@@ -6,13 +6,14 @@
 }
 
 .hero-stage {
+  /* How far the dialog box tucks in behind the character. */
+  --overlap: 10svh;
   position: sticky;
   top: 0;
   display: grid;
-  grid-template-columns: minmax(0, 62svh) minmax(0, 560px);
+  grid-template-columns: minmax(0, 62svh) minmax(0, 720px);
   justify-content: center;
   align-items: center;
-  column-gap: clamp(24px, 5vw, 88px);
   height: 100svh;
   padding-inline: clamp(16px, 4vw, 56px);
   overflow: hidden;
@@ -20,9 +21,12 @@
 
 /* ---------- Character ---------- */
 
+/* In front of the dialog box, which slides in behind the character. */
 .hero-figure {
   position: relative;
+  z-index: 1;
   align-self: stretch;
+  pointer-events: none;
   animation: hero-idle 6s ease-in-out infinite;
 }
 
@@ -30,7 +34,7 @@
 .hero-figure::before {
   content: '';
   position: absolute;
-  inset: 15% -10% 0;
+  inset: 15% 0 0;
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
 }
 
@@ -71,15 +75,21 @@
 
 /* ---------- Dialog ---------- */
 
+/* Sits low beside the character, like a game dialog box. */
 .hero-dialog {
   position: relative;
+  z-index: 0;
   display: grid;
-  gap: 18px;
+  gap: 16px;
+  align-self: end;
+  margin-bottom: 11svh;
 }
 
+/* Starts behind the character, so the text is padded past the overlap. */
 .dialog-box {
   position: relative;
-  padding: 36px 32px 20px;
+  margin-left: calc(-1 * var(--overlap));
+  padding: 44px 32px 44px calc(var(--overlap) + 32px);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 20px;
@@ -92,7 +102,7 @@
 .dialog-name {
   position: absolute;
   top: 0;
-  left: 28px;
+  left: calc(var(--overlap) + 28px);
   translate: 0 -50%;
   padding: 7px 12px;
   background: var(--ink);
@@ -143,11 +153,11 @@
   visibility: hidden;
 }
 
-.dialog-footer {
+.dialog-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 16px;
+  gap: 16px;
+  padding-left: 32px;
 }
 
 .dialog-count {
@@ -156,12 +166,15 @@
   letter-spacing: 0.08em;
 }
 
+/* Sits in the box's bottom padding, so it never covers the text. */
 .dialog-next {
+  position: absolute;
+  right: 14px;
+  bottom: 8px;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  margin-right: -8px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -185,7 +198,7 @@
   display: flex;
   gap: 6px;
   margin: 0;
-  padding: 0 4px;
+  padding: 0;
   list-style: none;
 }
 
@@ -219,7 +232,7 @@
 
 .hero-hint {
   margin: 0;
-  padding-inline: 4px;
+  padding-left: 32px;
   color: var(--muted);
   font: 500 12px/1 var(--mono);
   letter-spacing: 0.08em;
@@ -280,7 +293,9 @@
     padding: 0 16px max(16px, env(safe-area-inset-bottom));
   }
 
+  /* Here the box sits in front, covering the character's waist. */
   .hero-figure {
+    z-index: 0;
     width: 100%;
     margin-bottom: -48px;
   }
@@ -289,11 +304,22 @@
     z-index: 1;
     width: min(100%, 560px);
     gap: 12px;
+    align-self: auto;
+    margin-bottom: 0;
   }
 
   .dialog-box {
-    padding: 28px 20px 14px;
+    margin-left: 0;
+    padding: 28px 20px 36px;
     border-radius: 16px;
+  }
+
+  .dialog-name {
+    left: 20px;
+  }
+
+  .dialog-meta {
+    padding-left: 4px;
   }
 
   .hero-hint {

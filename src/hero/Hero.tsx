@@ -107,37 +107,37 @@ export default function Hero() {
             <p className="sr-only" aria-live="polite">
               {page.text}
             </p>
-            <div className="dialog-footer">
-              <span className="dialog-count">
-                {pad(active.index + 1)} / {pad(pages.length)}
-              </span>
-              <button
-                type="button"
-                className="dialog-next"
-                data-ready={typing.done}
-                aria-label={isLast ? 'Continue to the rest of the page' : 'Next'}
-                onClick={(event) => {
-                  event.stopPropagation()
-                  advance()
-                }}
-              >
-                <span aria-hidden="true">▼</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              className="dialog-next"
+              data-ready={typing.done}
+              aria-label={isLast ? 'Continue to the rest of the page' : 'Next'}
+              onClick={(event) => {
+                event.stopPropagation()
+                advance()
+              }}
+            >
+              <span aria-hidden="true">▼</span>
+            </button>
           </div>
 
-          <ol className="dialog-progress" aria-label="Introduction progress">
-            {pages.map((p, i) => (
-              <li key={p.pose}>
-                <button
-                  type="button"
-                  aria-label={`Part ${i + 1} of ${pages.length}`}
-                  aria-current={i === active.index ? 'step' : undefined}
-                  onClick={() => goTo(i)}
-                />
-              </li>
-            ))}
-          </ol>
+          <div className="dialog-meta">
+            <ol className="dialog-progress" aria-label="Introduction progress">
+              {pages.map((p, i) => (
+                <li key={p.pose}>
+                  <button
+                    type="button"
+                    aria-label={`Part ${i + 1} of ${pages.length}`}
+                    aria-current={i === active.index ? 'step' : undefined}
+                    onClick={() => goTo(i)}
+                  />
+                </li>
+              ))}
+            </ol>
+            <span className="dialog-count">
+              {pad(active.index + 1)} / {pad(pages.length)}
+            </span>
+          </div>
 
           <p className={hasScrolled ? 'hero-hint is-hidden' : 'hero-hint'} aria-hidden="true">
             Scroll to continue
