@@ -1,0 +1,297 @@
+/* Each page gets this much scrolling before the next one takes over. */
+.hero {
+  --page-scroll: 70svh;
+  position: relative;
+  height: calc(var(--pages) * var(--page-scroll) + 100svh);
+}
+
+.hero-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 62svh) minmax(0, 560px);
+  justify-content: center;
+  align-items: center;
+  column-gap: clamp(24px, 5vw, 88px);
+  height: 100svh;
+  padding-inline: clamp(16px, 4vw, 56px);
+  overflow: hidden;
+}
+
+/* ---------- Character ---------- */
+
+.hero-figure {
+  position: relative;
+  align-self: stretch;
+  animation: hero-idle 6s ease-in-out infinite;
+}
+
+/* Soft light behind the character. */
+.hero-figure::before {
+  content: '';
+  position: absolute;
+  inset: 15% -10% 0;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+}
+
+/* Centered with auto margins rather than `translate`, which the CSS minifier
+   drops when it sits next to the `transform` used for the pose transition. */
+.hero-pose {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  object-fit: contain;
+  object-position: 50% 100%;
+  opacity: 0;
+  transform: translateY(14px) scale(0.985);
+  transform-origin: 50% 100%;
+  transition:
+    opacity 450ms ease,
+    transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* The photos are cropped at the waist and sometimes at the elbows: fade those edges out. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(to top, transparent, #000 9%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(to top, transparent, #000 9%);
+  mask-composite: intersect;
+}
+
+.hero-pose.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Dialog ---------- */
+
+.hero-dialog {
+  position: relative;
+  display: grid;
+  gap: 18px;
+}
+
+.dialog-box {
+  position: relative;
+  padding: 36px 32px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow:
+    0 24px 60px -28px rgba(22, 22, 22, 0.35),
+    0 2px 6px rgba(22, 22, 22, 0.04);
+  cursor: pointer;
+}
+
+.dialog-name {
+  position: absolute;
+  top: 0;
+  left: 28px;
+  translate: 0 -50%;
+  padding: 7px 12px;
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: 999px;
+  font: 600 11px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.dialog-text {
+  display: grid;
+}
+
+.dialog-page {
+  grid-area: 1 / 1;
+  margin: 0;
+  visibility: hidden;
+  font-size: clamp(17px, 0.55vw + 12px, 21px);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.dialog-page.is-active {
+  visibility: visible;
+}
+
+/* Not typed yet: kept in place so words don't jump between lines while typing. */
+.dialog-unrevealed {
+  visibility: hidden;
+}
+
+.dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.dialog-count {
+  color: var(--muted);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.dialog-next {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin-right: -8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.dialog-next[data-ready='true'],
+.dialog-next:focus-visible {
+  opacity: 1;
+}
+
+.dialog-next[data-ready='true'] span {
+  animation: hero-nudge 1s ease-in-out infinite;
+}
+
+.dialog-progress {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0 4px;
+  list-style: none;
+}
+
+.dialog-progress button {
+  display: block;
+  width: 22px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: width 300ms ease;
+}
+
+.dialog-progress button::before {
+  content: '';
+  display: block;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(22, 22, 22, 0.16);
+  transition: background-color 200ms ease;
+}
+
+.dialog-progress button[aria-current='step'] {
+  width: 36px;
+}
+
+.dialog-progress button[aria-current='step']::before {
+  background: var(--ink);
+}
+
+.hero-hint {
+  margin: 0;
+  padding-inline: 4px;
+  color: var(--muted);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 300ms ease;
+}
+
+.hero-hint::after {
+  content: '↓';
+  display: inline-block;
+  margin-left: 8px;
+  animation: hero-nudge 1.2s ease-in-out infinite;
+}
+
+.hero-hint.is-hidden {
+  opacity: 0;
+}
+
+.hero-skip {
+  position: absolute;
+  top: clamp(12px, 3svh, 28px);
+  right: clamp(16px, 3vw, 40px);
+  z-index: 2;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.hero-skip:hover {
+  background: var(--surface);
+}
+
+@keyframes hero-idle {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes hero-nudge {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* Phones and portrait tablets: character on top, dialog underneath. */
+@media (max-width: 760px), (orientation: portrait) and (max-width: 1100px) {
+  .hero-stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    justify-items: center;
+    padding: 0 16px max(16px, env(safe-area-inset-bottom));
+  }
+
+  .hero-figure {
+    width: 100%;
+    margin-bottom: -48px;
+  }
+
+  .hero-dialog {
+    z-index: 1;
+    width: min(100%, 560px);
+    gap: 12px;
+  }
+
+  .dialog-box {
+    padding: 28px 20px 14px;
+    border-radius: 16px;
+  }
+
+  .hero-hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-figure,
+  .dialog-next[data-ready='true'] span,
+  .hero-hint::after {
+    animation: none;
+  }
+
+  .hero-pose {
+    transform: none;
+    transition: opacity 150ms linear;
+  }
+}
