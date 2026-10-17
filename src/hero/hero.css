@@ -19,6 +19,31 @@
   overflow: hidden;
 }
 
+/* ---------- Backdrop title ---------- */
+
+/* Huge, faint title across the top of the hero; the character stands in front of it. */
+.hero-backdrop {
+  position: absolute;
+  top: 6svh;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  margin: 0;
+  /* Sized so the line spans about 96% of the screen width. */
+  font: 400 11.4vw/0.9 'Anton', var(--font);
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  /* Fades out completely toward the bottom of the letters. */
+  background: linear-gradient(to bottom, rgba(22, 22, 22, 0.17), rgba(22, 22, 22, 0.1) 45%, rgba(22, 22, 22, 0));
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+  user-select: none;
+}
+
 /* ---------- Character ---------- */
 
 /* In front of the dialog box, which slides in behind the character. */
@@ -296,6 +321,18 @@
     grid-template-rows: minmax(0, 1fr) auto;
     justify-items: center;
     padding: 0 16px max(16px, env(safe-area-inset-bottom));
+  }
+
+  /* One word per line, sized so "DEVELOPER" spans about 90% of the width. */
+  .hero-backdrop {
+    top: 5svh;
+    font-size: 22vw;
+    line-height: 0.88;
+    white-space: normal;
+  }
+
+  .hero-backdrop span {
+    display: block;
   }
 
   /* Here the box sits in front, covering the character's waist. */

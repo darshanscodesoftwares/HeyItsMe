@@ -74,6 +74,10 @@ export default function Hero() {
       aria-label="Introduction"
     >
       <div className="hero-stage">
+        <h1 className="hero-backdrop">
+          <span>Fullstack</span> <span>Developer</span>
+        </h1>
+
         <button type="button" className="hero-skip" onClick={() => goTo(pages.length)}>
           Skip intro
         </button>
