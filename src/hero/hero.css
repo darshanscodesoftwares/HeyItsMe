@@ -111,6 +111,11 @@
   font: 600 11px/1 var(--mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition: opacity 250ms ease;
+}
+
+.dialog-name.is-hidden {
+  opacity: 0;
 }
 
 .dialog-text {

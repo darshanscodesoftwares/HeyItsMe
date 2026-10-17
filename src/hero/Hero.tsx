@@ -95,7 +95,13 @@ export default function Hero() {
 
         <div className="hero-dialog">
           <div className="dialog-box" onClick={advance}>
-            <span className="dialog-name">Priyadarshan</span>
+            {/* Hidden on the first page, where the dialog itself introduces Priyadarshan. */}
+            <span
+              className={active.index === 0 ? 'dialog-name is-hidden' : 'dialog-name'}
+              aria-hidden={active.index === 0 || undefined}
+            >
+              Priyadarshan
+            </span>
             <div className="dialog-text" aria-hidden="true">
               {/* Every page sits in the same grid cell so the box keeps the height of the longest one. */}
               {pages.map((p, i) => (
