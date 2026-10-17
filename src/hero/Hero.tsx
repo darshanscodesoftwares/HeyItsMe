@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import DialogText from './DialogText'
 import { pages } from './pages'
 import { useTypewriter } from './useTypewriter'
 import './hero.css'
@@ -99,14 +100,7 @@ export default function Hero() {
               {/* Every page sits in the same grid cell so the box keeps the height of the longest one. */}
               {pages.map((p, i) => (
                 <p key={p.pose} className={i === active.index ? 'dialog-page is-active' : 'dialog-page'}>
-                  {i === active.index ? (
-                    <>
-                      {p.text.slice(0, typing.count)}
-                      <span className="dialog-unrevealed">{p.text.slice(typing.count)}</span>
-                    </>
-                  ) : (
-                    p.text
-                  )}
+                  {i === active.index ? <DialogText text={p.text} count={typing.count} /> : p.text}
                 </p>
               ))}
             </div>

@@ -120,6 +120,24 @@
   visibility: visible;
 }
 
+.dialog-highlight {
+  font-weight: 700;
+}
+
+/* A highlighted phrase lays out inline so it can wrap like normal text;
+   the gradient carries on across the line break. */
+.dialog-highlight--phrase,
+.dialog-highlight--phrase .gradient-text__inner,
+.dialog-highlight--phrase .gradient-text__fill {
+  display: inline;
+}
+
+/* The text between the highlighted words of a phrase, e.g. ", and ". */
+.dialog-plain {
+  font-weight: 400;
+  -webkit-text-fill-color: currentColor;
+}
+
 /* Not typed yet: kept in place so words don't jump between lines while typing. */
 .dialog-unrevealed {
   visibility: hidden;
