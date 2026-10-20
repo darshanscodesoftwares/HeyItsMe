@@ -60,7 +60,7 @@ function Preview({ section }: { section: Section }) {
             <li key={i}>
               <span className="sheet-dot" />
               <Line width={lineWidth(item.title, i, 64, 84)} />
-              <Line />
+              {item.period && <Line />}
             </li>
           ))}
         </ul>

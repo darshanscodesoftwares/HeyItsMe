@@ -92,9 +92,10 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
 **Resume** (`src/resume/`). The design reference is
 `dynamic-resume-navigation-section/resume-refernce.png`.
 
-- `content.ts`: all resume text, and the place to edit it. Text in `[square brackets]` is a
-  placeholder. Contacts and links with an empty `text`/`href` show as placeholders.
-  Sections come in four kinds: `groups` (chips), `timeline`, `cards` and `list`.
+- `content.ts`: all resume text, and the place to edit it, filled from his own resume. A
+  contact with an empty `text` shows as a grey line, and a link with an empty `href` shows
+  as "not live yet". Sections come in four kinds: `groups` (chips), `timeline`, `cards`
+  and `list`.
 - `Paper.tsx`: the "paper" overview, which follows the reference's layout on a compact
   4:5 sheet. Each entry is drawn as a grey line, like a resume seen from far away. Each section is an
   `<a href="#/resume/<id>">`. Everything on the sheet is sized in `cqw`, so it scales as
@@ -151,10 +152,19 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - The section page's giant title uses the same tint, so the FLIP keeps its colour.
   - The user first asked for "minimal, unseeable". The 30% version was too faint, and he
     asked for "a little more seeable". Keep it subtle.
-- **Resume content:** the paper shows only grey lines, and the real text lives on the
-  section pages. Seeded from the intro dialog: Skills, the two Experience roles,
-  Education (B.Com) and the HeyItsMe project. Everything else is a placeholder. The
-  avatar is pose 1, cropped in CSS.
+- **Resume content:** the paper shows grey lines, and the real text lives on the section
+  pages.
+  - Everything comes from his resume PDF (October 2026), with typos and cut-off bullets
+    cleaned up. He will update the resume later.
+  - **Never show his phone number.** He asked for it to be left out.
+  - Contacts: email, Cuddalore, LinkedIn `darshan-stack`, GitHub `DarshanLevi`.
+  - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
+    now **Languages**.
+  - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
+  - Projects: MYCARBOY, Decimal-chess, schoolNest, Word-Builder, Musica, Find-ISS. The
+    HeyItsMe project isn't on his resume, so it was dropped. No project links yet.
+  - Not used anywhere yet: his professional summary.
+  - The avatar is pose 1, cropped in CSS.
 - **Resume section pages:** a "camera" dives in. The section heading becomes a huge faint
   title behind the content, and the zoomed paper stays blurred behind everything.
   Previous/next wrap around, in the order of `sections` in `content.ts`.
@@ -201,8 +211,7 @@ _Last updated: 2026-10-20_
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
   checked at 1536×698 (the user's laptop), 1920×870, on a 390×844 phone and with reduced
-  motion. All the content apart from the seeded facts is still a placeholder, waiting
-  for real text in `src/resume/content.ts`.
+  motion. Its content is filled in from his resume (2026-10-20).
 - **Open:** the hero's background treatment (open decision in HERO_PLAN.md).
 - **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
   section.
@@ -247,6 +256,11 @@ _Last updated: 2026-10-20_
 - Added a faint, distinct colour to each resume section's heading, at the user's request,
   then made it a step more visible: text from 30% to 50%, icon wash from 10% to 16%,
   underline from 70% to 90%.
+- Filled the resume with his real details from his resume PDF.
+  - Left out his phone number at his request.
+  - Interests became Languages.
+  - His one measurable result went under Achievements.
+  - Certifications have no year, so the paper skips their date line.
   - He called the taste-skill revamp "complete shit": make only the design changes he asks
     for, one at a time.
 

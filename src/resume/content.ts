@@ -1,7 +1,7 @@
-// Everything the resume shows. On the paper each entry is drawn as a grey line, like a
-// resume seen from across the room; the full text is on each section's own page.
-// Text in [square brackets] is a placeholder waiting for the real thing. A link with
-// an empty href shows as "not live yet".
+// Everything the resume shows, taken from Priyadarshan's resume (October 2026). On the
+// paper each entry is drawn as a grey line, like a resume seen from across the room;
+// the full text is on each section's own page. A link with an empty href shows as
+// "not live yet".
 import type { IconName } from './Icon'
 
 export interface Link {
@@ -58,22 +58,22 @@ export type Section = SectionBase &
     | { kind: 'list'; items: Item[] }
   )
 
+// No phone number, on purpose.
 export const profile: { name: string; role: string; contacts: Contact[] } = {
   name: 'Priyadarshan S',
   role: 'Full Stack Developer',
   contacts: [
-    { icon: 'mail', label: 'Email', text: '', href: '' },
-    { icon: 'phone', label: 'Phone', text: '', href: '' },
-    { icon: 'pin', label: 'Location', text: '', href: '' },
-    { icon: 'linkedin', label: 'LinkedIn', text: '', href: '' },
-    { icon: 'github', label: 'GitHub', text: '', href: '' },
+    { icon: 'mail', label: 'Email', text: 's2darshan2@gmail.com', href: 'mailto:s2darshan2@gmail.com' },
+    { icon: 'pin', label: 'Location', text: 'Cuddalore, India', href: '' },
+    {
+      icon: 'linkedin',
+      label: 'LinkedIn',
+      text: 'darshan-stack',
+      href: 'https://www.linkedin.com/in/darshan-stack',
+    },
+    { icon: 'github', label: 'GitHub', text: 'DarshanLevi', href: 'https://github.com/DarshanLevi' },
   ],
 }
-
-const projectLinks = (): Link[] => [
-  { label: 'Live', href: '' },
-  { label: 'Code', href: '' },
-]
 
 // The shaded left column of the paper, top to bottom.
 export const sideSections: Section[] = [
@@ -83,10 +83,22 @@ export const sideSections: Section[] = [
     icon: 'code',
     kind: 'groups',
     groups: [
-      { name: 'Frontend', items: ['HTML', 'CSS', 'JavaScript', 'React'] },
-      { name: 'Backend', items: ['Node.js', 'Express', 'REST APIs'] },
-      { name: 'Data', items: ['MongoDB', 'Data modelling'] },
-      { name: 'Deployment', items: ['PaaS', 'VPS'] },
+      { name: 'Frontend', items: ['React.js', 'Vite', 'CSS Modules', 'HTML5', 'Responsive Design', 'Framer Motion'] },
+      {
+        name: 'Backend',
+        items: [
+          'Node.js',
+          'Express.js',
+          'REST API Design',
+          'JWT Authentication',
+          'Role-Based Access Control',
+          'Microservices Architecture',
+          'Web Scraping (Puppeteer, Cheerio)',
+          'Razorpay Webhooks and Integration',
+        ],
+      },
+      { name: 'Languages', items: ['JavaScript', 'SQL'] },
+      { name: 'Databases', items: ['MongoDB', 'PostgreSQL'] },
     ],
   },
   {
@@ -95,8 +107,10 @@ export const sideSections: Section[] = [
     icon: 'gear',
     kind: 'groups',
     groups: [
-      { name: '[Category]', items: ['[Tool]', '[Tool]', '[Tool]', '[Tool]'] },
-      { name: '[Category]', items: ['[Tool]', '[Tool]', '[Tool]', '[Tool]'] },
+      { name: 'Version control', items: ['Git', 'GitHub'] },
+      { name: 'APIs and databases', items: ['Postman', 'pgAdmin'] },
+      { name: 'Deployment', items: ['PM2', 'Ubuntu VPS'] },
+      { name: 'Design', items: ['Figma'] },
     ],
   },
   {
@@ -106,44 +120,49 @@ export const sideSections: Section[] = [
     kind: 'cards',
     cards: [
       {
-        title: 'HeyItsMe',
-        meta: 'Personal portfolio',
-        text: 'This site: a scroll-driven, game-style introduction and an interactive resume.',
-        tags: ['React', 'TypeScript', 'Vite'],
-        links: projectLinks(),
+        title: 'MYCARBOY',
+        meta: '5 months',
+        text: 'A vehicle inspection platform: REST APIs with state-driven booking lifecycles, Razorpay payments with secure webhook verification, dynamic vehicle pricing, job assignment and inspection report pipelines. Deployed on an Ubuntu VPS with PM2.',
+        tags: ['React', 'Node.js', 'Express', 'MongoDB'],
       },
       {
-        title: '[Project name]',
-        meta: '[Year · your role]',
-        text: '[What it does, what you built, and how it turned out.]',
-        tags: ['[Tech]', '[Tech]', '[Tech]'],
-        links: projectLinks(),
+        title: 'Decimal-chess',
+        meta: '3 months',
+        text: 'A chess tournament results system. It scrapes tournament keys, player lists and round pairings with Puppeteer and Cheerio, lets arbiters submit board results through secure shareable links, and generates Swiss-Manager XML to update Chess-Results automatically.',
+        tags: ['React (Vite)', 'Node.js', 'Express', 'MongoDB'],
       },
       {
-        title: '[Project name]',
-        meta: '[Year · your role]',
-        text: '[What it does, what you built, and how it turned out.]',
-        tags: ['[Tech]', '[Tech]'],
-        links: projectLinks(),
+        title: 'schoolNest',
+        meta: '4 months',
+        text: 'A multi-tenant school SaaS backend: Controller → Service → Repository REST APIs with JWT, bcrypt and role-based access for admins, teachers and parents, a database per service, and tenant isolation by school.',
+        tags: ['Node.js', 'Express', 'PostgreSQL'],
       },
       {
-        title: '[Project name]',
-        meta: '[Year · your role]',
-        text: '[What it does, what you built, and how it turned out.]',
-        tags: ['[Tech]', '[Tech]'],
-        links: projectLinks(),
+        title: 'Word-Builder',
+        meta: '1 month',
+        text: 'An ATS resume builder: a multi-step form with a live preview, automatic section structuring, bullet enhancement, resume scoring with keyword checks, and one-click A4 PDF export with Puppeteer.',
+        tags: ['React (Vite)', 'Node.js', 'Express', 'Puppeteer', 'CSS Modules'],
+      },
+      {
+        title: 'Musica',
+        meta: '2.5 months',
+        text: 'A responsive concert booking landing page.',
+        tags: ['React', 'CSS Modules', 'Framer Motion'],
+      },
+      {
+        title: 'Find-ISS',
+        meta: '2.5 months',
+        text: 'A real-time web app that tracks the International Space Station on Google Maps from live coordinates.',
+        tags: ['Node.js', 'Express.js', 'EJS', 'External APIs'],
       },
     ],
   },
   {
-    id: 'interests',
-    title: 'Interests',
-    icon: 'gamepad',
-    kind: 'cards',
-    cards: [
-      { title: '[Interest]', text: '[A line about what you enjoy in it.]' },
-      { title: '[Interest]', text: '[A line about what you enjoy in it.]' },
-    ],
+    id: 'languages',
+    title: 'Languages',
+    icon: 'languages',
+    kind: 'groups',
+    groups: [{ name: 'Spoken', items: ['Tamil', 'English'] }],
   },
   {
     id: 'achievements',
@@ -151,8 +170,11 @@ export const sideSections: Section[] = [
     icon: 'trophy',
     kind: 'cards',
     cards: [
-      { title: '[Achievement]', meta: '[Year]', text: '[What happened, and why it mattered.]' },
-      { title: '[Achievement]', meta: '[Year]', text: '[What happened, and why it mattered.]' },
+      {
+        title: 'About 80% fewer upload crashes',
+        meta: 'MYCARBOY',
+        text: 'Compressed chunk uploads for media and report files cut upload-related crashes by about 80% and made uploads consistent in production.',
+      },
     ],
   },
 ]
@@ -166,20 +188,27 @@ export const mainSections: Section[] = [
     kind: 'timeline',
     entries: [
       {
-        title: 'Full-Stack Developer (MERN)',
-        place: '[Company] · [City]',
-        period: '[20XX] – Present',
+        title: 'Full-Stack Developer',
+        place: 'Scode Software Solutions',
+        period: 'Aug 2025 – Feb 2026',
         points: [
-          '[What you build and own day to day.]',
-          '[A result you are proud of, with a number if you have one.]',
-          '[A tool or practice you brought to the team.]',
+          'Built production features across tournament management, school SaaS and vehicle inspection platforms: secure APIs, role-based workflows and scalable backend services.',
+          'Delivered key modules for Decimal-chess and schoolNest, including automated data scraping, XML export workflows and a multi-tenant backend.',
+          'In MYCARBOY, added compressed chunk uploads for media and report files, cutting upload-related crashes by about 80%.',
+          'Developed responsive web interfaces and maintained backend services with reliable API integrations.',
         ],
       },
       {
-        title: 'Full-Stack Developer Intern',
-        place: '[Startup] · [City]',
-        period: '[20XX] – [20XX]',
-        points: ['[What you worked on.]', '[What you shipped or learned.]'],
+        title: 'Full-Stack Intern',
+        place: 'Go Prime Technologies',
+        period: 'Apr 2023 – Apr 2024',
+        points: [
+          'Built foundational JavaScript skills by solving game-based problems.',
+          'Developed responsive web interfaces and improved the user experience across devices.',
+          'Built and maintained backend services with reliable API integrations and clean architecture.',
+          "Contributed to Onbo's transportation management system.",
+          'Designed and optimised database queries for faster, more reliable data access.',
+        ],
       },
     ],
   },
@@ -190,10 +219,10 @@ export const mainSections: Section[] = [
     kind: 'timeline',
     entries: [
       {
-        title: 'Bachelor of Commerce (B.Com)',
-        place: '[College or university] · [City]',
-        period: '[20XX] – [20XX]',
-        points: ['[Anything worth mentioning: focus, projects, results.]'],
+        title: 'Bachelor of Commerce in Bank Management',
+        place: 'St. Joseph College of Arts and Science',
+        period: '2019 – 2022',
+        points: [],
       },
     ],
   },
@@ -203,10 +232,8 @@ export const mainSections: Section[] = [
     icon: 'award',
     kind: 'list',
     items: [
-      { title: '[Certificate name]', meta: '[Issuer]', period: '[Year]', link: { label: 'Credential', href: '' } },
-      { title: '[Certificate name]', meta: '[Issuer]', period: '[Year]', link: { label: 'Credential', href: '' } },
-      { title: '[Certificate name]', meta: '[Issuer]', period: '[Year]', link: { label: 'Credential', href: '' } },
-      { title: '[Certificate name]', meta: '[Issuer]', period: '[Year]', link: { label: 'Credential', href: '' } },
+      { title: 'The Complete Full-Stack Web Development Bootcamp', meta: 'Udemy', period: '' },
+      { title: 'Foundations of Digital Marketing and E-commerce', meta: 'Coursera', period: '' },
     ],
   },
 ]
