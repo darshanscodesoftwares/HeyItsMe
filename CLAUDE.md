@@ -144,6 +144,12 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
     Scrolling back up hides the paper again. A deep link shows it immediately.
   - The paper keeps the reference's blue accents (`--sheet-*` tokens in `resume.css`),
     even though the rest of the site is monochrome.
+- **Section colours:** each section has its own faint colour, set by `[data-tone='<id>']` in
+  `resume.css`.
+  - The heading text is only 30% tinted toward it (`--tone-ink`). The icon circle gets a
+    10% wash, and the underline carries the colour itself.
+  - The section page's giant title uses the same tint, so the FLIP keeps its colour.
+  - The user asked for it "minimal, unseeable": keep it this faint.
 - **Resume content:** the paper shows only grey lines, and the real text lives on the
   section pages. Seeded from the intro dialog: Skills, the two Experience roles,
   Education (B.Com) and the HeyItsMe project. Everything else is a placeholder. The
@@ -237,6 +243,9 @@ _Last updated: 2026-10-20_
   - The site is exactly as it was before the skill. The only things kept from that
     stretch: the he/him doc fix and the "always update CLAUDE.md" rule.
 - The user is Priyadarshan himself and uses he/him.
+- Added a faint, distinct colour to each resume section's heading, at the user's request.
+  - He called the taste-skill revamp "complete shit": make only the design changes he asks
+    for, one at a time.
 
 ### 2026-10-19 (Windows PC)
 

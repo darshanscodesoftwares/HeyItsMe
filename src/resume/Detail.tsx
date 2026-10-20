@@ -132,7 +132,14 @@ export default function Detail({ ref, section, onBack, onGo }: DetailProps) {
   const next = sections[(index + 1) % sections.length]
 
   return (
-    <div ref={ref} className="resume-detail" role="dialog" aria-modal="true" aria-labelledby="resume-detail-title">
+    <div
+      ref={ref}
+      className="resume-detail"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="resume-detail-title"
+      data-tone={section.id}
+    >
       <div className="resume-detail-veil" data-veil />
       {/* The section's heading from the paper, grown huge and pushed back behind the page. */}
       <h2 id="resume-detail-title" className="resume-detail-title" tabIndex={-1} data-title>

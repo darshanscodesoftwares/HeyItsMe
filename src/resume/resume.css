@@ -3,7 +3,6 @@
   --sheet-muted: #5b6a80;
   --sheet-accent: #2b5ea7;
   --sheet-side: #edf3fb;
-  --sheet-tint: #dde8f7;
   --sheet-line: #d7e0ec;
   --sheet-bar: #c9d1dd;
   --sheet-bar-strong: #7b8699;
@@ -255,6 +254,21 @@
   margin-bottom: 2.4cqw;
 }
 
+/* Each section has its own colour, kept faint: it only tints the heading toward it,
+   washes the icon circle and colours the underline. The section's page uses it too. */
+[data-tone='skills'] { --tone: #2563eb; }
+[data-tone='tools'] { --tone: #0d9488; }
+[data-tone='projects'] { --tone: #7c3aed; }
+[data-tone='interests'] { --tone: #db2777; }
+[data-tone='achievements'] { --tone: #d97706; }
+[data-tone='experience'] { --tone: #059669; }
+[data-tone='education'] { --tone: #ea580c; }
+[data-tone='certifications'] { --tone: #0891b2; }
+
+[data-tone] {
+  --tone-ink: color-mix(in srgb, var(--tone) 30%, var(--sheet-ink));
+}
+
 .sheet-icon {
   display: grid;
   flex: none;
@@ -262,7 +276,8 @@
   width: 4cqw;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: var(--sheet-tint);
+  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 10%, #fff);
+  color: var(--tone-ink, var(--sheet-ink));
 }
 
 .sheet-icon svg {
@@ -281,6 +296,7 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
   white-space: nowrap;
+  color: var(--tone-ink, var(--sheet-ink));
 }
 
 .sheet-heading-text::after {
@@ -291,7 +307,7 @@
   width: 3.4cqw;
   height: 0.28cqw;
   border-radius: 0.2cqw;
-  background: var(--sheet-accent);
+  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 70%, var(--sheet-ink));
   transition: width 300ms ease;
 }
 
@@ -482,6 +498,7 @@
   text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
+  color: var(--tone-ink, var(--sheet-ink));
   pointer-events: none;
   user-select: none;
 }

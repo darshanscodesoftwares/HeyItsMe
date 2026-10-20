@@ -78,6 +78,7 @@ function Column({ className, sections, onOpen }: { className: string; sections: 
             className="sheet-section"
             href={hrefFor(section.id)}
             data-section={section.id}
+            data-tone={section.id}
             onClick={(event) => onOpen(event, section.id)}
           >
             <span className="sheet-heading">
