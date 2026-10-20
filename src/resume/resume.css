@@ -11,65 +11,21 @@
 
 /* ---------- Scene ---------- */
 
+/* Just the paper, in the middle of the screen. */
 .resume {
-  --nudge: translateX(3px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) min(max(64svh, 500px), 58%);
-  align-items: center;
-  gap: clamp(32px, 6vw, 112px);
-  width: min(100%, 1320px);
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
   min-height: 100svh;
-  margin-inline: auto;
-  padding: 5svh clamp(16px, 4vw, 56px);
-}
-
-.resume-intro {
-  display: grid;
-  gap: 20px;
-  justify-items: start;
-}
-
-.resume-title {
-  margin: 0;
-  font: 400 clamp(72px, 10vw, 176px)/0.86 'Anton', var(--font);
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-}
-
-.resume-lead {
-  margin: 0;
-  max-width: 30ch;
-  color: var(--muted);
-  font-size: clamp(17px, 0.5vw + 13px, 20px);
-  line-height: 1.6;
-}
-
-.resume-hint {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font: 500 12px/1 var(--mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.resume-hint::after {
-  content: '→';
-  display: inline-block;
-  margin-left: 8px;
-  animation: resume-nudge 1.2s ease-in-out infinite;
-}
-
-@keyframes resume-nudge {
-  50% {
-    transform: var(--nudge);
-  }
+  padding: 5svh 16px;
 }
 
 /* ---------- Paper ---------- */
 
+/* A compact 4:5 sheet, sized by the screen's height so all of it fits in one view. */
 .resume-slot {
-  width: 100%;
-  aspect-ratio: 210 / 297;
+  width: min(100%, 72svh);
+  aspect-ratio: 4 / 5;
 }
 
 /* Everything on the sheet is sized in cqw (1cqw = 1% of the paper's width), so the
@@ -79,7 +35,7 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  aspect-ratio: 210 / 297;
+  aspect-ratio: 4 / 5;
   /* The camera's transforms start from here (see cinema.ts). */
   transform-origin: 0 0;
 }
@@ -94,7 +50,6 @@
 }
 
 .sheet {
-  text-align: left;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   height: 100%;
@@ -111,21 +66,21 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 3.5cqw;
-  padding: 6cqw 5.5cqw 5cqw;
+  gap: 3cqw;
+  padding: 4.5cqw 5cqw 3.5cqw;
   transition: opacity 400ms ease;
 }
 
 .sheet-avatar {
   position: relative;
-  width: 16cqw;
+  width: 11.5cqw;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
   background: var(--sheet-side);
   box-shadow:
-    0 0 0 0.6cqw #fff,
-    0 0 0 0.8cqw var(--sheet-line);
+    0 0 0 0.5cqw #fff,
+    0 0 0 0.65cqw var(--sheet-line);
 }
 
 /* Crops the pose photo to head and shoulders. */
@@ -139,7 +94,7 @@
 
 .sheet-name {
   margin: 0;
-  font-size: 4.9cqw;
+  font-size: 3.7cqw;
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -147,9 +102,9 @@
 }
 
 .sheet-role {
-  margin: 1.4cqw 0 0;
+  margin: 1cqw 0 0;
   color: var(--sheet-accent);
-  font-size: 1.6cqw;
+  font-size: 1.35cqw;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -165,7 +120,7 @@
 
 .sheet-contacts {
   display: grid;
-  gap: 1.5cqw;
+  gap: 0.85cqw;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -174,18 +129,19 @@
 .sheet-contacts li {
   display: flex;
   align-items: center;
-  gap: 2cqw;
-  font-size: 1.4cqw;
+  gap: 1.6cqw;
+  font-size: 1.3cqw;
 }
 
 .sheet-contacts svg {
   flex: none;
-  width: 2.1cqw;
-  height: 2.1cqw;
+  width: 1.7cqw;
+  height: 1.7cqw;
 }
 
 .sheet-contacts .sheet-line {
-  width: 15cqw;
+  width: 13cqw;
+  height: 1cqw;
 }
 
 .sheet-contacts a {
@@ -206,12 +162,12 @@
 }
 
 .sheet-side {
-  padding: 4.5cqw 3.2cqw;
+  padding: 3.6cqw 3.2cqw;
   background: var(--sheet-side);
 }
 
 .sheet-main {
-  padding: 4.5cqw 5cqw 4.5cqw 4.4cqw;
+  padding: 3.6cqw 5cqw 3.6cqw 4.4cqw;
 }
 
 .sheet-rule {
@@ -226,9 +182,9 @@
 .sheet-section {
   position: relative;
   display: block;
-  margin: -1.8cqw;
-  padding: 1.8cqw;
-  border-radius: 1.8cqw;
+  margin: -1.6cqw;
+  padding: 1.6cqw;
+  border-radius: 1.6cqw;
   color: inherit;
   text-decoration: none;
   transition:
@@ -248,23 +204,23 @@
 .sheet-heading {
   display: flex;
   align-items: center;
-  gap: 2.2cqw;
-  margin-bottom: 3cqw;
+  gap: 2cqw;
+  margin-bottom: 2.4cqw;
 }
 
 .sheet-icon {
   display: grid;
   flex: none;
   place-items: center;
-  width: 4.4cqw;
+  width: 4cqw;
   aspect-ratio: 1;
   border-radius: 50%;
   background: var(--sheet-tint);
 }
 
 .sheet-icon svg {
-  width: 2.1cqw;
-  height: 2.1cqw;
+  width: 1.9cqw;
+  height: 1.9cqw;
 }
 
 /* The section page's title grows out of this text, so the two share their type
@@ -283,7 +239,7 @@
 .sheet-heading-text::after {
   content: '';
   position: absolute;
-  top: calc(100% + 1cqw);
+  top: calc(100% + 0.9cqw);
   left: 0;
   width: 3.4cqw;
   height: 0.28cqw;
@@ -313,8 +269,8 @@
 /* Out of the flow, so the heading line reaches the edge until the arrow shows. */
 .sheet-open {
   position: absolute;
-  top: 2.9cqw;
-  right: 1.8cqw;
+  top: 2.5cqw;
+  right: 1.6cqw;
   width: 2.2cqw;
   height: 2.2cqw;
   color: var(--sheet-accent);
@@ -342,7 +298,7 @@
 
 .sheet-line {
   display: block;
-  height: 1.3cqw;
+  height: 1.2cqw;
   border-radius: 1cqw;
   background: var(--sheet-bar);
 }
@@ -353,7 +309,7 @@
 
 .sheet-lines {
   display: grid;
-  gap: 1.5cqw;
+  gap: 1.3cqw;
 }
 
 .sheet-lines--pairs {
@@ -365,9 +321,9 @@
 .sheet-timeline {
   position: relative;
   display: grid;
-  gap: 3.6cqw;
+  gap: 2.8cqw;
   margin: 0;
-  padding: 0 0 0 5.4cqw;
+  padding: 0 0 0 5cqw;
   list-style: none;
 }
 
@@ -376,7 +332,7 @@
   position: absolute;
   top: 0.6cqw;
   bottom: 0.6cqw;
-  left: 2.1cqw;
+  left: 1.9cqw;
   width: 0.2cqw;
   background: var(--sheet-accent);
 }
@@ -385,7 +341,7 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 9cqw;
-  gap: 1.6cqw 2cqw;
+  gap: 1.3cqw 2cqw;
 }
 
 .sheet-timeline li > :nth-child(n + 3) {
@@ -396,8 +352,8 @@
   content: '';
   position: absolute;
   top: -0.15cqw;
-  left: -4cqw;
-  width: 1.6cqw;
+  left: -3.75cqw;
+  width: 1.5cqw;
   aspect-ratio: 1;
   border: 0.3cqw solid var(--sheet-accent);
   border-radius: 50%;
@@ -406,7 +362,7 @@
 
 .sheet-list {
   display: grid;
-  gap: 2.6cqw;
+  gap: 2.2cqw;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -414,7 +370,7 @@
 
 .sheet-list li {
   display: grid;
-  grid-template-columns: 4.4cqw minmax(0, 1fr) 9cqw;
+  grid-template-columns: 4cqw minmax(0, 1fr) 9cqw;
   align-items: center;
   gap: 1.6cqw;
 }
@@ -802,30 +758,6 @@
   font-size: 18px;
 }
 
-/* Phones and portrait tablets: heading on top, paper underneath. */
-@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
-  .resume {
-    --nudge: translateY(3px);
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    gap: 32px;
-    padding-block: 10svh;
-    text-align: center;
-  }
-
-  .resume-intro {
-    justify-items: center;
-  }
-
-  .resume-slot {
-    width: min(100%, 560px);
-  }
-
-  .resume-hint::after {
-    content: '↓';
-  }
-}
-
 @media (max-width: 760px) {
   .resume-detail-body {
     gap: 16px;
@@ -846,11 +778,5 @@
 
   .detail-pager strong {
     font-size: 16px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .resume-hint::after {
-    animation: none;
   }
 }

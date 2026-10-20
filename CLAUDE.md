@@ -92,8 +92,8 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
 - `content.ts`: all resume text, and the place to edit it. Text in `[square brackets]` is a
   placeholder. Contacts and links with an empty `text`/`href` show as placeholders.
   Sections come in four kinds: `groups` (chips), `timeline`, `cards` and `list`.
-- `Paper.tsx`: the A4 "paper" overview, which follows the reference. Each entry is drawn
-  as a grey line, like a resume seen from far away. Each section is an
+- `Paper.tsx`: the "paper" overview, which follows the reference's layout on a compact
+  4:5 sheet. Each entry is drawn as a grey line, like a resume seen from far away. Each section is an
   `<a href="#/resume/<id>">`. Everything on the sheet is sized in `cqw`, so it scales as
   one piece.
 - `Detail.tsx`: a section's own page. It's a fixed overlay rendered into `document.body`,
@@ -128,9 +128,15 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 - **Scrolling:** normal scrolling only, with no scroll-jacking and no snapping.
 - **Accessibility:** the dialog is real text. Screen readers get each page whole through an
   `aria-live` `.sr-only` paragraph, and the visual copy is `aria-hidden`.
-- **Resume overview:** a giant Anton "RESUME" sits on the left with the paper on the right.
-  On phones and portrait screens they stack. The paper keeps the reference's blue accents
-  (`--sheet-*` tokens in `resume.css`), even though the rest of the site is monochrome.
+- **Resume overview:** just the paper, centered, with no text beside it. The user had a
+  "RESUME" heading on the left removed.
+  - It's a compact 4:5 sheet sized by screen height (`width: min(100%, 72svh)`), so the
+    whole resume fits in one view.
+  - The user's laptop runs at 125% scaling, so its browser view is only about 1536×698
+    CSS px. Check that size.
+  - The avatar and name were shrunk at the user's request.
+  - The paper keeps the reference's blue accents (`--sheet-*` tokens in `resume.css`),
+    even though the rest of the site is monochrome.
 - **Resume content:** the paper shows only grey lines, and the real text lives on the
   section pages. Seeded from the intro dialog: Skills, the two Experience roles,
   Education (B.Com) and the HeyItsMe project. Everything else is a placeholder. The
@@ -179,9 +185,10 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 _Last updated: 2026-10-20_
 
 - Hero: first version done (2026-10-17).
-- Resume section: first version done (2026-10-20). It was checked at 1920×870, on a
-  390×844 phone and with reduced motion. All the content apart from the seeded facts is
-  still a placeholder, waiting for real text in `src/resume/content.ts`.
+- Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
+  checked at 1536×698 (the user's laptop), 1920×870, on a 390×844 phone and with reduced
+  motion. All the content apart from the seeded facts is still a placeholder, waiting
+  for real text in `src/resume/content.ts`.
 - **Open:** the hero's background treatment (open decision in HERO_PLAN.md).
 - **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
   section.
@@ -197,8 +204,13 @@ _Last updated: 2026-10-20_
   back returns to the paper.
 - On phones the zoomed paper made the page zoom out, so the fix was to pin the paper to
   the screen while the camera is on it.
-- The content still needs to be filled in. The user hasn't seen the result in a browser
-  yet, so expect visual feedback next.
+- The user's feedback after seeing it:
+  - center the paper and remove the left-side "RESUME / The whole story on one page" text;
+  - fit the whole resume in one view;
+  - make the photo and name smaller.
+
+  That gave the compact 4:5 sheet sized by screen height.
+- The content still needs to be filled in.
 
 ### 2026-10-19 (Windows PC)
 

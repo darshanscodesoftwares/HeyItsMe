@@ -81,14 +81,9 @@ export default function Resume() {
 
   return (
     <section ref={sceneRef} className="resume" aria-labelledby="resume-title">
-      <div className="resume-intro">
-        <h2 id="resume-title" className="resume-title">
-          Resume
-        </h2>
-        <p className="resume-lead">The whole story on one page.</p>
-        <p className="resume-hint">Pick a section to zoom in</p>
-      </div>
-
+      <h2 id="resume-title" className="sr-only">
+        Resume
+      </h2>
       <Paper ref={paperRef} onOpen={open} />
 
       {section &&
