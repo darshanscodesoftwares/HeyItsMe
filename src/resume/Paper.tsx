@@ -100,10 +100,17 @@ function Column({ className, sections, onOpen }: { className: string; sections: 
   )
 }
 
-export default function Paper({ ref, onOpen }: { ref: Ref<HTMLDivElement>; onOpen: OpenHandler }) {
+interface PaperProps {
+  ref: Ref<HTMLDivElement>
+  // Not revealed yet: invisible (see resume.css) and out of reach of keyboard and mouse.
+  hidden: boolean
+  onOpen: OpenHandler
+}
+
+export default function Paper({ ref, hidden, onOpen }: PaperProps) {
   return (
     // The slot keeps the paper's place in the page while the camera pins it to the screen.
-    <div className="resume-slot">
+    <div className="resume-slot" inert={hidden}>
       <div ref={ref} className="resume-paper">
         <article className="sheet" aria-label={`Resume of ${profile.name}`}>
           <header className="sheet-header">

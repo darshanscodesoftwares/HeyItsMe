@@ -135,6 +135,10 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - The user's laptop runs at 125% scaling, so its browser view is only about 1536×698
     CSS px. Check that size.
   - The avatar and name were shrunk at the user's request.
+  - While scrolling in, the paper is hidden (`inert`). Only a huge, nearly invisible
+    "RESUME" (Anton, 6% opacity) shows. Once the page is scrolled all the way down, the
+    word sinks away and the paper rises in, row by row (`bringIn` in `Resume.tsx`).
+    Scrolling back up hides the paper again. A deep link shows it immediately.
   - The paper keeps the reference's blue accents (`--sheet-*` tokens in `resume.css`),
     even though the rest of the site is monochrome.
 - **Resume content:** the paper shows only grey lines, and the real text lives on the
@@ -210,6 +214,15 @@ _Last updated: 2026-10-20_
   - make the photo and name smaller.
 
   That gave the compact 4:5 sheet sized by screen height.
+- The user then asked not to see the resume while scrolling into it, only once at the
+  very bottom. That gave the faint "RESUME" teaser and the reveal.
+- The user asked to install and use `npx skills add Leonxlnx/taste-skill` (the
+  `design-taste-frontend` skill). The installer was blocked by Claude Code's safety
+  check, so its motion rules were applied by hand to the reveal: a stagger of 60–90ms,
+  a 16–32px rise, transform and opacity only, and a reduced-motion fallback.
+  - Its other rules clash with decisions already made: no grey-bar placeholders, no
+    monospace labels, no shadows at rest, no pill buttons, no 01/08 numbering.
+  - Not applied yet. Ask the user before restyling for them.
 - The content still needs to be filled in.
 
 ### 2026-10-19 (Windows PC)
