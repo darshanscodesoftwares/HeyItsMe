@@ -1,8 +1,9 @@
 # HeyItsMe
 
 Personal portfolio site for **Priyadarshan**, a Full-Stack (MERN) developer.
-Repo: github.com/darshanscodesoftwares/HeyItsMe. So far only the hero is built: a
-scroll-driven, video-game-style self-introduction. Everything after it is a placeholder.
+Repo: github.com/darshanscodesoftwares/HeyItsMe. Two sections so far: the hero (a
+scroll-driven, video-game-style self-introduction) and an interactive resume, where
+clicking a section on a paper resume zooms a "camera" into it and opens its own page.
 
 > The user works on this repo from several PCs (Windows, and at least one other machine).
 > Chat history stays on the machine where it happened, but this file travels with the repo.
@@ -82,8 +83,34 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
 - `src/components/GradientText.{tsx,css}`: from React Bits. The animation code is
   unchanged and its Tailwind classes are rewritten as plain CSS. It's vendored, so it keeps
   its own code style (semicolons).
-- `src/App.tsx`: the Hero, then a placeholder `<main id="after-hero">`.
+- `src/App.tsx`: the Hero, then `<main id="after-hero">` holding the Resume.
 - `src/styles.css`: global tokens (`--bg --surface --ink --muted --line --font --mono`).
+
+**Resume** (`src/resume/`). The design reference is
+`dynamic-resume-navigation-section/resume-refernce.png`.
+
+- `content.ts`: all resume text, and the place to edit it. Text in `[square brackets]` is a
+  placeholder. Contacts and links with an empty `text`/`href` show as placeholders.
+  Sections come in four kinds: `groups` (chips), `timeline`, `cards` and `list`.
+- `Paper.tsx`: the A4 "paper" overview, which follows the reference. Each entry is drawn
+  as a grey line, like a resume seen from far away. Each section is an
+  `<a href="#/resume/<id>">`. Everything on the sheet is sized in `cqw`, so it scales as
+  one piece.
+- `Detail.tsx`: a section's own page. It's a fixed overlay rendered into `document.body`,
+  with Back, previous/next and a giant faint title.
+- `cinema.ts`: the camera choreography, using the Web Animations API with no library.
+  - **Open:** the paper is pinned to the screen and transformed (origin top-left) to fill
+    the screen with the section. The heading lifts off and grows into the giant title
+    (FLIP). A blur veil fades in and the cards rise.
+  - **Close:** the reverse.
+  - **Previous/next:** pans the camera across the paper.
+  - **Reduced motion:** a 200ms fade instead.
+- `route.ts`: hash routes (`#/resume/skills`). Opening a section pushes a history entry,
+  so browser Back returns to the paper. Previous/next replace it. A deep link opens
+  straight on the section, without the camera move.
+- `Resume.tsx`: React wiring. It handles popstate, resize, Escape, and the "landed on a
+  deep link" back behaviour.
+- `Icon.tsx`: inline Lucide icon paths.
 
 ## Decisions
 
@@ -101,6 +128,16 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 - **Scrolling:** normal scrolling only, with no scroll-jacking and no snapping.
 - **Accessibility:** the dialog is real text. Screen readers get each page whole through an
   `aria-live` `.sr-only` paragraph, and the visual copy is `aria-hidden`.
+- **Resume overview:** a giant Anton "RESUME" sits on the left with the paper on the right.
+  On phones and portrait screens they stack. The paper keeps the reference's blue accents
+  (`--sheet-*` tokens in `resume.css`), even though the rest of the site is monochrome.
+- **Resume content:** the paper shows only grey lines, and the real text lives on the
+  section pages. Seeded from the intro dialog: Skills, the two Experience roles,
+  Education (B.Com) and the HeyItsMe project. Everything else is a placeholder. The
+  avatar is pose 1, cropped in CSS.
+- **Resume section pages:** a "camera" dives in. The section heading becomes a huge faint
+  title behind the content, and the zoomed paper stays blurred behind everything.
+  Previous/next wrap around, in the order of `sections` in `content.ts`.
 
 ## Conventions
 
@@ -124,26 +161,54 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 - The folder names contain parentheses, so quote them in shells (PowerShell: `-LiteralPath`).
 - Windows PowerShell 5.1 `Get-Content` shows the dialog's curly quotes as `â€™`. The files
   are fine UTF-8, so don't "fix" them. Use the Read tool or `Get-Content -Encoding utf8`.
+- **The resume paper must be pinned** (`.is-pinned`, `position: fixed` over its
+  `.resume-slot`) while zoomed. A transformed paper left in the page overflows it, and
+  phones then zoom the whole page out, which breaks the layout.
+- The detail title and `.sheet-heading-text` must keep identical type settings (size
+  ratio, weight, `letter-spacing: 0.09em`, `line-height: 1`). Otherwise the FLIP from
+  heading to title jumps.
+- **Checking the resume visually:** no browser tool is set up here. Drive the installed
+  Chrome (`C:\Program Files\Google\Chrome\Application\chrome.exe`) with `puppeteer-core`
+  from a scratch folder. To film transitions, slow them down with DevTools
+  `Animation.setPlaybackRate`. Don't pause and seek with the Web Animations API: an
+  animation seeked past its end drops out of `document.getAnimations()`, so it never
+  resumes and the cinema stays "busy".
 
 ## Current state
 
-_Last updated: 2026-10-19_
+_Last updated: 2026-10-20_
 
-- First version of the hero is done (7 commits, 2026-10-17), committed and on `origin/main`.
+- Hero: first version done (2026-10-17).
+- Resume section: first version done (2026-10-20). It was checked at 1920×870, on a
+  390×844 phone and with reduced motion. All the content apart from the seeded facts is
+  still a placeholder, waiting for real text in `src/resume/content.ts`.
 - **Open:** the hero's background treatment (open decision in HERO_PLAN.md).
-- **Not started:** the rest of the site (projects, experience, contact). `App.tsx` only
-  has a placeholder.
+- **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
+  section.
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
 
+### 2026-10-20 (Windows PC)
+
+- Built the interactive resume section from the user's reference image.
+- The user's brief: click a section → cinematic zoom → the section's heading becomes
+  huge and stays faint in the back → its details in front, as a separate page. Coming
+  back returns to the paper.
+- On phones the zoomed paper made the page zoom out, so the fix was to pin the paper to
+  the screen while the camera is on it.
+- The content still needs to be filled in. The user hasn't seen the result in a browser
+  yet, so expect visual feedback next.
+
 ### 2026-10-19 (Windows PC)
+
 - Tried to teleport the Remote Control session "Portfolio hero scroll dialogs" onto this
   freshly cloned PC. It failed because chat history stays on the machine that started it.
 - Added this CLAUDE.md so project context travels with the repo. When the same chat is
   needed on several machines, use cloud sessions at claude.ai/code.
 
 ### 2026-10-17 (first build session, on another machine)
+
 - Wrote HERO_PLAN.md and built the scroll-driven dialog hero, fixing missing punctuation in
   dialogs 2-4 (`42a7f60`).
 - Replaced pose 8 with a PNG that has real alpha. `make_cutouts.py` now keeps an existing

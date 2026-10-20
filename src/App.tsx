@@ -1,12 +1,12 @@
 import Hero from './hero/Hero'
+import Resume from './resume/Resume'
 
 export default function App() {
   return (
     <>
       <Hero />
-      <main id="after-hero" className="after-hero">
-        <h2>More coming soon</h2>
-        <p>Projects, experience and contact details will live here.</p>
+      <main id="after-hero">
+        <Resume />
       </main>
     </>
   )

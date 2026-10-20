@@ -1,0 +1,856 @@
+:root {
+  --sheet-ink: #10213f;
+  --sheet-muted: #5b6a80;
+  --sheet-accent: #2b5ea7;
+  --sheet-side: #edf3fb;
+  --sheet-tint: #dde8f7;
+  --sheet-line: #d7e0ec;
+  --sheet-bar: #c9d1dd;
+  --sheet-bar-strong: #7b8699;
+}
+
+/* ---------- Scene ---------- */
+
+.resume {
+  --nudge: translateX(3px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) min(max(64svh, 500px), 58%);
+  align-items: center;
+  gap: clamp(32px, 6vw, 112px);
+  width: min(100%, 1320px);
+  min-height: 100svh;
+  margin-inline: auto;
+  padding: 5svh clamp(16px, 4vw, 56px);
+}
+
+.resume-intro {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+
+.resume-title {
+  margin: 0;
+  font: 400 clamp(72px, 10vw, 176px)/0.86 'Anton', var(--font);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.resume-lead {
+  margin: 0;
+  max-width: 30ch;
+  color: var(--muted);
+  font-size: clamp(17px, 0.5vw + 13px, 20px);
+  line-height: 1.6;
+}
+
+.resume-hint {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resume-hint::after {
+  content: '→';
+  display: inline-block;
+  margin-left: 8px;
+  animation: resume-nudge 1.2s ease-in-out infinite;
+}
+
+@keyframes resume-nudge {
+  50% {
+    transform: var(--nudge);
+  }
+}
+
+/* ---------- Paper ---------- */
+
+.resume-slot {
+  width: 100%;
+  aspect-ratio: 210 / 297;
+}
+
+/* Everything on the sheet is sized in cqw (1cqw = 1% of the paper's width), so the
+   sheet scales as one piece, like a printed page. */
+.resume-paper {
+  container-type: inline-size;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  /* The camera's transforms start from here (see cinema.ts). */
+  transform-origin: 0 0;
+}
+
+/* Pinned to the screen, right over its slot, while the camera is on it. Zoomed in, a
+   paper left in the page would make the page wider, and phones zoom out to fit. */
+.resume-paper.is-pinned {
+  position: fixed;
+  top: var(--pin-top);
+  left: var(--pin-left);
+  width: var(--pin-width);
+}
+
+.sheet {
+  text-align: left;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 0.5cqw;
+  box-shadow:
+    0 50px 90px -50px rgba(16, 33, 63, 0.45),
+    0 2px 8px rgba(16, 33, 63, 0.06);
+  color: var(--sheet-ink);
+}
+
+.sheet-header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 3.5cqw;
+  padding: 6cqw 5.5cqw 5cqw;
+  transition: opacity 400ms ease;
+}
+
+.sheet-avatar {
+  position: relative;
+  width: 16cqw;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--sheet-side);
+  box-shadow:
+    0 0 0 0.6cqw #fff,
+    0 0 0 0.8cqw var(--sheet-line);
+}
+
+/* Crops the pose photo to head and shoulders. */
+.sheet-avatar img {
+  position: absolute;
+  top: -9%;
+  left: -32%;
+  width: 145%;
+  max-width: none;
+}
+
+.sheet-name {
+  margin: 0;
+  font-size: 4.9cqw;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.sheet-role {
+  margin: 1.4cqw 0 0;
+  color: var(--sheet-accent);
+  font-size: 1.6cqw;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sheet-divider {
+  align-self: stretch;
+  width: 0.15cqw;
+  background: var(--sheet-accent);
+  opacity: 0.6;
+}
+
+.sheet-contacts {
+  display: grid;
+  gap: 1.5cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheet-contacts li {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  font-size: 1.4cqw;
+}
+
+.sheet-contacts svg {
+  flex: none;
+  width: 2.1cqw;
+  height: 2.1cqw;
+}
+
+.sheet-contacts .sheet-line {
+  width: 15cqw;
+}
+
+.sheet-contacts a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sheet-body {
+  display: grid;
+  grid-template-columns: 41cqw minmax(0, 1fr);
+}
+
+.sheet-side,
+.sheet-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sheet-side {
+  padding: 4.5cqw 3.2cqw;
+  background: var(--sheet-side);
+}
+
+.sheet-main {
+  padding: 4.5cqw 5cqw 4.5cqw 4.4cqw;
+}
+
+.sheet-rule {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-top: 0.12cqw solid var(--sheet-line);
+  transition: opacity 400ms ease;
+}
+
+/* Each section is a link to its own page. */
+.sheet-section {
+  position: relative;
+  display: block;
+  margin: -1.8cqw;
+  padding: 1.8cqw;
+  border-radius: 1.8cqw;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background-color 250ms ease,
+    opacity 400ms ease;
+}
+
+.sheet-section:hover {
+  background: rgba(43, 94, 167, 0.07);
+}
+
+.sheet-section:focus-visible {
+  outline: 0.3cqw solid var(--sheet-accent);
+  outline-offset: 0;
+}
+
+.sheet-heading {
+  display: flex;
+  align-items: center;
+  gap: 2.2cqw;
+  margin-bottom: 3cqw;
+}
+
+.sheet-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 4.4cqw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--sheet-tint);
+}
+
+.sheet-icon svg {
+  width: 2.1cqw;
+  height: 2.1cqw;
+}
+
+/* The section page's title grows out of this text, so the two share their type
+   settings (see .resume-detail-title). */
+.sheet-heading-text {
+  position: relative;
+  flex: none;
+  font-size: 1.9cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sheet-heading-text::after {
+  content: '';
+  position: absolute;
+  top: calc(100% + 1cqw);
+  left: 0;
+  width: 3.4cqw;
+  height: 0.28cqw;
+  border-radius: 0.2cqw;
+  background: var(--sheet-accent);
+  transition: width 300ms ease;
+}
+
+.sheet-section:hover .sheet-heading-text::after,
+.sheet-section:focus-visible .sheet-heading-text::after {
+  width: 7cqw;
+}
+
+.sheet-heading-rule {
+  flex: 1;
+  height: 0.12cqw;
+  background: var(--sheet-accent);
+  opacity: 0.45;
+  transition: margin-right 250ms ease;
+}
+
+/* Only the right column's headings run a line out to the edge. */
+.sheet-side .sheet-heading-rule {
+  visibility: hidden;
+}
+
+/* Out of the flow, so the heading line reaches the edge until the arrow shows. */
+.sheet-open {
+  position: absolute;
+  top: 2.9cqw;
+  right: 1.8cqw;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  color: var(--sheet-accent);
+  opacity: 0;
+  transform: translate(-0.6cqw, 0.6cqw);
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+
+.sheet-section:hover .sheet-open,
+.sheet-section:focus-visible .sheet-open {
+  opacity: 1;
+  transform: none;
+}
+
+.sheet-section:hover .sheet-heading-rule,
+.sheet-section:focus-visible .sheet-heading-rule {
+  margin-right: 3.6cqw;
+}
+
+.sheet-preview {
+  display: block;
+}
+
+.sheet-line {
+  display: block;
+  height: 1.3cqw;
+  border-radius: 1cqw;
+  background: var(--sheet-bar);
+}
+
+.sheet-line--strong {
+  background: var(--sheet-bar-strong);
+}
+
+.sheet-lines {
+  display: grid;
+  gap: 1.5cqw;
+}
+
+.sheet-lines--pairs {
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2.6cqw;
+}
+
+/* The line and its circles sit right under the heading's icon. */
+.sheet-timeline {
+  position: relative;
+  display: grid;
+  gap: 3.6cqw;
+  margin: 0;
+  padding: 0 0 0 5.4cqw;
+  list-style: none;
+}
+
+.sheet-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0.6cqw;
+  bottom: 0.6cqw;
+  left: 2.1cqw;
+  width: 0.2cqw;
+  background: var(--sheet-accent);
+}
+
+.sheet-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9cqw;
+  gap: 1.6cqw 2cqw;
+}
+
+.sheet-timeline li > :nth-child(n + 3) {
+  grid-column: 1 / -1;
+}
+
+.sheet-timeline li::before {
+  content: '';
+  position: absolute;
+  top: -0.15cqw;
+  left: -4cqw;
+  width: 1.6cqw;
+  aspect-ratio: 1;
+  border: 0.3cqw solid var(--sheet-accent);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.sheet-list {
+  display: grid;
+  gap: 2.6cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheet-list li {
+  display: grid;
+  grid-template-columns: 4.4cqw minmax(0, 1fr) 9cqw;
+  align-items: center;
+  gap: 1.6cqw;
+}
+
+.sheet-dot {
+  justify-self: center;
+  width: 1.2cqw;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--sheet-accent);
+}
+
+/* While the camera is on a section, the rest of the sheet steps back. */
+.resume-paper.is-focusing .sheet-section:not(.is-focused),
+.resume-paper.is-focusing .sheet-header,
+.resume-paper.is-focusing .sheet-rule {
+  opacity: 0.25;
+}
+
+/* The heading has become the section page's title. */
+.sheet-section.is-lifted .sheet-heading-text {
+  visibility: hidden;
+}
+
+/* ---------- Section page ---------- */
+
+/* Lets the title's fade animate: how far down its letters stay solid. */
+@property --title-solid {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+.resume-detail {
+  --bar-height: clamp(60px, 9svh, 84px);
+  --title-size: 120px;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  color: var(--sheet-ink);
+}
+
+/* Throws the zoomed-in paper out of focus. */
+.resume-detail-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(246, 248, 252, 0.6);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+/* Same type settings as .sheet-heading-text, which it grows out of. */
+.resume-detail-title {
+  position: absolute;
+  top: calc(var(--bar-height) + 2svh);
+  right: 4vw;
+  left: 4vw;
+  margin: 0;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.resume-detail-title:focus {
+  outline: none;
+}
+
+.resume-detail-title span {
+  --title-solid: 15%;
+  display: inline-block;
+  /* Letter spacing also trails the last letter; leave it out when centering. */
+  margin-right: -0.09em;
+  opacity: 0.16;
+  transform-origin: 0 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 var(--title-solid), transparent);
+  mask-image: linear-gradient(to bottom, #000 var(--title-solid), transparent);
+}
+
+.resume-detail-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.resume-detail-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--bar-height);
+  padding-inline: clamp(16px, 3vw, 40px);
+  pointer-events: none;
+}
+
+.resume-detail-bar > * {
+  pointer-events: auto;
+}
+
+/* Starts partway down the title, so the cards overlap its faded lower half. */
+.resume-detail-body {
+  display: grid;
+  gap: 24px;
+  width: min(100% - 32px, 1040px);
+  margin-inline: auto;
+  padding: calc(2svh + var(--title-size) * 0.62) 0 10svh;
+}
+
+.detail-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px 0 12px;
+  border: 1px solid var(--sheet-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.detail-pill:hover {
+  background: #fff;
+}
+
+.detail-pill svg {
+  width: 16px;
+  height: 16px;
+}
+
+.detail-pill--icon {
+  justify-content: center;
+  width: 38px;
+  padding: 0;
+}
+
+.detail-steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-count {
+  color: var(--sheet-muted);
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+}
+
+.detail-card {
+  padding: clamp(20px, 2.4vw, 28px);
+  background: #fff;
+  border: 1px solid var(--sheet-line);
+  border-radius: 20px;
+  box-shadow:
+    0 30px 60px -40px rgba(16, 33, 63, 0.45),
+    0 2px 6px rgba(16, 33, 63, 0.04);
+}
+
+.detail-card h3 {
+  margin: 0;
+  font-size: clamp(18px, 0.4vw + 15px, 21px);
+  line-height: 1.3;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 20px;
+}
+
+.detail-label {
+  margin: 0 0 16px;
+  color: var(--sheet-accent);
+  font: 600 12px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detail-card h3.detail-label {
+  font-size: 12px;
+}
+
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-chips li {
+  padding: 8px 14px;
+  background: var(--sheet-side);
+  border: 1px solid #d6e2f2;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.detail-chips--small {
+  margin-top: 16px;
+}
+
+.detail-chips--small li {
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.detail-meta {
+  margin: 6px 0 0;
+  color: var(--sheet-muted);
+  font-size: 15px;
+}
+
+.detail-text {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.detail-period {
+  color: var(--sheet-muted);
+  font: 500 12px/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sheet-accent);
+  font: 600 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.detail-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.detail-link.is-pending {
+  color: var(--sheet-muted);
+  opacity: 0.6;
+}
+
+/* The same line-and-circles as on the paper, at full size. */
+.detail-timeline {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  margin: 0;
+  padding: 0 0 0 40px;
+  list-style: none;
+}
+
+.detail-timeline::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: 30px;
+  left: 10px;
+  width: 2px;
+  background: var(--sheet-accent);
+  opacity: 0.45;
+}
+
+.detail-entry {
+  position: relative;
+}
+
+.detail-entry::before {
+  content: '';
+  position: absolute;
+  top: 28px;
+  left: -40px;
+  width: 22px;
+  height: 22px;
+  border: 3px solid var(--sheet-accent);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.detail-entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+
+.detail-points {
+  display: grid;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding-left: 20px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.detail-list {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.detail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--sheet-accent);
+}
+
+.detail-row-end {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+}
+
+.detail-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.detail-pager button {
+  display: grid;
+  gap: 8px;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--sheet-line);
+  border-radius: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.detail-pager button:last-child {
+  text-align: right;
+}
+
+.detail-pager button:hover {
+  background: #fff;
+}
+
+.detail-pager span {
+  color: var(--sheet-muted);
+  font: 500 11px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.detail-pager strong {
+  font-size: 18px;
+}
+
+/* Phones and portrait tablets: heading on top, paper underneath. */
+@media (max-width: 900px), (orientation: portrait) and (max-width: 1100px) {
+  .resume {
+    --nudge: translateY(3px);
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 32px;
+    padding-block: 10svh;
+    text-align: center;
+  }
+
+  .resume-intro {
+    justify-items: center;
+  }
+
+  .resume-slot {
+    width: min(100%, 560px);
+  }
+
+  .resume-hint::after {
+    content: '↓';
+  }
+}
+
+@media (max-width: 760px) {
+  .resume-detail-body {
+    gap: 16px;
+  }
+
+  .detail-card {
+    border-radius: 16px;
+  }
+
+  .detail-row {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .detail-row-end {
+    grid-column: 2;
+    justify-items: start;
+  }
+
+  .detail-pager strong {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-hint::after {
+    animation: none;
+  }
+}
