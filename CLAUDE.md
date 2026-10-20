@@ -13,8 +13,10 @@ clicking a section on a paper resume zooms a "camera" into it and opens its own 
 
 ## Keep this file up to date (every session)
 
-- When you finish a piece of work, update **Current state** and add or extend today's
-  **Session log** entry *in the same commit* as the work.
+- **Always** keep this file current. The user asked for this explicitly. Every change,
+  even a small one, updates **Current state** and today's **Session log** entry *in the
+  same commit* as the work, or in a CLAUDE.md commit right after it. Never end a session
+  with this file stale.
 - When the user says "save", "wrap up", "log this", or is about to switch machines: update
   both sections, commit, and offer to push (push only once they agree).
 - Log what a future session needs, not a transcript: what changed and why, decisions,
@@ -225,6 +227,16 @@ _Last updated: 2026-10-20_
     monospace labels, no shadows at rest, no pill buttons, no 01/08 numbering.
   - Not applied yet. Ask the user before restyling for them.
 - The content still needs to be filled in.
+- **Later that day: the taste skill was tried and then fully reverted at the user's
+  request.**
+  - He installed it, and a strict restyle was built on a branch: Archivo, the name as a
+    monument, a black resume field, real text on the paper.
+  - He rejected it and asked for a strict revert to before the skill. `main` was reset to
+    `7099182`, the restyle branch deleted, and the skill and all its files removed.
+  - Don't reinstall the taste skill or restyle by its rules unless he asks.
+  - The site is exactly as it was before the skill. The only things kept from that
+    stretch: the he/him doc fix and the "always update CLAUDE.md" rule.
+- The user is Priyadarshan himself and uses he/him.
 
 ### 2026-10-19 (Windows PC)
 
@@ -242,7 +254,7 @@ _Last updated: 2026-10-20_
 - Set one typing speed for every page, 6 ms per character (`a9b7722`).
 - Added the animated gradient on the name and two phrases with React Bits GradientText
   (`2a1a3c9`).
-- Attached the dialog box to the character: low beside them and tucked behind (`daf0e87`).
+- Attached the dialog box to the character: low beside him and tucked behind (`daf0e87`).
 - Hid the name tag on page 1 (`835e5a7`).
 - Added the faint "Fullstack Developer" title behind the character (`f7168c9`).
 
