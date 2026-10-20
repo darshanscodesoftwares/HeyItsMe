@@ -266,7 +266,7 @@
 [data-tone='certifications'] { --tone: #0891b2; }
 
 [data-tone] {
-  --tone-ink: color-mix(in srgb, var(--tone) 30%, var(--sheet-ink));
+  --tone-ink: color-mix(in srgb, var(--tone) 50%, var(--sheet-ink));
 }
 
 .sheet-icon {
@@ -276,7 +276,7 @@
   width: 4cqw;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 10%, #fff);
+  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 16%, #fff);
   color: var(--tone-ink, var(--sheet-ink));
 }
 
@@ -307,7 +307,7 @@
   width: 3.4cqw;
   height: 0.28cqw;
   border-radius: 0.2cqw;
-  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 70%, var(--sheet-ink));
+  background: color-mix(in srgb, var(--tone, var(--sheet-accent)) 90%, var(--sheet-ink));
   transition: width 300ms ease;
 }
 
