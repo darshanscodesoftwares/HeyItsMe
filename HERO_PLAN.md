@@ -2,7 +2,7 @@
 
 ## Concept
 
-The hero works like a dialog scene in a video game. Priyadarshan introduces themself
+The hero works like a dialog scene in a video game. Priyadarshan introduces himself
 one line at a time, and each line comes with a different pose or gesture.
 
 Here it's driven by scroll instead of a "next" button:

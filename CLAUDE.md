@@ -1,6 +1,7 @@
 # HeyItsMe
 
-Personal portfolio site for **Priyadarshan**, a Full-Stack (MERN) developer.
+Personal portfolio site for **Priyadarshan** (he/him; he is the user), a Full-Stack (MERN)
+developer.
 Repo: github.com/darshanscodesoftwares/HeyItsMe. Two sections so far: the hero (a
 scroll-driven, video-game-style self-introduction) and an interactive resume, where
 clicking a section on a paper resume zooms a "camera" into it and opens its own page.
@@ -119,7 +120,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 - **Style:** professional with a touch of game. A warm light background (`#f1efea`), white
   dialog card, black pill name tag, B&W photos, and a monochrome gradient on highlights
   (`#111111` to `#9A9A9A`, following the pointer).
-- **Layout:** the dialog box sits low beside the character and tucks in behind them
+- **Layout:** the dialog box sits low beside the character and tucks in behind him
   (`--overlap: 10svh`). On phones the character is on top and the box sits in front,
   covering the waist.
 - The name tag is hidden on page 1, because that line already introduces Priyadarshan.
