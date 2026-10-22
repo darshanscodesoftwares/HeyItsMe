@@ -213,7 +213,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-23_
+_Last updated: 2026-10-24_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -226,6 +226,12 @@ _Last updated: 2026-10-23_
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-24 (Windows PC)
+
+- Replaced the short tag lists on MYCARBOY and schoolNest with their full tech stacks, as
+  he wrote them. The project text itself is unchanged, so schoolNest's description still
+  says "backend" although its stack now includes React, Next.js and Flutter.
 
 ### 2026-10-23 (Windows PC)
 
