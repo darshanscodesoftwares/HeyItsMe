@@ -207,6 +207,23 @@ export const sideSections: Section[] = [
         ],
       },
       {
+        title: 'VR De-Addiction Wellness',
+        meta: 'Proof of concept · Aug–Oct 2025',
+        text: 'A standalone VR prototype for de-addiction and wellness, set in a procedurally built Indian bar. It has hand tracking, grab/throw physics and arm-swing locomotion, a Blender-to-Unity asset pipeline scripted in Python, and a planned NestJS and PostgreSQL backend for session data. Optimized to a locked 72 fps on Quest 3S.',
+        tags: [
+          'Unity 6',
+          'C#',
+          'OpenXR',
+          'XR Interaction Toolkit',
+          'XR Hands',
+          'Meta Quest 3S',
+          'Blender',
+          'Python',
+          'NestJS',
+          'PostgreSQL',
+        ],
+      },
+      {
         title: 'Musica',
         meta: 'Personal project · 2.5 months',
         text: 'A responsive concert booking landing page.',

@@ -161,7 +161,8 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
     now **Languages**.
   - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
-  - Projects: MYCARBOY, schoolNest, and the personal projects Musica and Find-ISS (tagged
+  - Projects: MYCARBOY, schoolNest, VR De-Addiction Wellness (a proof of concept, not a
+    clinical product), and the personal projects Musica and Find-ISS (tagged
     "Personal project" in their meta line). Decimal-chess and Word-Builder were removed at his request. The
     HeyItsMe project isn't on his resume, so it was dropped. No project links yet.
   - Not used anywhere yet: his professional summary.
@@ -214,7 +215,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-25_
+_Last updated: 2026-10-26_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -227,6 +228,12 @@ _Last updated: 2026-10-25_
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-26 (Windows PC)
+
+- Added the VR De-Addiction Wellness project, compacted to one paragraph and ten tags from
+  his longer write-up. It is labelled a proof of concept on purpose, since his notes say it
+  is not a finished clinical product. The "locked 72 fps on device" figure comes from his notes.
 
 ### 2026-10-25 (Windows PC)
 
