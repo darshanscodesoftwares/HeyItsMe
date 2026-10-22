@@ -98,7 +98,27 @@ export const sideSections: Section[] = [
         ],
       },
       { name: 'Languages', items: ['JavaScript', 'SQL'] },
-      { name: 'Databases', items: ['MongoDB', 'PostgreSQL'] },
+      {
+        name: 'Databases',
+        items: ['MongoDB', 'PostgreSQL', 'Database Management Systems (DBMS)', 'Database Development'],
+      },
+      {
+        name: 'Full-stack and web',
+        items: [
+          'Full-Stack Development',
+          'MERN Stack',
+          'Front-End Development',
+          'Back-End Web Development',
+          'Web Development',
+          'Web Technologies',
+          'Web Design',
+          'Website Building',
+        ],
+      },
+      {
+        name: 'Engineering practice',
+        items: ['Software Infrastructure', 'Internet Software', 'Performance Tuning', 'Debugging', 'Analytical Skills'],
+      },
     ],
   },
   {
@@ -110,7 +130,8 @@ export const sideSections: Section[] = [
       { name: 'Version control', items: ['Git', 'GitHub'] },
       { name: 'APIs and databases', items: ['Postman', 'pgAdmin'] },
       { name: 'Deployment', items: ['PM2', 'Ubuntu VPS'] },
-      { name: 'Design', items: ['Figma'] },
+      { name: 'Operating systems', items: ['Linux', 'Mac'] },
+      { name: 'Design and office', items: ['Figma', 'Google Slides', 'Google Sheets'] },
     ],
   },
   {

@@ -213,7 +213,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-22_
+_Last updated: 2026-10-23_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -226,6 +226,14 @@ _Last updated: 2026-10-22_
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-23 (Windows PC)
+
+- Added the rest of his LinkedIn skills to the resume. Skills gained "Full-stack and web"
+  and "Engineering practice" groups, and Databases gained DBMS and Database Development.
+  Tools gained "Operating systems" (Linux, Mac) and Google Slides and Sheets under Design.
+- Skills already on the resume were not duplicated (React.js, Node.js, Git, PM2 and so on).
+  The paper preview shows only the first 8 skills, so its layout didn't change.
 
 ### 2026-10-22 (Windows PC)
 
