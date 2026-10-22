@@ -232,8 +232,33 @@ export const mainSections: Section[] = [
     icon: 'award',
     kind: 'list',
     items: [
-      { title: 'The Complete Full-Stack Web Development Bootcamp', meta: 'Udemy', period: '' },
-      { title: 'Foundations of Digital Marketing and E-commerce', meta: 'Coursera', period: '' },
+      {
+        title: 'The Complete Full-Stack Web Development Bootcamp',
+        meta: 'Udemy',
+        period: 'Jan 2025',
+        link: {
+          label: 'Show credential',
+          href: 'https://www.udemy.com/certificate/UC-81553b9d-0e49-4db6-9daf-ff8443cda1ca/',
+        },
+      },
+      {
+        title: 'Foundations of Digital Marketing and E-commerce',
+        meta: 'Google · Coursera',
+        period: 'Apr 2025',
+        link: {
+          label: 'Show credential',
+          href: 'https://www.coursera.org/account/accomplishments/verify/97A01J2JXM1N',
+        },
+      },
+      {
+        title: 'Google Data Analytics Specialization',
+        meta: 'Google · Coursera',
+        period: 'Aug 2022',
+        link: {
+          label: 'Show credential',
+          href: 'https://www.coursera.org/account/accomplishments/specialization/PKS3PKNE569D',
+        },
+      },
     ],
   },
 ]

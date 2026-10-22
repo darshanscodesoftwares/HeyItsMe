@@ -206,18 +206,31 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-20_
+_Last updated: 2026-10-22_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
   checked at 1536×698 (the user's laptop), 1920×870, on a 390×844 phone and with reduced
-  motion. Its content is filled in from his resume (2026-10-20).
+  motion. Its content is filled in from his resume (2026-10-20). Certifications now hold
+  three entries from his LinkedIn, each with a date and a "Show credential" link (2026-10-22).
 - **Open:** the hero's background treatment (open decision in HERO_PLAN.md).
 - **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
   section.
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-22 (Windows PC)
+
+- Ran `npm install` and the dev server for him. PowerShell blocks `npm.ps1` on this PC, so
+  use `npm.cmd` or set the execution policy to RemoteSigned for the current user.
+- Added his LinkedIn certifications to the resume: the Udemy full-stack bootcamp (Jan 2025),
+  Google Digital Marketing and E-commerce (Apr 2025) and Google Data Analytics (Aug 2022),
+  each linking to its credential. Credential IDs are in the URLs, not shown on screen.
+- Only the Digital Marketing link was confirmed live. Udemy returned 403 and the Data
+  Analytics page needs a login, so ask him to click both.
+- Left uncommitted on purpose: `.vscode/settings.json` (his editor settings) and the
+  `next-section (resume navigation section)/` reference image.
 
 ### 2026-10-20 (Windows PC)
 
