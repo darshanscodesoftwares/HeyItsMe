@@ -229,8 +229,6 @@ _Last updated: 2026-10-22_
   each linking to its credential. Credential IDs are in the URLs, not shown on screen.
 - Only the Digital Marketing link was confirmed live. Udemy returned 403 and the Data
   Analytics page needs a login, so ask him to click both.
-- Left uncommitted on purpose: `.vscode/settings.json` (his editor settings) and the
-  `next-section (resume navigation section)/` reference image.
 
 ### 2026-10-20 (Windows PC)
 
