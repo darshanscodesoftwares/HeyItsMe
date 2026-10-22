@@ -161,7 +161,8 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
     now **Languages**.
   - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
-  - Projects: MYCARBOY, Decimal-chess, schoolNest, Word-Builder, Musica, Find-ISS. The
+  - Projects: MYCARBOY, schoolNest, and the personal projects Musica and Find-ISS (tagged
+    "Personal project" in their meta line). Decimal-chess and Word-Builder were removed at his request. The
     HeyItsMe project isn't on his resume, so it was dropped. No project links yet.
   - Not used anywhere yet: his professional summary.
   - The avatar is pose 1, cropped in CSS.
@@ -213,7 +214,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-24_
+_Last updated: 2026-10-25_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -226,6 +227,11 @@ _Last updated: 2026-10-24_
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-25 (Windows PC)
+
+- Removed the Decimal-chess and Word-Builder project cards at his request. Musica and
+  Find-ISS stay and are tagged "Personal project" in their meta line.
 
 ### 2026-10-24 (Windows PC)
 

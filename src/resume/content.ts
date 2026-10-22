@@ -173,12 +173,6 @@ export const sideSections: Section[] = [
         ],
       },
       {
-        title: 'Decimal-chess',
-        meta: '3 months',
-        text: 'A chess tournament results system. It scrapes tournament keys, player lists and round pairings with Puppeteer and Cheerio, lets arbiters submit board results through secure shareable links, and generates Swiss-Manager XML to update Chess-Results automatically.',
-        tags: ['React (Vite)', 'Node.js', 'Express', 'MongoDB'],
-      },
-      {
         title: 'schoolNest',
         meta: '4 months',
         text: 'A multi-tenant school SaaS backend: Controller → Service → Repository REST APIs with JWT, bcrypt and role-based access for admins, teachers and parents, a database per service, and tenant isolation by school.',
@@ -213,20 +207,14 @@ export const sideSections: Section[] = [
         ],
       },
       {
-        title: 'Word-Builder',
-        meta: '1 month',
-        text: 'An ATS resume builder: a multi-step form with a live preview, automatic section structuring, bullet enhancement, resume scoring with keyword checks, and one-click A4 PDF export with Puppeteer.',
-        tags: ['React (Vite)', 'Node.js', 'Express', 'Puppeteer', 'CSS Modules'],
-      },
-      {
         title: 'Musica',
-        meta: '2.5 months',
+        meta: 'Personal project · 2.5 months',
         text: 'A responsive concert booking landing page.',
         tags: ['React', 'CSS Modules', 'Framer Motion'],
       },
       {
         title: 'Find-ISS',
-        meta: '2.5 months',
+        meta: 'Personal project · 2.5 months',
         text: 'A real-time web app that tracks the International Space Station on Google Maps from live coordinates.',
         tags: ['Node.js', 'Express.js', 'EJS', 'External APIs'],
       },
