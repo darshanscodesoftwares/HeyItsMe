@@ -204,6 +204,13 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   animation seeked past its end drops out of `document.getAnimations()`, so it never
   resumes and the cinema stays "busy".
 
+- **Pushing to GitHub:** the repo is owned by `darshanscodesoftwares`. Git Credential
+  Manager can hold a saved login for a different account (`DarshanLevi`), which has no
+  write access. The push then fails with 403 and VS Code offers to "Create Fork". Never
+  fork. Remove the `git:https://github.com` entry in Windows Credential Manager and push
+  again, then sign in as `darshanscodesoftwares`. Commit authorship (`user.name`) is
+  separate and doesn't affect push rights.
+
 ## Current state
 
 _Last updated: 2026-10-22_
@@ -222,6 +229,9 @@ _Last updated: 2026-10-22_
 
 ### 2026-10-22 (Windows PC)
 
+- Push to GitHub was blocked and VS Code offered a fork. Cause: a saved `DarshanLevi`
+  login in Git Credential Manager. He removed it, signed in as `darshanscodesoftwares`, and
+  the push went through (see Gotchas).
 - Ran `npm install` and the dev server for him. PowerShell blocks `npm.ps1` on this PC, so
   use `npm.cmd` or set the execution policy to RemoteSigned for the current user.
 - Added his LinkedIn certifications to the resume: the Udemy full-stack bootcamp (Jan 2025),
