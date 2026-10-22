@@ -162,7 +162,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
     now **Languages**.
   - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
   - Projects: MYCARBOY, schoolNest, VR De-Addiction Wellness (a proof of concept, not a
-    clinical product), and the personal projects Musica and Find-ISS (tagged
+    clinical product), Marina FC Website (a one-day client POC, no link yet), and the personal projects Musica and Find-ISS (tagged
     "Personal project" in their meta line). Decimal-chess and Word-Builder were removed at his request. The
     HeyItsMe project isn't on his resume, so it was dropped. No project links yet.
   - Not used anywhere yet: his professional summary.
@@ -215,7 +215,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-26_
+_Last updated: 2026-10-27_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -228,6 +228,13 @@ _Last updated: 2026-10-26_
 - No hosting or deploy is set up yet.
 
 ## Session log (newest first)
+
+### 2026-10-27 (Windows PC)
+
+- Added the Marina FC Website project, read from its public GitHub repo
+  (`darshanscodesoftwares/Marina-FC_POC`). He asked for it to be labelled a proof of concept
+  and to take one day. No GitHub link was added because he didn't say whether to show it.
+  The stack tags come from the repo's package.json.
 
 ### 2026-10-26 (Windows PC)
 
