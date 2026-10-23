@@ -1,6 +1,6 @@
 import '@fontsource/instrument-serif/latin-400.css'
 import '@fontsource/instrument-serif/latin-400-italic.css'
-import { useEffect, useId, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
 import type { Card, Link } from './content'
 import { mediaFor } from './projectMedia'
 import './projects.css'
@@ -16,25 +16,6 @@ const ROLL = 0.35
 // Cuddalore, where he's based, and his local time.
 const COORDS = '11.7480°N 79.7714°E'
 const ZONE = 'Asia/Kolkata'
-
-// The highlighter "Projects" that sits behind the pictures.
-function Sticker({ className }: { className: string }) {
-  const filter = useId()
-  return (
-    <svg className={className} viewBox="0 0 820 230" aria-hidden="true">
-      <defs>
-        {/* Roughens the edges, like marker on paper. */}
-        <filter id={filter} x="-5%" y="-10%" width="110%" height="120%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7" />
-          <feDisplacementMap in="SourceGraphic" scale="7" />
-        </filter>
-      </defs>
-      <text x="410" y="172" textAnchor="middle" textLength="740" lengthAdjust="spacingAndGlyphs" filter={`url(#${filter})`}>
-        Projects
-      </text>
-    </svg>
-  )
-}
 
 function Clock() {
   const format = () =>
@@ -128,10 +109,6 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
 
   return (
     <div ref={root} className="pj-page" role="dialog" aria-modal="true" aria-label={card.title}>
-      <div className="pj-page-back" aria-hidden="true">
-        <Sticker className="pj-sticker" />
-      </div>
-
       {/* Over the pictures, in difference blend, so it stays readable on any of them. */}
       <div className="pj-page-front">
         <header className="pj-page-head">
@@ -202,7 +179,7 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
 
 // The Projects page, after quangdinh.im/projects: one column of pictures scrolls through
 // the middle, the title and category of the one at the centre roll by at the sides, and
-// a highlighter "Projects" peeks out from behind. A picture opens its project's page.
+// the section's giant title stays faint behind. A picture opens its project's page.
 export default function Projects({ cards }: { cards: Card[] }) {
   const root = useRef<HTMLDivElement>(null)
   const titles = useRef<(HTMLElement | null)[]>([])
@@ -290,7 +267,6 @@ export default function Projects({ cards }: { cards: Card[] }) {
   return (
     <div ref={root} className="pj">
       <div className="pj-stage" aria-hidden="true">
-        <Sticker className="pj-sticker" />
         <div className="pj-roll pj-roll--title">
           {cards.map((card, i) => (
             <p

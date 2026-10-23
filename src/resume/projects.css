@@ -17,12 +17,6 @@
   backdrop-filter: none;
 }
 
-/* The highlighter word stands in for the giant title here; the title still grows out of
-   the paper's heading, then fades away. */
-.resume-detail[data-tone='projects'] .resume-detail-title span {
-  opacity: 0;
-}
-
 /* The page runs edge to edge; the pager below keeps the usual width. */
 .resume-detail[data-tone='projects'] .resume-detail-body {
   width: 100%;
@@ -50,25 +44,6 @@
   height: 100svh;
   margin-bottom: -100svh;
   pointer-events: none;
-}
-
-.pj-sticker {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(var(--pj-w) + 34px);
-  height: auto;
-  overflow: visible;
-  transform: translate(-50%, -50%);
-}
-
-.pj-sticker text {
-  fill: #cfe61a;
-  stroke: #ebff45;
-  stroke-width: 30px;
-  stroke-linejoin: round;
-  paint-order: stroke;
-  font: 400 200px/1 var(--pj-serif);
 }
 
 /* The side labels: one line tall, each project's label stacked in the same place and
@@ -255,20 +230,11 @@
   }
 }
 
-.pj-page-back,
 .pj-page-front {
   position: sticky;
   top: 0;
   height: 100svh;
   margin-bottom: -100svh;
-}
-
-.pj-page-back {
-  z-index: 0;
-}
-
-.pj-page-back .pj-sticker {
-  width: min(52vw, 820px);
 }
 
 /* Over the pictures. Difference blend keeps it readable on any of them, and this grey
@@ -529,17 +495,6 @@
   .pj-page {
     display: flex;
     flex-direction: column;
-  }
-
-  .pj-page-back {
-    position: fixed;
-    inset: 0;
-    height: auto;
-    margin: 0;
-  }
-
-  .pj-page-back .pj-sticker {
-    width: 92vw;
   }
 
   /* Everything falls into one column: title, pictures, facts, then the write-up. */

@@ -249,6 +249,8 @@ _Last updated: 2026-10-23_
   closes it before the section. Images come from `scripts/make_project_media.py`
   (→ `src/assets/projects/`). Added `@fontsource/instrument-serif`. Checked at 1536x698 and
   on a 390px phone.
+- He then had the lime highlighter "Projects" removed; the faint giant PROJECTS title is
+  back behind the column, like every other section page.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
