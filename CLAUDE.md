@@ -90,7 +90,7 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
 - `src/styles.css`: global tokens (`--bg --surface --ink --muted --line --font --mono`).
 
 **Resume** (`src/resume/`). The design reference is
-`dynamic-resume-navigation-section/resume-refernce.png`.
+`references/dynamic-resume-navigation-section/resume-refernce.png`.
 
 - `content.ts`: all resume text, and the place to edit it, filled from his own resume. A
   contact with an empty `text` shows as a grey line, and a link with an empty `href` shows
