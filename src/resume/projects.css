@@ -1,11 +1,10 @@
 /* ---------- Projects page ---------- */
 
-/* After quangdinh.im/projects: warm white, dark warm ink, an italic serif for titles and
-   a lime highlighter word behind everything. */
+/* After quangdinh.im/projects, in the site's own fonts: warm white, dark warm ink, with
+   the section's faint giant title behind. */
 .resume-detail[data-tone='projects'] {
   --pj-bg: #f7f6f2;
   --pj-ink: #302c27;
-  --pj-serif: 'Instrument Serif', Georgia, serif;
   /* The column: half the screen wide, but never taller than the screen allows (5:4). */
   --pj-w: min(48.3vw, 84svh * 1.25);
   color: var(--pj-ink);
@@ -69,7 +68,7 @@
 .pj-roll--title {
   left: 16px;
   width: calc(50% - var(--pj-w) / 2 - 32px);
-  font: italic 400 clamp(22px, 1.9vw, 30px) / 1 var(--pj-serif);
+  font: 600 clamp(22px, 1.9vw, 30px) / 1 var(--font);
   text-transform: uppercase;
 }
 
@@ -287,7 +286,7 @@
   color: inherit;
   background: none;
   border: 0;
-  font: 400 17px/1 var(--pj-serif);
+  font: 400 17px/1 var(--font);
   cursor: pointer;
   transform: translateY(-50%);
 }
@@ -344,7 +343,9 @@
 
 .pj-facts dt {
   margin-bottom: 4px;
-  font: 400 14px/1 var(--pj-serif);
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .pj-facts dd {
@@ -409,7 +410,7 @@
 
 .pj-notes h4 {
   margin: 0 0 16px;
-  font: italic 400 clamp(24px, 2.2vw, 32px) / 1 var(--pj-serif);
+  font: 600 clamp(24px, 2.2vw, 32px) / 1 var(--font);
 }
 
 .pj-notes ul {
@@ -429,7 +430,9 @@
 .pj-notes strong {
   display: block;
   margin-bottom: 2px;
-  font: 400 14px/1.2 var(--pj-serif);
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   opacity: 0.75;
 }
 
@@ -448,11 +451,13 @@
 }
 
 .pj-next span {
-  font: 400 14px/1 var(--pj-serif);
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .pj-next em {
-  font: italic 400 clamp(36px, 4vw, 60px) / 1 var(--pj-serif);
+  font: 600 clamp(36px, 4vw, 60px) / 1 var(--font);
   text-transform: uppercase;
   transition: transform 300ms ease;
 }
@@ -488,7 +493,7 @@
   }
 
   .pj-caption em {
-    font: italic 400 22px/1 var(--pj-serif);
+    font: 600 22px/1 var(--font);
     text-transform: uppercase;
   }
 
@@ -542,7 +547,7 @@
   }
 
   .pj-page-head h3 {
-    font: italic 400 34px/1 var(--pj-serif);
+    font: 600 34px/1 var(--font);
     text-transform: uppercase;
   }
 

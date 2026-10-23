@@ -251,6 +251,9 @@ _Last updated: 2026-10-23_
   on a 390px phone.
 - He then had the lime highlighter "Projects" removed; the faint giant PROJECTS title is
   back behind the column, like every other section page.
+- Switched the Projects page to the site's own fonts (no serif, at his request): titles in
+  the sans `--font`, small labels in the uppercase `--mono` style; removed
+  `@fontsource/instrument-serif`.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch

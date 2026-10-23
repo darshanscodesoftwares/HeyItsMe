@@ -1,5 +1,3 @@
-import '@fontsource/instrument-serif/latin-400.css'
-import '@fontsource/instrument-serif/latin-400-italic.css'
 import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
 import type { Card, Link } from './content'
 import { mediaFor } from './projectMedia'
