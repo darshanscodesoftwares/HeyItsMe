@@ -1,0 +1,41 @@
+Project 01 — MYCARBOY
+Automotive Services · Full-Stack Web Application · April 2025 – April 2026 (work-log period)
+Project overview
+MYCARBOY is a multi-service car inspection platform that manages the complete inspection lifecycle, from customer bookings and online payments to expert assignment, vehicle inspections, administrative review, and report delivery.
+Key implementations
+Customer application: Service booking for Pre-Delivery Inspection (PDI), Used Car Inspection (UCI), and Vehicle Service History (VSH); vehicle and location details; scheduling; payments; booking status tracking.
+Admin dashboard: Booking and lead management, inspection expert assignment and reassignment, rescheduling, cancellations, refunds, user permissions, coupons, banners, testimonials, and analytics.
+Inspection Expert application: Mobile-responsive inspection workflows, configurable checklists, image/video/document uploads, attendance and leave management, inspection progress, and report submission.
+Automated reports: PDF generation with inspection checkpoints, vehicle condition summaries, expert remarks, OBD scan results, background history checks, and service-specific report layouts.
+Notifications and communication: Email and WhatsApp notification flows for relevant booking, assignment, and report events.
+Standout engineering work
+Multi-application integration: Connected customer, admin, and inspection-expert workflows through REST APIs and shared booking/job data.
+Payment reliability: Implemented Razorpay payment workflows and webhook handling, with safeguards around duplicate events, payment states, refunds, and booking confirmation.
+Scheduling and concurrency: Developed availability checks that account for expert skills, districts, leave, and occupied slots, including backend revalidation to prevent double-booking.
+Complex data consistency fixes: Investigated and resolved production issues involving mismatched databases, booking references, status synchronization, cancellations, and technician assignment.
+Dynamic inspection system: Aligned checklist definitions, backend data, admin editing, and PDF generation so service-specific inspection results remain consistent across the workflow.
+Production deployment and debugging: Worked with Linux VPS hosting, Nginx, PM2, SSH-based Git deployment, CORS configuration, and production API troubleshooting.
+Technology stack and integrations
+Area
+Technologies
+Frontend
+React, Vite, Redux, CSS/SCSS
+Backend
+Node.js, Express.js, REST APIs
+Database
+MongoDB, Mongoose
+Payments
+Razorpay, webhooks
+Notifications
+Nodemailer, Zoho SMTP, Twilio/WhatsApp
+Maps and analytics
+Google Maps, Google Analytics 4
+Reports and uploads
+PDF generation, image/video/document uploads
+API testing and documentation
+Postman, Swagger
+Deployment and infrastructure
+Linux VPS, Nginx, PM2, SSH, Git
+What makes this project significant?
+The main challenge was not simply building three interfaces. It was maintaining consistent booking, payment, scheduling, inspection, and reporting workflows across multiple applications, while diagnosing and fixing issues in a live production environment.
+Core concepts demonstrated: Full-stack development, REST API integration, multi-application architecture, payment processing, webhook reliability, scheduling and concurrency control, data consistency, role-based permissions, automated document generation, and production debugging.

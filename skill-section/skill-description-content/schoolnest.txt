@@ -1,0 +1,30 @@
+Project 02 — SchoolNest
+Multi-Tenant School Management Platform | 2025–2026
+Overview
+SchoolNest is a school management platform designed to support multiple schools in one system. It connects academic operations, admissions, attendance, fees, communication, and school transport across web and mobile applications for administrators, teachers, parents, and transport staff.
+Key Implementations
+Multi-tenant architecture: School-aware data flows, role-based access, JWT claims, school-specific configuration, and controlled access to academic records.
+Academic management: APIs for classes, sections, teacher assignments, timetables, homework, exams/results, attendance, and leave.
+Admissions and identity: Admission approval workflows connected to student creation and parent authentication, with class assignments and teacher access.
+Parent and teacher workflows: OTP login, parent-child association, attendance, fees and payment history, homework, announcements, leave, and timetables.
+Administrative operations: Class and section templates, master-data management, teacher management, timetable configuration, admissions lifecycle, and fee management.
+Notifications: Firebase Cloud Messaging integration, device-token registration, in-app notifications, unread counts, and mark-as-read functionality.
+Transport and GPS tracking: Driver ride lifecycle, live bus-map updates through REST snapshots and Server-Sent Events (SSE), and geofence-aware teacher check-in.
+Developer support: Swagger/OpenAPI documentation, Postman guides, request/response examples, seed scripts, and demo data.
+Standout Engineering Work
+Worked across authentication, academic, notification, and transport services with separate PostgreSQL databases and cross-service API integrations.
+Implemented role-aware JWT authentication, OTP flows, token-blacklist checks, multi-school parent selection, and child-ownership validation.
+Worked on a transactional outbox pattern with background relays, retries, cleanup, and environment-controlled messaging for a staged local-to-cloud architecture.
+Migrated backend services from Render to AWS EC2/RDS, configuring HTTPS, domains, environment variables, migrations, processes, and production connectivity.
+Integrated live transport tracking using GPS updates, REST snapshots, SSE, and map visualization.
+Investigated data-integrity issues involving cross-database identity links, UUID mismatches, duplicate records, timetable mappings, stale FCM tokens, and production API failures.
+Tech Stack
+React, Next.js, Redux, Flutter, Bootstrap, CSS/SCSS, Node.js, REST APIs, service-based architecture, PostgreSQL, Redis, JWT, OTP, Firebase Cloud Messaging, transactional outbox, GPS/geofencing, Leaflet, OpenStreetMap, SSE, AWS EC2, AWS RDS, Render, Git, Postman, Swagger, PM2, and Nginx.
+Engineering Highlight: Connecting multi-tenant data isolation, role-based workflows, multiple backend services, live transport tracking, and cloud deployment while maintaining reliability across development and production environments.
+Overall Portfolio Strengths
+Across these two projects, the work demonstrates experience in:
+Full-stack development: Building and connecting frontend applications, backend APIs, databases, and integrations.
+Backend engineering: Business logic, authentication, scheduling, payment workflows, data integrity, and API design.
+System integration: Coordinating multiple applications and services around shared business workflows.
+Architecture: Multi-tenant systems, service-based architecture, event-driven processing patterns, and real-time updates.
+Deployment and production support: Cloud migrations, server configuration, deployment troubleshooting, and live issue resolution.

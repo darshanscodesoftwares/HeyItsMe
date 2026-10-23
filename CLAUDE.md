@@ -229,7 +229,7 @@ _Last updated: 2026-10-23_
 - `main` was reset to `b850214` to remove the later themed Projects and Skills work. The
   project and skill pages are back to the regular resume-section design.
 - Keep `skill-section/skill-description-content/` intact. It contains the user's six
-  project write-ups and is intentionally untracked; do not remove it during cleanup.
+  project write-ups, now tracked in Git; do not remove them during cleanup.
 - Commit `570704f` adds a compact detail-page layout for wide screens up to 800px tall,
   reorders the Skills groups (Full-stack and web before Databases and Languages), and
   restores the minimal section pager from commit `53c3b9d`.
@@ -239,11 +239,11 @@ _Last updated: 2026-10-23_
 ### 2026-10-23
 
 - Reset `main` to `b850214`, removing the later themed Projects and Skills changes. Kept
-  `skill-section/skill-description-content/` exactly as it was; its six write-ups remain
-  untracked and must be preserved.
+  `skill-section/skill-description-content/` exactly as it was.
 - Added compact section-page spacing for 1366 × 768, reordered the Skills groups, and
   restored the minimal previous/next pager from `53c3b9d`. These follow-up changes are in
   `570704f`; no push was made.
+- Committed the six preserved project write-ups under `skill-section/skill-description-content/`.
 
 ### 2026-10-27 (Windows PC)
 
