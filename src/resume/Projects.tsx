@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
 import type { Card, Link } from './content'
 import { mediaFor } from './projectMedia'
 import './projects.css'
@@ -66,44 +66,92 @@ function Point({ text }: { text: string }) {
   )
 }
 
+const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)'
+const PAGE_BG = 'rgb(247, 246, 242)'
+const CLEAR = 'rgba(247, 246, 242, 0)'
+
+// The transform that lays an element sitting at `to` over the rectangle `from`.
+const over = (from: DOMRect, to: DOMRect) =>
+  `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`
+
 interface ProjectProps {
   card: Card
   next: Card
-  // The list picture that was clicked, to fly from; null when there's nothing to fly from.
-  from: DOMRect | null
-  onBack: () => void
+  // The list picture this page grows out of and shrinks back into.
+  origin: HTMLImageElement | null
+  // Fly from the origin on the way in; false when arriving from "Next project".
+  flyIn: boolean
+  // Set to this page's animated exit, so Back, Escape and the list all leave the same way.
+  leave: { current: (() => void) | null }
+  onClosed: () => void
   onNext: () => void
 }
 
-// One project's own page: the poster, the picture from the list, and the write-up, with
+// One project's own page: the picture from the list, the poster, and the write-up, with
 // the facts in a column on the right.
-function Project({ card, next, from, onBack, onNext }: ProjectProps) {
+function Project({ card, next, origin, flyIn, leave, onClosed, onNext }: ProjectProps) {
   const { thumb, poster } = mediaFor(card.title)
   const root = useRef<HTMLDivElement>(null)
-  const posterRef = useRef<HTMLImageElement>(null)
+  const lead = useRef<HTMLImageElement>(null)
   const back = useRef<HTMLButtonElement>(null)
 
-  // The clicked picture flies to its place at the top of the page.
+  // Everything on the page except the travelling picture, which fades around it.
+  const rest = () => [...root.current!.querySelectorAll<HTMLElement>('.pj-page-front, .pj-poster, .pj-notes')]
+
+  // In: the list picture itself glides to its place at the top while the page fills in
+  // around it. Nothing appears at the destination before it lands.
   useLayoutEffect(() => {
+    const page = root.current!
+    page.scrollTo(0, 0)
     back.current?.focus({ preventScroll: true })
-    root.current?.scrollTo(0, 0)
-    const target = posterRef.current
-    if (!from || !target || !thumb || prefersReducedMotion()) return
-    const to = target.getBoundingClientRect()
-    const ghost = document.createElement('img')
-    ghost.src = thumb
-    ghost.className = 'pj-ghost'
-    Object.assign(ghost.style, { left: `${to.left}px`, top: `${to.top}px`, width: `${to.width}px`, height: `${to.height}px` })
-    root.current!.append(ghost)
-    const shift = `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`
-    const easing = 'cubic-bezier(0.7, 0, 0.2, 1)'
-    ghost.animate([{ transform: shift }, { transform: 'none' }], { duration: 900, easing })
-    ghost.animate([{ opacity: 1 }, { opacity: 1, offset: 0.7 }, { opacity: 0 }], { duration: 1150, fill: 'forwards' }).finished.then(
-      () => ghost.remove(),
-      () => ghost.remove(),
-    )
-    target.animate([{ opacity: 0 }, { opacity: 0, offset: 0.6 }, { opacity: 1 }], { duration: 1150, easing: 'ease' })
-  }, [card, from, thumb])
+    if (prefersReducedMotion()) return
+    const picture = lead.current
+    // Measure at rest: drop anything a previous run started (React runs this twice in dev).
+    for (const element of [page, picture, ...rest()]) element?.getAnimations().forEach((animation) => animation.cancel())
+    if (flyIn && origin && picture) {
+      picture.animate([{ transform: over(origin.getBoundingClientRect(), picture.getBoundingClientRect()) }, { transform: 'none' }], {
+        duration: 950,
+        easing: EASE,
+      })
+      page.animate([{ backgroundColor: CLEAR }, { backgroundColor: PAGE_BG }], { duration: 600, easing: 'ease' })
+      for (const part of rest()) {
+        part.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 550, easing: 'ease', fill: 'backwards' })
+      }
+    } else {
+      page.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, easing: 'ease' })
+    }
+  }, [card, flyIn, origin])
+
+  // Out: the reverse. The page empties, and the picture glides back into its place in
+  // the list, which is shown again only once it has landed.
+  useEffect(() => {
+    let leaving = false
+    leave.current = () => {
+      if (leaving) return
+      leaving = true
+      const page = root.current!
+      const picture = lead.current
+      const target = origin?.getBoundingClientRect()
+      const onScreen = target && target.bottom > 0 && target.top < window.innerHeight
+      if (prefersReducedMotion() || !picture || !target || !onScreen) {
+        page.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 250, fill: 'forwards' }).finished.then(onClosed, onClosed)
+        return
+      }
+      page.style.overflow = 'hidden'
+      for (const part of rest()) part.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, easing: 'ease', fill: 'forwards' })
+      page.animate([{ backgroundColor: PAGE_BG }, { backgroundColor: CLEAR }], { duration: 600, delay: 250, easing: 'ease', fill: 'forwards' })
+      picture
+        .animate([{ transform: 'none' }, { transform: over(target, picture.getBoundingClientRect()) }], {
+          duration: 950,
+          easing: EASE,
+          fill: 'forwards',
+        })
+        .finished.then(onClosed, onClosed)
+    }
+    return () => {
+      leave.current = null
+    }
+  }, [leave, onClosed, origin])
 
   return (
     <div ref={root} className="pj-page" role="dialog" aria-modal="true" aria-label={card.title}>
@@ -114,7 +162,7 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
           <p>{card.type}</p>
           <p>{card.meta}</p>
         </header>
-        <button ref={back} type="button" className="pj-back" onClick={onBack}>
+        <button ref={back} type="button" className="pj-back" onClick={() => leave.current?.()}>
           <span aria-hidden="true" />
           Back
         </button>
@@ -146,7 +194,7 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
 
       <div className="pj-page-flow">
         {/* The list's picture stays on top, where it flies to; the poster follows. */}
-        {thumb && <img ref={posterRef} className="pj-lead" src={thumb} alt="" />}
+        {thumb && <img ref={lead} className="pj-lead" src={thumb} alt="" />}
         {poster && <img className="pj-poster" src={poster} alt={`${card.title} poster`} />}
 
         <div className="pj-notes">
@@ -184,8 +232,9 @@ export default function Projects({ cards }: { cards: Card[] }) {
   const titles = useRef<(HTMLElement | null)[]>([])
   const categories = useRef<(HTMLElement | null)[]>([])
   const cursor = useRef<HTMLDivElement>(null)
-  const [open, setOpen] = useState<{ index: number; from: DOMRect | null } | null>(null)
+  const [open, setOpen] = useState<{ index: number; flyIn: boolean } | null>(null)
   const opener = useRef<HTMLButtonElement | null>(null)
+  const leave = useRef<(() => void) | null>(null)
 
   // Rolls the side labels with the scroll: each picture's label sits in place while it's
   // at the centre, and slides out as the gap to the next one crosses the middle.
@@ -244,15 +293,38 @@ export default function Projects({ cards }: { cards: Card[] }) {
     return () => window.removeEventListener('keydown', onKeyDown, true)
   })
 
-  const show = (index: number, button: HTMLButtonElement | null) => {
-    opener.current = button
+  const thumbAt = (index: number) => root.current?.querySelectorAll<HTMLButtonElement>('.pj-thumb')[index] ?? null
+
+  // While a project is open its list picture is away on the project's page.
+  const hide = (button: HTMLButtonElement | null, hidden: boolean) => {
     const picture = button?.querySelector('img')
-    setOpen({ index, from: picture ? picture.getBoundingClientRect() : null })
+    if (picture) picture.style.visibility = hidden ? 'hidden' : ''
   }
 
-  const close = () => {
+  const show = (index: number, button: HTMLButtonElement | null) => {
+    hideCursor()
+    opener.current = button
+    hide(button, true)
+    setOpen({ index, flyIn: true })
+  }
+
+  const close = () => leave.current?.()
+
+  const closed = useCallback(() => {
+    hide(opener.current, false)
     setOpen(null)
-    requestAnimationFrame(() => opener.current?.focus({ preventScroll: true }))
+    opener.current?.focus({ preventScroll: true })
+  }, [])
+
+  // "Next project": the list quietly scrolls to that project behind the page, so Back
+  // returns into it.
+  const showNext = (index: number) => {
+    hide(opener.current, false)
+    const button = thumbAt(index)
+    button?.scrollIntoView({ block: 'center' })
+    opener.current = button
+    hide(button, true)
+    setOpen({ index, flyIn: false })
   }
 
   // The "See detail" cursor follows the pointer over the pictures.
@@ -333,12 +405,11 @@ export default function Projects({ cards }: { cards: Card[] }) {
           key={open.index}
           card={cards[open.index]}
           next={cards[(open.index + 1) % cards.length]}
-          from={open.from}
-          onBack={close}
-          onNext={() => {
-            opener.current = root.current?.querySelectorAll<HTMLButtonElement>('.pj-thumb')[(open.index + 1) % cards.length] ?? null
-            setOpen({ index: (open.index + 1) % cards.length, from: null })
-          }}
+          origin={opener.current?.querySelector('img') ?? null}
+          flyIn={open.flyIn}
+          leave={leave}
+          onClosed={closed}
+          onNext={() => showNext((open.index + 1) % cards.length)}
         />
       )}
       <p className="sr-only" aria-live="polite">

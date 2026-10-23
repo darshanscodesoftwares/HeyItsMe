@@ -134,7 +134,8 @@
   aspect-ratio: 5 / 4;
   padding: 0;
   overflow: hidden;
-  background: #e7e4dc;
+  /* No placeholder colour, so the empty slot is invisible while its picture is away. */
+  background: transparent;
   border: 0;
   cursor: pointer;
 }
@@ -254,13 +255,6 @@
   overscroll-behavior: contain;
   background: var(--pj-bg);
   color: var(--pj-ink);
-  animation: pj-in 350ms ease both;
-}
-
-@keyframes pj-in {
-  from {
-    opacity: 0;
-  }
 }
 
 .pj-page-front {
@@ -420,12 +414,11 @@
   object-fit: cover;
 }
 
-.pj-ghost {
-  position: fixed;
-  z-index: 30;
-  object-fit: cover;
+/* Scaled from its top-left corner when it travels to and from the list. */
+.pj-lead {
+  position: relative;
+  z-index: 3;
   transform-origin: 0 0;
-  pointer-events: none;
 }
 
 .pj-notes {
@@ -621,7 +614,6 @@
     transition: none;
   }
 
-  .pj-page,
   .pj-thumb::after,
   .pj-clock span {
     animation: none;

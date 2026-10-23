@@ -258,6 +258,10 @@ _Last updated: 2026-10-23_
   grain (`.pj-thumb::before/::after`) instead of greyscale.
 - On a project's page the list picture now comes first (top, where the click flies to,
   `.pj-lead`) and the square poster follows below it (`.pj-poster`), at his request.
+- The open/close is a true FLIP of that same picture (no ghost copy): it glides from its
+  list slot to the page and, on Back/Esc, glides back while the page empties; the list
+  picture is hidden while away. The in-effect cancels earlier animations before measuring,
+  because React dev mode runs it twice and the second pass measured mid-flight.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
