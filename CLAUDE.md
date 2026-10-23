@@ -226,16 +226,24 @@ _Last updated: 2026-10-23_
 - **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
   section.
 - No hosting or deploy is set up yet.
-- Section detail pages have a compact desktop-height layout for 1366 × 768 screens. The
-  section pager uses the minimal divider-and-links style from commit `53c3b9d`.
+- `main` was reset to `b850214` to remove the later themed Projects and Skills work. The
+  project and skill pages are back to the regular resume-section design.
+- Keep `skill-section/skill-description-content/` intact. It contains the user's six
+  project write-ups and is intentionally untracked; do not remove it during cleanup.
+- Commit `570704f` adds a compact detail-page layout for wide screens up to 800px tall,
+  reorders the Skills groups (Full-stack and web before Databases and Languages), and
+  restores the minimal section pager from commit `53c3b9d`.
 
 ## Session log (newest first)
 
 ### 2026-10-23
 
-- Added compact spacing for desktop section pages at 1366 × 768, and moved Full-stack and
-  web before Databases and Languages in the Skills groups.
-- Restored the minimalist previous/next section pager from commit `53c3b9d`.
+- Reset `main` to `b850214`, removing the later themed Projects and Skills changes. Kept
+  `skill-section/skill-description-content/` exactly as it was; its six write-ups remain
+  untracked and must be preserved.
+- Added compact section-page spacing for 1366 × 768, reordered the Skills groups, and
+  restored the minimal previous/next pager from `53c3b9d`. These follow-up changes are in
+  `570704f`; no push was made.
 
 ### 2026-10-27 (Windows PC)
 
