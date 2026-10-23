@@ -274,6 +274,8 @@ _Last updated: 2026-10-23_
 - Checked the Projects list and pages at 1366x768, 1024x700, 820x1180 and 390x844 (no
   sideways scroll). Portrait tablets now get the stacked phone layout
   (`max-width: 760px, or 1100px portrait`, like the hero).
+- `references/projects-section/` is committed: the quangdinh.im screenshots, his thumbnails and
+  the after-click posters that `scripts/make_project_media.py` reads (about 32 MB).
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
