@@ -254,6 +254,8 @@ _Last updated: 2026-10-23_
 - Switched the Projects page to the site's own fonts (no serif, at his request): titles in
   the sans `--font`, small labels in the uppercase `--mono` style; removed
   `@fontsource/instrument-serif`.
+- Pictures shrunk to `min(40vw, 70svh × 1.25)`; hover now adds a vignette and animated film
+  grain (`.pj-thumb::before/::after`) instead of greyscale.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
