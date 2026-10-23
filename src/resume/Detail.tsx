@@ -1,5 +1,6 @@
 import type { Ref } from 'react'
 import Icon from './Icon'
+import Projects from './Projects'
 import { sections, type Card, type Entry, type Group, type Item, type Link, type Section } from './content'
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -111,7 +112,7 @@ function Body({ section }: { section: Section }) {
     case 'timeline':
       return <Timeline entries={section.entries} />
     case 'cards':
-      return <Cards cards={section.cards} />
+      return section.id === 'projects' ? <Projects cards={section.cards} /> : <Cards cards={section.cards} />
     case 'list':
       return <List items={section.items} />
   }

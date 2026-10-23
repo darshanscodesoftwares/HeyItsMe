@@ -29,12 +29,23 @@ export interface Entry {
   points: string[]
 }
 
+export interface Note {
+  heading: string
+  // A point may start with "Label: ", shown as a small heading for the rest.
+  points: string[]
+}
+
 export interface Card {
   title: string
   meta?: string
   text?: string
   tags?: string[]
   links?: Link[]
+  // Used by the Projects page only (Projects.tsx).
+  category?: string
+  type?: string
+  overview?: string
+  notes?: Note[]
 }
 
 export interface Item {
@@ -143,6 +154,38 @@ export const sideSections: Section[] = [
       {
         title: 'MYCARBOY',
         meta: '5 months',
+        category: 'Automotive',
+        type: 'Full-stack web application',
+        overview:
+          'A multi-service car inspection platform that runs the whole inspection lifecycle: customer bookings and online payments, expert assignment, vehicle inspections, admin review and report delivery.',
+        notes: [
+          {
+            heading: 'Key implementations',
+            points: [
+              'Customer app: booking for Pre-Delivery, Used Car and Vehicle Service History inspections, with scheduling, payments and status tracking.',
+              'Admin dashboard: bookings and leads, expert assignment and reassignment, rescheduling, cancellations, refunds, permissions, coupons and analytics.',
+              'Inspection expert app: mobile-friendly checklists, image, video and document uploads, attendance and leave, and report submission.',
+              'Automated reports: PDFs with inspection checkpoints, condition summaries, expert remarks, OBD scans and history checks.',
+              'Notifications: email and WhatsApp messages for booking, assignment and report events.',
+            ],
+          },
+          {
+            heading: 'Standout engineering',
+            points: [
+              'Multi-app integration: connected the customer, admin and expert apps through REST APIs and shared booking data.',
+              'Payment reliability: Razorpay payments and webhooks, guarded against duplicate events, with refunds and booking confirmation.',
+              'Scheduling: availability checks by expert skills, district, leave and booked slots, revalidated on the server to prevent double-booking.',
+              'Data consistency: found and fixed live issues with mismatched databases, booking references, status sync, cancellations and assignments.',
+              'Production: deployed and debugged on a Linux VPS with Nginx, PM2, SSH-based Git deploys and CORS setup.',
+            ],
+          },
+          {
+            heading: 'Why it matters',
+            points: [
+              'The challenge was not building three interfaces. It was keeping bookings, payments, scheduling, inspections and reports consistent across them, while fixing issues in a live production system.',
+            ],
+          },
+        ],
         text: 'A vehicle inspection platform: REST APIs with state-driven booking lifecycles, Razorpay payments with secure webhook verification, dynamic vehicle pricing, job assignment and inspection report pipelines. Deployed on an Ubuntu VPS with PM2.',
         tags: [
           'React',
@@ -175,6 +218,33 @@ export const sideSections: Section[] = [
       {
         title: 'schoolNest',
         meta: '4 months',
+        category: 'Education',
+        type: 'Multi-tenant school platform',
+        overview:
+          'A school management platform that serves many schools in one system. It connects academics, admissions, attendance, fees, communication and school transport across web and mobile apps for admins, teachers, parents and transport staff.',
+        notes: [
+          {
+            heading: 'Key implementations',
+            points: [
+              'Multi-tenant architecture: school-aware data, role-based access, JWT claims and per-school configuration.',
+              'Academics: classes, sections, teacher assignments, timetables, homework, exams, results, attendance and leave.',
+              'Admissions: approval workflows connected to student creation, parent sign-in and class assignment.',
+              'Parents and teachers: OTP login, attendance, fees and payment history, homework, announcements and timetables.',
+              'Notifications: Firebase Cloud Messaging with device tokens, in-app messages and unread counts.',
+              'Transport: the driver ride lifecycle, a live bus map over REST snapshots and Server-Sent Events, and geofenced teacher check-in.',
+            ],
+          },
+          {
+            heading: 'Standout engineering',
+            points: [
+              'Services: worked across auth, academic, notification and transport services, each with its own PostgreSQL database.',
+              'Security: role-aware JWT auth, OTP flows, token blacklisting, multi-school parent selection and child-ownership checks.',
+              'Messaging: a transactional outbox with background relays, retries and cleanup.',
+              'Cloud: migrated the backend from Render to AWS EC2 and RDS, with HTTPS, domains, environment, migrations and processes.',
+              'Data integrity: tracked down cross-database links, UUID mismatches, duplicates, timetable mappings and stale FCM tokens.',
+            ],
+          },
+        ],
         text: 'A multi-tenant school SaaS backend: Controller → Service → Repository REST APIs with JWT, bcrypt and role-based access for admins, teachers and parents, a database per service, and tenant isolation by school.',
         tags: [
           'React',
@@ -209,6 +279,30 @@ export const sideSections: Section[] = [
       {
         title: 'VR De-Addiction Wellness',
         meta: 'Proof of concept · Aug–Oct 2025',
+        category: 'Wellness',
+        type: 'Standalone VR prototype',
+        overview:
+          'A proof of concept for a VR de-addiction and wellness experience, starting with an Indian bar. It explores how immersive scenes, tracked interactions and session data could support future therapy and rehabilitation work. A prototype, not a finished clinical product.',
+        notes: [
+          {
+            heading: 'Key implementations',
+            points: [
+              'Standalone VR: Unity 6 with OpenXR, XR Interaction Toolkit and XR Hands, built for Meta Quest 3S.',
+              'The scene: a procedurally built Indian bar with seating, counter, signage, lighting, textures and props.',
+              'Interaction: hand tracking, grab and throw physics, object placement, arm-swing locomotion, turning and a safety exit.',
+              'Asset pipeline: Blender to Unity through Python scripts for models, FBX export, optimisation and scene regeneration.',
+              'Atmosphere: footsteps, glass clinks, a sign that flickers with the audio, and moody lighting.',
+            ],
+          },
+          {
+            heading: 'Standout engineering',
+            points: [
+              'Builds: Quest settings applied by editor scripts that also run headless, after diagnosing silent build failures.',
+              'Performance: GPU instancing, material reuse, lighting and shadow budgets, culling and decimation, to a locked 72 fps on device.',
+              'Architecture: a Unity REST client planned against a NestJS and PostgreSQL backend, with OpenXR as the common layer across headsets.',
+            ],
+          },
+        ],
         text: 'A standalone VR prototype for de-addiction and wellness, set in a procedurally built Indian bar. It has hand tracking, grab/throw physics and arm-swing locomotion, a Blender-to-Unity asset pipeline scripted in Python, and a planned NestJS and PostgreSQL backend for session data. Optimized to a locked 72 fps on Quest 3S.',
         tags: [
           'Unity 6',
@@ -226,6 +320,8 @@ export const sideSections: Section[] = [
       {
         title: 'Marina FC Website',
         meta: 'Proof of concept · 1 day',
+        category: 'Sport',
+        type: 'Client demo website',
         text: 'A client demo site for a Chennai football club: a hero video scrubbed by scroll, a 3D football that follows the cursor, a photo gallery and a coaches section, with Node and Python scripts that build the media.',
         tags: [
           'React',
@@ -244,12 +340,16 @@ export const sideSections: Section[] = [
       {
         title: 'Musica',
         meta: 'Personal project · 2.5 months',
+        category: 'Music',
+        type: 'Landing page',
         text: 'A responsive concert booking landing page.',
         tags: ['React', 'CSS Modules', 'Framer Motion'],
       },
       {
         title: 'Find-ISS',
         meta: 'Personal project · 2.5 months',
+        category: 'Space',
+        type: 'Real-time web app',
         text: 'A real-time web app that tracks the International Space Station on Google Maps from live coordinates.',
         tags: ['Node.js', 'Express.js', 'EJS', 'External APIs'],
       },

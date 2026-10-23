@@ -238,6 +238,17 @@ _Last updated: 2026-10-23_
 
 ### 2026-10-23
 
+- Rebuilt the Projects page after quangdinh.im/projects (his reference in
+  `references/projects-section/`): `Projects.tsx` + `projects.css`. A centred column of
+  5:4 thumbnails scrolls; the title (Instrument Serif italic) and category roll at the
+  sides as each picture crosses the middle; a lime highlighter "Projects" sits behind;
+  hover greys a picture and shows a "See detail" eye cursor; corners show Cuddalore's
+  coordinates and his local time. Clicking opens the project's own page: the picture flies
+  into the after-click poster, with header (difference blend), "← Back", a facts column
+  (overview, duration, category, links) and his write-ups (`notes` in `content.ts`). Esc
+  closes it before the section. Images come from `scripts/make_project_media.py`
+  (→ `src/assets/projects/`). Added `@fontsource/instrument-serif`. Checked at 1536x698 and
+  on a 390px phone.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
