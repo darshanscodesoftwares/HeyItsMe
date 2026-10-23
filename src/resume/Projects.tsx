@@ -79,8 +79,10 @@ interface ProjectProps {
   next: Card
   // The list picture this page grows out of and shrinks back into.
   origin: HTMLImageElement | null
-  // Fly from the origin on the way in; false when arriving from "Next project".
+  // Fly from the origin on the way in.
   flyIn: boolean
+  // Arriving from another project's page: the page is already there, only fill it in.
+  chained: boolean
   // Set to this page's animated exit, so Back, Escape and the list all leave the same way.
   leave: { current: (() => void) | null }
   onClosed: () => void
@@ -89,7 +91,7 @@ interface ProjectProps {
 
 // One project's own page: the picture from the list, the poster, and the write-up, with
 // the facts in a column on the right.
-function Project({ card, next, origin, flyIn, leave, onClosed, onNext }: ProjectProps) {
+function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }: ProjectProps) {
   const { thumb, poster } = mediaFor(card.title)
   const root = useRef<HTMLDivElement>(null)
   const lead = useRef<HTMLImageElement>(null)
@@ -113,14 +115,27 @@ function Project({ card, next, origin, flyIn, leave, onClosed, onNext }: Project
         duration: 950,
         easing: EASE,
       })
-      page.animate([{ backgroundColor: CLEAR }, { backgroundColor: PAGE_BG }], { duration: 600, easing: 'ease' })
+      if (!chained) page.animate([{ backgroundColor: CLEAR }, { backgroundColor: PAGE_BG }], { duration: 600, easing: 'ease' })
       for (const part of rest()) {
         part.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, delay: 550, easing: 'ease', fill: 'backwards' })
       }
     } else {
       page.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, easing: 'ease' })
     }
-  }, [card, flyIn, origin])
+  }, [card, chained, flyIn, origin])
+
+  // Next project: this page empties out the way it filled in, then the next project's
+  // picture glides up from the list just like a click on it would.
+  const goNext = () => {
+    const page = root.current!
+    if (prefersReducedMotion()) return onNext()
+    page.style.overflow = 'hidden'
+    for (const part of [lead.current, ...rest()]) {
+      part?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 350, easing: 'ease', fill: 'forwards' })
+    }
+    // The page itself stays, so the list never shows through while it moves on.
+    window.setTimeout(onNext, 380)
+  }
 
   // Out: the reverse. The page empties, and the picture glides back into its place in
   // the list, which is shown again only once it has landed.
@@ -214,7 +229,7 @@ function Project({ card, next, origin, flyIn, leave, onClosed, onNext }: Project
               <p className="pj-stack">{card.tags.join(', ')}</p>
             </section>
           )}
-          <button type="button" className="pj-next" onClick={onNext}>
+          <button type="button" className="pj-next" onClick={goNext}>
             <span>Next project</span>
             <em>{next.title}</em>
           </button>
@@ -232,7 +247,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
   const titles = useRef<(HTMLElement | null)[]>([])
   const categories = useRef<(HTMLElement | null)[]>([])
   const cursor = useRef<HTMLDivElement>(null)
-  const [open, setOpen] = useState<{ index: number; flyIn: boolean } | null>(null)
+  const [open, setOpen] = useState<{ index: number; flyIn: boolean; chained?: boolean } | null>(null)
   const opener = useRef<HTMLButtonElement | null>(null)
   const leave = useRef<(() => void) | null>(null)
 
@@ -324,7 +339,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
     button?.scrollIntoView({ block: 'center' })
     opener.current = button
     hide(button, true)
-    setOpen({ index, flyIn: false })
+    setOpen({ index, flyIn: !prefersReducedMotion(), chained: true })
   }
 
   // The "See detail" cursor follows the pointer over the pictures.
@@ -407,6 +422,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
           next={cards[(open.index + 1) % cards.length]}
           origin={opener.current?.querySelector('img') ?? null}
           flyIn={open.flyIn}
+          chained={open.chained ?? false}
           leave={leave}
           onClosed={closed}
           onNext={() => showNext((open.index + 1) % cards.length)}

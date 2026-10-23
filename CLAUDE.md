@@ -262,6 +262,9 @@ _Last updated: 2026-10-23_
   list slot to the page and, on Back/Esc, glides back while the page empties; the list
   picture is hidden while away. The in-effect cancels earlier animations before measuring,
   because React dev mode runs it twice and the second pass measured mid-flight.
+- "Next project" is smooth too: the page's contents fade out (the page itself stays, so the
+  list never shows), the list scrolls the next picture to the centre behind it, and that
+  picture glides up into place (`chained` skips the background fade).
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
