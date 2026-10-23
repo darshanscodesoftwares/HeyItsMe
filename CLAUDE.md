@@ -238,6 +238,11 @@ _Last updated: 2026-10-23_
 
 ### 2026-10-23
 
+- Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
+  this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
+  skill icons, lens and GSAP camera only survive in the local branch
+  `backup/themed-work-2026-10-23` (23 commits, never pushed). He said not to worry about
+  them; delete the branch whenever he agrees. `.env.local` is gitignored again.
 - Reset `main` to `b850214`, removing the later themed Projects and Skills changes. Kept
   `skill-section/skill-description-content/` exactly as it was.
 - Added compact section-page spacing for 1366 × 768, reordered the Skills groups, and
