@@ -271,6 +271,9 @@ _Last updated: 2026-10-23_
 - Smooth inertial scrolling on the Projects list with Lenis (new dependency `lenis`, as the
   reference site uses), scoped to the section's `[data-scroll]` container, `lerp 0.075`;
   off with reduced motion. Exception to the old "normal scrolling only" rule, at his request.
+- Checked the Projects list and pages at 1366x768, 1024x700, 820x1180 and 390x844 (no
+  sideways scroll). Portrait tablets now get the stacked phone layout
+  (`max-width: 760px, or 1100px portrait`, like the hero).
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
