@@ -404,19 +404,19 @@
   padding-bottom: 18svh;
 }
 
-.pj-poster {
+.pj-lead {
   display: block;
-  width: min(26vw, 70svh);
-  aspect-ratio: 1;
-  margin: calc(50svh - min(13vw, 35svh)) 0 0 17.3vw;
+  width: min(36vw, 64svh * 1.25);
+  aspect-ratio: 5 / 4;
+  margin: calc(50svh - min(14.4vw, 32svh)) 0 0 17.3vw;
   object-fit: cover;
 }
 
-.pj-still {
+.pj-poster {
   display: block;
-  width: 43vw;
-  aspect-ratio: 5 / 4;
-  margin: 6svh 0 0 31.7vw;
+  width: min(30vw, 80svh);
+  aspect-ratio: 1;
+  margin: 6svh 0 0 44vw;
   object-fit: cover;
 }
 
@@ -545,8 +545,8 @@
   .pj-page-head,
   .pj-back,
   .pj-facts,
+  .pj-lead,
   .pj-poster,
-  .pj-still,
   .pj-notes {
     position: relative;
     inset: auto;
@@ -585,13 +585,13 @@
     text-transform: uppercase;
   }
 
-  .pj-poster {
+  .pj-lead {
     order: 2;
     width: auto;
     margin-top: 24px;
   }
 
-  .pj-still {
+  .pj-poster {
     order: 3;
     width: auto;
     margin-top: 16px;

@@ -83,7 +83,7 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
   const posterRef = useRef<HTMLImageElement>(null)
   const back = useRef<HTMLButtonElement>(null)
 
-  // The clicked picture flies into the poster's place and fades into it.
+  // The clicked picture flies to its place at the top of the page.
   useLayoutEffect(() => {
     back.current?.focus({ preventScroll: true })
     root.current?.scrollTo(0, 0)
@@ -145,8 +145,9 @@ function Project({ card, next, from, onBack, onNext }: ProjectProps) {
       </div>
 
       <div className="pj-page-flow">
-        {poster && <img ref={posterRef} className="pj-poster" src={poster} alt={`${card.title} poster`} />}
-        {thumb && <img className="pj-still" src={thumb} alt="" />}
+        {/* The list's picture stays on top, where it flies to; the poster follows. */}
+        {thumb && <img ref={posterRef} className="pj-lead" src={thumb} alt="" />}
+        {poster && <img className="pj-poster" src={poster} alt={`${card.title} poster`} />}
 
         <div className="pj-notes">
           {card.notes?.map((note) => (

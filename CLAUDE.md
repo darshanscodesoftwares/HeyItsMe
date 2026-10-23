@@ -256,6 +256,8 @@ _Last updated: 2026-10-23_
   `@fontsource/instrument-serif`.
 - Pictures shrunk to `min(40vw, 70svh × 1.25)`; hover now adds a vignette and animated film
   grain (`.pj-thumb::before/::after`) instead of greyscale.
+- On a project's page the list picture now comes first (top, where the click flies to,
+  `.pj-lead`) and the square poster follows below it (`.pj-poster`), at his request.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
