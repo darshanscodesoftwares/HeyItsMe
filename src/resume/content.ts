@@ -97,11 +97,6 @@ export const sideSections: Section[] = [
           'Razorpay Webhooks and Integration',
         ],
       },
-      { name: 'Languages', items: ['JavaScript', 'SQL'] },
-      {
-        name: 'Databases',
-        items: ['MongoDB', 'PostgreSQL', 'Database Management Systems (DBMS)', 'Database Development'],
-      },
       {
         name: 'Full-stack and web',
         items: [
@@ -115,6 +110,11 @@ export const sideSections: Section[] = [
           'Website Building',
         ],
       },
+      {
+        name: 'Databases',
+        items: ['MongoDB', 'PostgreSQL', 'Database Management Systems (DBMS)', 'Database Development'],
+      },
+      { name: 'Languages', items: ['JavaScript', 'SQL'] },
       {
         name: 'Engineering practice',
         items: ['Software Infrastructure', 'Internet Software', 'Performance Tuning', 'Debugging', 'Analytical Skills'],

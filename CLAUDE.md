@@ -215,7 +215,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-27_
+_Last updated: 2026-10-23_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -226,8 +226,16 @@ _Last updated: 2026-10-27_
 - **Next ideas, not asked for yet:** a "Download PDF" button and a footer or contact
   section.
 - No hosting or deploy is set up yet.
+- Section detail pages have a compact desktop-height layout for 1366 × 768 screens. The
+  section pager uses the minimal divider-and-links style from commit `53c3b9d`.
 
 ## Session log (newest first)
+
+### 2026-10-23
+
+- Added compact spacing for desktop section pages at 1366 × 768, and moved Full-stack and
+  web before Databases and Languages in the Skills groups.
+- Restored the minimalist previous/next section pager from commit `53c3b9d`.
 
 ### 2026-10-27 (Windows PC)
 

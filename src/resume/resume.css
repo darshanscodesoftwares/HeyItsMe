@@ -785,41 +785,128 @@
 }
 
 .detail-pager {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   gap: 16px;
-  margin-top: 16px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
 
 .detail-pager button {
-  display: grid;
+  display: inline-flex;
+  align-items: center;
   gap: 8px;
-  padding: 18px 22px;
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid var(--sheet-line);
-  border-radius: 16px;
-  text-align: left;
+  padding: 4px 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  font: 500 13px/1.2 var(--font);
+  opacity: 0.55;
   cursor: pointer;
-  transition: background-color 200ms ease;
+  transition: opacity 200ms ease;
 }
 
-.detail-pager button:last-child {
-  text-align: right;
-}
-
-.detail-pager button:hover {
-  background: #fff;
+.detail-pager button:hover,
+.detail-pager button:focus-visible {
+  opacity: 1;
 }
 
 .detail-pager span {
-  color: var(--sheet-muted);
-  font: 500 11px/1 var(--mono);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  transition: transform 200ms ease;
 }
 
-.detail-pager strong {
-  font-size: 18px;
+.detail-pager button:first-child:hover span {
+  transform: translateX(-3px);
+}
+
+.detail-pager button:last-child:hover span {
+  transform: translateX(3px);
+}
+
+/* Keep section pages compact on standard laptop screens such as 1366 × 768. */
+@media (min-width: 1100px) and (max-height: 800px) {
+  .resume-detail {
+    --bar-height: 56px;
+    --title-size: 92px;
+  }
+
+  .resume-detail-body {
+    gap: 16px;
+    padding-top: calc(1svh + var(--title-size) * 0.58);
+    padding-bottom: 4svh;
+  }
+
+  .detail-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .detail-card h3 {
+    font-size: 18px;
+  }
+
+  .detail-grid {
+    gap: 14px;
+  }
+
+  .detail-chips {
+    gap: 6px;
+  }
+
+  .detail-chips li {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .detail-chips--small {
+    margin-top: 10px;
+  }
+
+  .detail-chips--small li {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .detail-meta {
+    font-size: 14px;
+  }
+
+  .detail-text {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .detail-timeline {
+    gap: 12px;
+    padding-left: 34px;
+  }
+
+  .detail-timeline::before {
+    left: 8px;
+  }
+
+  .detail-entry::before {
+    top: 22px;
+    left: -34px;
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
+
+  .detail-points {
+    gap: 4px;
+    margin-top: 10px;
+    padding-left: 18px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .detail-list {
+    gap: 10px;
+  }
+
 }
 
 @media (max-width: 760px) {
@@ -840,7 +927,4 @@
     justify-items: start;
   }
 
-  .detail-pager strong {
-    font-size: 16px;
-  }
 }

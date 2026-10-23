@@ -181,13 +181,13 @@ export default function Detail({ ref, section, onBack, onGo }: DetailProps) {
         <div className="resume-detail-body" data-body>
           <Body key={section.id} section={section} />
           <nav className="detail-pager" aria-label="Other sections" data-enter>
-            <button type="button" onClick={() => onGo(previous.id)}>
-              <span>Previous</span>
-              <strong>{previous.title}</strong>
+            <button type="button" aria-label={`Previous: ${previous.title}`} onClick={() => onGo(previous.id)}>
+              <span aria-hidden="true">←</span>
+              {previous.title}
             </button>
-            <button type="button" onClick={() => onGo(next.id)}>
-              <span>Next</span>
-              <strong>{next.title}</strong>
+            <button type="button" aria-label={`Next: ${next.title}`} onClick={() => onGo(next.id)}>
+              {next.title}
+              <span aria-hidden="true">→</span>
             </button>
           </nav>
         </div>
