@@ -268,6 +268,9 @@ _Last updated: 2026-10-23_
 - Removed the coordinates and the clock from the list's corners; two big "+" crosses sit
   there instead and turn with the scroll like a ship's wheel (0.15°/px, opposite
   directions, a 0.9s eased lag for weight).
+- Smooth inertial scrolling on the Projects list with Lenis (new dependency `lenis`, as the
+  reference site uses), scoped to the section's `[data-scroll]` container, `lerp 0.075`;
+  off with reduced motion. Exception to the old "normal scrolling only" rule, at his request.
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch

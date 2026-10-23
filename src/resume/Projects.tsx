@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
+import Lenis from 'lenis'
 import type { Card, Link } from './content'
 import { mediaFor } from './projectMedia'
 import './projects.css'
@@ -276,6 +277,21 @@ export default function Projects({ cards }: { cards: Card[] }) {
       scroller.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', schedule)
     }
+  }, [])
+
+  // Smooth, gliding scroll on this page only, like the reference: the page keeps drifting
+  // a little after the wheel stops. Lenis drives the section's own scroll container.
+  useEffect(() => {
+    const scroller = root.current?.closest<HTMLElement>('[data-scroll]')
+    if (!scroller || prefersReducedMotion()) return
+    const lenis = new Lenis({
+      wrapper: scroller,
+      content: scroller.firstElementChild as HTMLElement,
+      lerp: 0.075,
+      wheelMultiplier: 0.9,
+      autoRaf: true,
+    })
+    return () => lenis.destroy()
   }, [])
 
   // Escape leaves a project before it would close the whole section.
