@@ -11,30 +11,6 @@ const pad = (n: number) => String(n).padStart(2, '0')
 // the gap between them crosses the middle of the screen.
 const ROLL = 0.35
 
-// Cuddalore, where he's based, and his local time.
-const COORDS = '11.7480°N 79.7714°E'
-const ZONE = 'Asia/Kolkata'
-
-function Clock() {
-  const format = () =>
-    new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: ZONE })
-      .formatToParts(new Date())
-      .filter((part) => part.type !== 'literal')
-      .map((part) => part.value)
-  const [time, setTime] = useState(format)
-  useEffect(() => {
-    const timer = window.setInterval(() => setTime(format()), 10_000)
-    return () => window.clearInterval(timer)
-  }, [])
-  return (
-    <span className="pj-clock" aria-label={`${time[0]}:${time[1]} in India`}>
-      {time[0]}
-      <span aria-hidden="true">:</span>
-      {time[1]}
-    </span>
-  )
-}
-
 function Eye() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -247,6 +223,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
   const titles = useRef<(HTMLElement | null)[]>([])
   const categories = useRef<(HTMLElement | null)[]>([])
   const cursor = useRef<HTMLDivElement>(null)
+  const crosses = useRef<(HTMLElement | null)[]>([])
   const [open, setOpen] = useState<{ index: number; flyIn: boolean; chained?: boolean } | null>(null)
   const opener = useRef<HTMLButtonElement | null>(null)
   const leave = useRef<(() => void) | null>(null)
@@ -260,6 +237,11 @@ export default function Projects({ cards }: { cards: Card[] }) {
     let frame = 0
     const update = () => {
       frame = 0
+      // A quarter turn for every picture scrolled past, in opposite directions.
+      const turn = scroller.scrollTop * 0.15
+      crosses.current.forEach((cross, k) => {
+        if (cross) cross.style.transform = `rotate(${(k ? turn : -turn).toFixed(1)}deg)`
+      })
       const items = [...element.querySelectorAll<HTMLElement>('.pj-item')]
       const box = scroller.getBoundingClientRect()
       const middle = box.top + box.height / 2
@@ -377,10 +359,19 @@ export default function Projects({ cards }: { cards: Card[] }) {
             </p>
           ))}
         </div>
-        <p className="pj-corner pj-corner--left">{COORDS}</p>
-        <p className="pj-corner pj-corner--right">
-          <Clock />
-        </p>
+        {/* Two big crosses that turn with the scroll, like a ship's wheel. */}
+        <span
+          ref={(element) => {
+            crosses.current[0] = element
+          }}
+          className="pj-cross pj-cross--left"
+        />
+        <span
+          ref={(element) => {
+            crosses.current[1] = element
+          }}
+          className="pj-cross pj-cross--right"
+        />
       </div>
 
       <ol className="pj-column" data-enter>

@@ -265,6 +265,9 @@ _Last updated: 2026-10-23_
 - "Next project" is smooth too: the page's contents fade out (the page itself stays, so the
   list never shows), the list scrolls the next picture to the centre behind it, and that
   picture glides up into place (`chained` skips the background fade).
+- Removed the coordinates and the clock from the list's corners; two big "+" crosses sit
+  there instead and turn with the scroll like a ship's wheel (0.15°/px, opposite
+  directions, a 0.9s eased lag for weight).
 - Merged nothing: he confirmed he reverted the themed Projects and Skills designs himself, so
   this PC's `main` was reset to GitHub's. The notice board, lantern, constellation sky,
   skill icons, lens and GSAP camera only survive in the local branch
