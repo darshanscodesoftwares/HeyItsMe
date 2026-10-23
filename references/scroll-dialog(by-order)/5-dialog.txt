@@ -1,0 +1,1 @@
+I’ve also gained hands-on experience deploying applications in production using both PaaS and VPS, which has helped me develop a stronger systems and operations mindset.

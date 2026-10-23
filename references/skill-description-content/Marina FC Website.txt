@@ -1,0 +1,12 @@
+A client demo site for a Chennai football club: a hero video scrubbed by scroll, a 3D football that follows the cursor, a photo gallery and a coaches section, with Node and Python scripts that build the media.
+React
+TypeScript
+Vite
+Three.js
+GSAP
+Anime.js
+Motion
+Lenis
+Node.js
+Python
+FFmpeg

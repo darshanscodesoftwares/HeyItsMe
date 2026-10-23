@@ -1,0 +1,1 @@
+Today, I’m a Full-Stack (MERN) Developer focused on building real, scalable systems, not just interfaces. I design workflows, APIs, and data models that power actual applications, thinking end-to-end from frontend experience to backend logic, databases, and deployment.

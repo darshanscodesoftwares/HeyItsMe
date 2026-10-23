@@ -1,0 +1,6 @@
+A real-time web app that tracks the International Space Station on Google Maps from live coordinates.
+
+Node.js
+Express.js
+EJS
+External APIs
