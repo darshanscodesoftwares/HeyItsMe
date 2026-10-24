@@ -19,7 +19,7 @@ const LINES = 5
 // section the lines wait at its dot while its skills come in, one row for every ROW_PX of
 // scrolling; then they travel on to the next dot, over TRAVEL of the distance between the two.
 const ROW_PX = 84
-const TRAVEL = 0.8
+const TRAVEL = 1.3
 const WHEEL = 0.9
 
 interface Point {
