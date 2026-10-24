@@ -141,8 +141,8 @@ export const sideSections: Section[] = [
       { name: 'Version control', items: ['Git', 'GitHub'] },
       { name: 'APIs and databases', items: ['Postman', 'pgAdmin'] },
       { name: 'Deployment', items: ['PM2', 'Ubuntu VPS'] },
-      { name: 'Operating systems', items: ['Linux', 'Mac'] },
       { name: 'Design and office', items: ['Figma', 'Google Slides', 'Google Sheets'] },
+      { name: 'Operating systems', items: ['Linux', 'Mac'] },
     ],
   },
   {

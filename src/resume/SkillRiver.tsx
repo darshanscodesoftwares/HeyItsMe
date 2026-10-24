@@ -27,7 +27,7 @@ interface Point {
   y: number
 }
 
-type Cubic = [Point, Point, Point, Point]
+export type Cubic = [Point, Point, Point, Point]
 
 const straight = (a: Point, b: Point): Cubic => [
   a,
@@ -67,7 +67,7 @@ function middleLine(dots: { y: number; side: number }[], mid: number, sway: numb
 
 // The path moved sideways along its normal, as a polyline, so parallel lines stay evenly
 // apart through every bend.
-function offsetPath(curves: Cubic[], distance: number) {
+export function offsetPath(curves: Cubic[], distance: number) {
   const points: string[] = []
   for (const [a, b, c, d] of curves) {
     const steps = Math.max(4, Math.ceil(Math.hypot(d.x - a.x, d.y - a.y) / 5))

@@ -3,6 +3,7 @@ import Icon from './Icon'
 import Projects from './Projects'
 import { useScrollPush } from './scrollPush'
 import SkillRiver from './SkillRiver'
+import ToolWheel from './ToolWheel'
 import { sections, type Card, type Entry, type Group, type Item, type Link, type Section } from './content'
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -110,7 +111,9 @@ function List({ items }: { items: Item[] }) {
 function Body({ section }: { section: Section }) {
   switch (section.kind) {
     case 'groups':
-      return section.id === 'skills' ? <SkillRiver groups={section.groups} /> : <Groups groups={section.groups} />
+      if (section.id === 'skills') return <SkillRiver groups={section.groups} />
+      if (section.id === 'tools') return <ToolWheel groups={section.groups} />
+      return <Groups groups={section.groups} />
     case 'timeline':
       return <Timeline entries={section.entries} />
     case 'cards':

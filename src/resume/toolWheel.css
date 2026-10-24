@@ -1,0 +1,264 @@
+/* ---------- Tools ring (tools) ---------- */
+
+/* After his "Circular Workflow Infographic with Five UI Cards" reference, in the Skills
+   poster's cream, ink and sage. TOOLS & TECHNOLOGIES stays the page's faint title, fixed
+   behind everything. */
+.resume-detail[data-tone='tools'] {
+  --cream: #f1ece3;
+  --ink: #1c1c1a;
+  --green: #3f5a40;
+  color: var(--ink);
+}
+
+.resume-detail[data-tone='tools'] .resume-detail-veil {
+  background: rgba(241, 236, 227, 0.97);
+}
+
+.resume-detail[data-tone='tools'] .resume-detail-title {
+  color: #6f6a5f;
+}
+
+/* Pinned and played by the scroll, like the Skills poster (see ToolWheel.tsx). The stage runs
+   the full width of the screen, past the page's column. */
+.tw {
+  position: relative;
+  margin-inline: calc(-1 * var(--bleed, 0px));
+}
+
+.tw-stage {
+  position: sticky;
+  top: 0;
+  height: var(--stage, auto);
+  overflow: hidden;
+}
+
+/* Padding, not margin, so it isn't lost once the stage sticks (as on the Skills page). */
+.tw-window {
+  position: relative;
+  height: 100%;
+  padding-top: var(--pin, 0px);
+}
+
+.tw-view {
+  position: relative;
+  height: 100%;
+}
+
+/* The camera moves and scales this 1000 × 1000 world, centred in the view. */
+.tw-world {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1000px;
+  height: 1000px;
+  margin: -500px 0 0 -500px;
+  /* No will-change: with it, Chrome keeps the small render and scales it up, so the cards
+     look soft up close. */
+  transform-origin: 50% 50%;
+}
+
+.tw.is-static .tw-stage {
+  position: static;
+  height: 100%;
+}
+
+.tw.is-static .tw-window {
+  padding-top: 0;
+}
+
+/* ---------- Lines ---------- */
+
+.tw-lines {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.tw-ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+}
+
+.tw-ring.is-green {
+  stroke: var(--green);
+}
+
+.tw-hair,
+.tw-spoke {
+  fill: none;
+  stroke: rgba(28, 28, 26, 0.22);
+  stroke-width: 1;
+}
+
+.tw-dot {
+  fill: var(--green);
+}
+
+.tw-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  fill: var(--green);
+  transform: translate(-50%, -50%);
+}
+
+/* ---------- Cards ---------- */
+
+.tw-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tw-card {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 236px;
+  min-height: 214px;
+  padding: 22px 24px 24px;
+  background: #f6f2ea;
+  border: 1px solid rgba(28, 28, 26, 0.16);
+  border-radius: 22px;
+  box-shadow: 0 18px 40px -26px rgba(28, 28, 26, 0.35);
+  transform: translate(-50%, -50%);
+  transition: opacity 500ms ease;
+}
+
+/* Up close, the other cards fall back. */
+.tw.is-zoomed .tw-card:not(.is-active) {
+  opacity: 0.35;
+}
+
+.tw-num {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  font: 400 54px/0.9 Georgia, 'Times New Roman', serif;
+}
+
+.tw-spark {
+  width: 20px;
+  height: 20px;
+  fill: var(--green);
+}
+
+.tw-title {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.tw-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: auto 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tw-chips li {
+  padding: 6px 13px;
+  background: #e8e3d8;
+  border: 1px solid rgba(28, 28, 26, 0.08);
+  border-radius: 999px;
+  color: #2c2c29;
+  font-size: 13px;
+}
+
+/* ---------- Pager ---------- */
+
+.tw-pager {
+  position: absolute;
+  bottom: clamp(16px, 4svh, 36px);
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  /* A cream backing, so the ring's lines don't run through the dots. */
+  padding: 6px 6px 6px 18px;
+  background: rgba(241, 236, 227, 0.92);
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  pointer-events: none;
+  transition:
+    opacity 400ms ease,
+    transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.tw.is-zoomed .tw-pager {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+.tw-pips {
+  display: flex;
+  gap: 8px;
+}
+
+.tw-pips button {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border: 1.5px solid var(--green);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: background-color 250ms ease;
+}
+
+.tw-pips button.is-on,
+.tw-pips button:hover {
+  background: var(--green);
+}
+
+.tw-count {
+  color: #4a4a45;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.tw-next {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: background-color 200ms ease;
+}
+
+.tw-next:hover {
+  background: rgba(28, 28, 26, 0.06);
+}
+
+.tw-next svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-card {
+    transition: none;
+  }
+}

@@ -144,6 +144,29 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   `getBoundingClientRect`; a ResizeObserver re-measures. Lenis smooth scroll. Phones: one
   column, a straight run of lines on the left. Reduced motion (`.is-static`): no pinning,
   everything shown.
+- `ToolWheel.tsx` + `toolWheel.css`: the Tools & Technologies page, after his
+  `tools&technologies-section/` references, in the Skills poster's cream (`#f1ece3` veil),
+  ink and a dark green (`#3f5a40`).
+  - **Layout:** five numbered cards (serif numeral, green spark, title, grey pill chips) on
+    a ring round a dark-green four-point star in a 1000×1000 "world".
+  - **Lines:** five concentric ring lines (ink and green alternating), hairline circles
+    and a crosshair, spokes with dots, and five-line bundles running off to the screen
+    edges (built with `route()` plus `offsetPath`, which is exported from `SkillRiver.tsx`).
+  - **Order:** follows his reference, so Design and office is 4 and Operating systems is 5
+    (the `content.ts` order was changed to match).
+  - **The scroll is a camera** (pinned exactly like Skills: a track from the top of the page,
+    with a sticky stage the full width of the screen via `--bleed`). It goes: the whole ring
+    (`OPEN` 260px) → each card up close (`MOVE` 760px to get there, held for `STAY` 520px),
+    pulling back 30% while passing between cards → the whole ring again (`CLOSE` 360px).
+  - **Up close:** the other cards dim to 35%, and a "01 / 05" pager (dots, count, arrow) shows
+    at the bottom; its dots and arrow scroll (Lenis) to a card.
+  - TOOLS & TECHNOLOGIES is the page's usual faint title, fixed behind everything (warm grey
+    `#6f6a5f`), as he asked.
+  - **No `will-change` on the world:** with it, Chrome scales the small render and the
+    zoomed cards look soft.
+  - Reduced motion (`.is-static`): just the ring, no camera.
+  - Left out for now: the reference's photo and the brand logos on the chips, since there
+    are no assets for them.
 - `scrollPush.ts`: **the whole site works by scrolling alone** (clicks still work). `useScrollPush`
   watches wheel and touch: once a page is already scrolled to its end, carrying on scrolling
   "pushes" toward the next place (300px of scrolling without stopping; a pause drains it, and a
@@ -285,10 +308,11 @@ _Last updated: 2026-10-24_
   face is centred in the avatar circle.
 - **Project pages (2026-10-24):** the wheel scrolls them smoothly (own Lenis); the title line
   fades out on scrolling and the project's name appears above "Overview".
-- **Next, not started:** he added `tools&technologies-section/` (two reference images,
-  "Circular Workflow Infographic with Five UI Cards" and "Minimal Version Control UI Poster")
-  for redesigning Tools & Technologies the way Skills was done; he hasn't said what to build yet.
-  Work Experience was suggested as the next content-heavy section to redesign.
+- **Tools & Technologies page (2026-10-24):** a cream ring of five numbered cards round a
+  dark star (`ToolWheel.tsx`), played by the scroll like a camera: the ring, then each card
+  up close from 1 to 5, then the ring again. The faint title stays behind. Checked at
+  1366x651 and 390x844 in headless Chrome (no errors, no sideways scroll); he hasn't seen
+  it yet. Work Experience was suggested as the next content-heavy section to redesign.
 - **Gotcha, Lenis:** any scrollable layer inside the Projects section needs its own Lenis
   (as the project page has) or `data-lenis-prevent`, and the list's Lenis `prevent` must
   skip it, or the wheel won't scroll it.
@@ -308,6 +332,14 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- Built the Tools & Technologies page after his two references.
+  - The ring of five cards round a star, as in his "Circular Workflow Infographic", with
+    TOOLS & TECHNOLOGIES always faint behind.
+  - The scroll zooms into each card from 1 to 5 in turn (his "Minimal Version Control UI
+    Poster" for the close-up, with the "01 / 05" pager), then back out to the ring.
+  - Fixed along the way: the zoomed card touching the pager, soft text up close (removed
+    `will-change`), and the pager wrapping on phones.
+  - The reference's photo and the brand logos were left out, since there are no assets.
 - The Skills lines travelled between dots too fast, so `TRAVEL` went from 0.5 to 0.8, and then,
   still too fast, to 1.3 (the lines now move at about 0.77x the scroll, so the scroll between
   dots is a little longer than the lines' own distance). Raise it further to slow them more.
