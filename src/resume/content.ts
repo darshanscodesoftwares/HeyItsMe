@@ -75,7 +75,6 @@ export const profile: { name: string; role: string; contacts: Contact[] } = {
   role: 'Full Stack Developer',
   contacts: [
     { icon: 'mail', label: 'Email', text: 's2darshan2@gmail.com', href: 'mailto:s2darshan2@gmail.com' },
-    { icon: 'pin', label: 'Location', text: 'Cuddalore, India', href: '' },
     {
       icon: 'linkedin',
       label: 'LinkedIn',
@@ -83,6 +82,7 @@ export const profile: { name: string; role: string; contacts: Contact[] } = {
       href: 'https://www.linkedin.com/in/darshan-stack',
     },
     { icon: 'github', label: 'GitHub', text: 'DarshanLevi', href: 'https://github.com/DarshanLevi' },
+    { icon: 'pin', label: 'Location', text: 'Cuddalore, India', href: '' },
   ],
 }
 

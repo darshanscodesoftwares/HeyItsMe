@@ -131,6 +131,7 @@ export default function Paper({ ref, hidden, onOpen }: PaperProps) {
                     <a href={contact.href || undefined}>
                       <span className="sr-only">{contact.label}: </span>
                       {contact.text}
+                      {contact.href && <Icon name="arrowUpRight" />}
                     </a>
                   ) : (
                     <Line />
