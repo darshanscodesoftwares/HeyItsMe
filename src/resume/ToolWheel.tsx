@@ -30,6 +30,9 @@ const R = 430
 const CARD_W = 308
 const CARD_H = 280
 const CARD_SCALE = 0.85
+// Once the ring is complete and the camera has pulled all the way back, the cards pop up to
+// this size (see `grown` in render). toolWheel.css falls back to CARD_SCALE as the default.
+const POP_SCALE = 1.15
 const SW = CARD_W * CARD_SCALE
 const SH = CARD_H * CARD_SCALE
 const LINES = 5
@@ -236,6 +239,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
     let frame = 0
     let near = -2
     let reached = -1
+    let wasGrown = false
     const render = () => {
       frame = 0
       const { width, height, length, still } = view.current
@@ -287,6 +291,13 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
         element.classList.toggle('is-zoomed', focus >= 0)
         cardEls().forEach((card) => card.classList.toggle('is-active', Number(card.dataset.i) === focus))
         setCurrent(focus)
+      }
+      // The ring is complete and the camera is all the way back: the cards pop up bigger.
+      const grown = part.hold === -1
+      if (grown !== wasGrown) {
+        wasGrown = grown
+        element.classList.toggle('is-grown', grown)
+        element.style.setProperty('--card-scale', String(grown ? POP_SCALE : CARD_SCALE))
       }
       if (appeared !== reached) {
         reached = appeared
@@ -346,7 +357,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
   }
 
   return (
-    <div ref={root} className="tw" data-enter style={{ '--card-scale': CARD_SCALE } as CSSProperties}>
+    <div ref={root} className="tw" data-enter>
       <div className="tw-stage">
         <div className="tw-window">
           <div className="tw-view">
@@ -429,7 +440,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                     }}
                     className="tw-card"
                     data-i={i}
-                    style={{ left: points[i].x, top: points[i].y }}
+                    style={{ left: points[i].x, top: points[i].y, '--i': i } as CSSProperties}
                   >
                     <p className="tw-num">
                       {i + 1}

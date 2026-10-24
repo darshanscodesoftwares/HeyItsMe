@@ -185,7 +185,13 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
       (`lerp(u, smooth(u), 0.3)`) so it keeps pace with the line. `MOVE` was 720, 1100, now
       1400 (he keeps asking for slower, smoother).
     - After the last card (`FINAL` 1400px): the lines close the ring while the camera pulls
-      back to the whole ring, held for `CLOSE` 360px.
+      back to the whole ring, held for `CLOSE` 360px. **In that final hold (and not before)
+      the cards pop up bigger**, from `CARD_SCALE` 0.85 to `POP_SCALE` 1.15, one after
+      another (90ms apart) with a little overshoot, and shrink back if you scroll up. `render`
+      sets `--card-scale` on the root and toggles `.is-grown` when `part.hold === -1`; the
+      timing is in `toolWheel.css` (`.tw-card[data-i]`, `.tw.is-grown`). The default 0.85 in
+      the CSS fallback must match `CARD_SCALE`. At 1.15 the cards are still clear of each
+      other with R 430.
     - **Up close** a card is drawn at 80% (`CLOSE_UP`) of the biggest size that fits the screen
       (computed from `SW`×`SH`, so it also gets 15% smaller from `CARD_SCALE`); he asked for
       the zoomed-in cards to be smaller, twice.
@@ -437,6 +443,11 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-25
 
+- He asked that, once the Tools circle has touched card 1, completed and zoomed out, the cards
+  pop up and get bigger (only then, and only in the zoomed-out view). Done in the final hold:
+  0.85 to 1.15 with a staggered overshoot; they shrink back when scrolling up. Checked at
+  1366x651 and 390x844: not grown while closing, grown and settled in the hold, back to normal
+  scrolling up.
 - He corrected the Scode period: he still works there, so it is now "Aug 2025 – Present" (it said
   Feb 2026, copied from his résumé PDF).
 

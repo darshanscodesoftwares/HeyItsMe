@@ -151,8 +151,22 @@
   border: 1px solid rgba(28, 28, 26, 0.16);
   border-radius: 22px;
   box-shadow: 0 18px 40px -26px rgba(28, 28, 26, 0.35);
-  /* Laid out full size so its chips wrap as they should, and drawn smaller (see CARD_SCALE). */
-  transform: translate(-50%, -50%) scale(var(--card-scale, 1));
+  /* Laid out full size so its chips wrap as they should, and drawn smaller (CARD_SCALE, 0.85
+     here as the default); ToolWheel.tsx raises --card-scale to POP_SCALE once the ring is
+     complete and zoomed out. */
+  transform: translate(-50%, -50%) scale(var(--card-scale, 0.85));
+}
+
+/* The cards pop up one after another, with a little overshoot, then settle back when you
+   scroll back up (no delay going down in size). */
+.tw-card[data-i] {
+  transition:
+    opacity 800ms ease,
+    transform 650ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tw.is-grown .tw-card[data-i] {
+  transition-delay: 0ms, calc(var(--i, 0) * 90ms);
 }
 
 .tw-card > * {
@@ -289,6 +303,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tw-card > *,
+  .tw-card[data-i],
   [data-i],
   .tw-rest,
   .tw-core {
