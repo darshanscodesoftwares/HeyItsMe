@@ -21,9 +21,9 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 // The ring is drawn in a SIZE × SIZE world that the camera moves and scales.
 const SIZE = 1000
 const C = SIZE / 2
-// Six cards 60 degrees apart: the radius is the smallest that keeps neighbouring cards
-// (308 wide) apart, about 21 units between cards 1 and 2.
-const R = 380
+// Five cards 72 degrees apart: the radius is the smallest that keeps neighbouring cards
+// (308 wide) apart, about 25 units between cards 1 and 2.
+const R = 350
 const CARD_W = 308
 const CARD_H = 280
 const LINES = 5
@@ -101,23 +101,21 @@ function route(points: Point[], radius = 46): Cubic[] {
 }
 
 // Where the bundles leave each card and how they run off the poster, like the reference. For
-// the six cards, clockwise from the top: straight up from the top card (where the Skills page's
+// the five cards, clockwise from the top: straight up from the top card (where the Skills page's
 // lines end, at the centre, so they seem to carry on into this page), straight out to the right
-// from the upper right card, down and round to the right from the lower right one, straight
-// down from the bottom one, straight out to the left from the lower left one, and up and out to
-// the left from the upper left one.
+// from the next, down and round to the right from the lower right one, down and out to the left
+// from the lower left one, and out to the left and down from the last.
 function bundleRoutes(cards: Point[]): Point[][] {
-  const [top, upperRight, lowerRight, bottom, lowerLeft, upperLeft] = cards
+  const [top, right, lowRight, lowLeft, left] = cards
   const h = CARD_H / 2
   const w = CARD_W / 2
   const far = 1900
   return [
     [{ x: top.x, y: top.y - h }, { x: top.x, y: -far }],
-    [{ x: upperRight.x + w, y: upperRight.y }, { x: far, y: upperRight.y }],
-    [{ x: lowerRight.x, y: lowerRight.y + h }, { x: lowerRight.x, y: lowerRight.y + h + 60 }, { x: lowerRight.x + 300, y: lowerRight.y + h + 60 }, { x: lowerRight.x + 300, y: far }],
-    [{ x: bottom.x, y: bottom.y + h }, { x: bottom.x, y: far }],
-    [{ x: lowerLeft.x - w, y: lowerLeft.y }, { x: -far, y: lowerLeft.y }],
-    [{ x: upperLeft.x - w, y: upperLeft.y }, { x: upperLeft.x - w - 70, y: upperLeft.y }, { x: upperLeft.x - w - 70, y: upperLeft.y - 250 }, { x: -far, y: upperLeft.y - 250 }],
+    [{ x: right.x + w, y: right.y }, { x: far, y: right.y }],
+    [{ x: lowRight.x, y: lowRight.y + h }, { x: lowRight.x, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: far }],
+    [{ x: lowLeft.x, y: lowLeft.y + h }, { x: lowLeft.x, y: lowLeft.y + h + 70 }, { x: -far, y: lowLeft.y + h + 70 }],
+    [{ x: left.x - w, y: left.y }, { x: left.x - w - 70, y: left.y }, { x: left.x - w - 70, y: left.y + 330 }, { x: -far, y: left.y + 330 }],
   ].slice(0, cards.length)
 }
 

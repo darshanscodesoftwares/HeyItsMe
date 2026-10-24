@@ -138,14 +138,13 @@ export const sideSections: Section[] = [
     icon: 'gear',
     kind: 'groups',
     groups: [
-      { name: 'Version control', items: ['Git', 'GitHub'] },
+      { name: 'Version control and OS', items: ['Git', 'GitHub', 'Linux', 'Mac', 'Windows'] },
       { name: 'APIs and databases', items: ['Postman', 'Swagger', 'PostgreSQL', 'MongoDB', 'pgAdmin', 'RDS (AWS)'] },
       { name: 'Deployment', items: ['PM2', 'Ubuntu VPS', 'Nginx', 'SSH', 'Certbot', 'AWS EC2', 'Render', 'Vercel'] },
       {
         name: 'Design and office',
         items: ['Google Sheets', 'Google Meet', 'Google Slides', 'Google Docs', 'Figma', 'Excel', 'Trello'],
       },
-      { name: 'Operating systems', items: ['Linux', 'Mac'] },
       { name: 'AI tools', items: ['Claude', 'Claude Code', 'ChatGPT', 'Codex'] },
     ],
   },
