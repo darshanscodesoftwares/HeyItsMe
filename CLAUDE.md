@@ -310,6 +310,15 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
     LISTEN/NOTIFY, idempotent consumer). **The "Three-flow API architecture" and "Live bus
     tracking" cards are commented out** in `content.ts` (a `/* */` block) at his request; put
     them back by removing the markers.
+  - **Work Experience, Scode Software Solutions (Full-Stack Developer):** rewritten at his
+    request as seven achievement-style bullets (no Decimal-chess): an overview line, then the
+    SchoolNest services and auth, the AWS deployment, the self-hosted SNS/SQS stand-ins and
+    outbox, live bus tracking, the security fixes, and MYCARBOY. All drawn from his résumé,
+    projects, tools, achievements and work log. The paper's summary shows the first bullet
+    only, so keep that one a good overview. The AWS and SNS/SQS facts therefore appear in both
+    Experience and Achievements (on purpose). **The period still says Aug 2025 - Feb 2026,
+    but his work log is dated July, so he may still work there: ask him before changing it.**
+    The Go Prime intern entry is unchanged.
   - They only claim what the log says: the outbox is "built and tested locally", the AWS side
     of the switch is "designed in, not live". **Two things to remember:** the outbox is the
     stand-in for SNS-to-SQS delivery, *not* for Redis (he asked; Redis in the log is the
@@ -425,6 +434,10 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He asked for the Scode work experience to drop Decimal-chess and read like real work
+  experience, not a content dump, using what's in the projects, skills, tools and
+  achievements. Rewrote it as seven bullets (see Resume content). Checked the Work Experience
+  page at 1366x651 and 390x844.
 - He then asked to comment out the Three-flow and Live bus tracking cards and to make the other
   two read like achievements, leading with the cost saved (no AWS SNS/SQS bill until the
   platform grows). Done; checked the page at 1366x651 and 390x844.

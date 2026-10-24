@@ -416,10 +416,13 @@ export const mainSections: Section[] = [
         place: 'Scode Software Solutions',
         period: 'Aug 2025 – Feb 2026',
         points: [
-          'Built production features across tournament management, school SaaS and vehicle inspection platforms: secure APIs, role-based workflows and scalable backend services.',
-          'Delivered key modules for Decimal-chess and schoolNest, including automated data scraping, XML export workflows and a multi-tenant backend.',
-          'In MYCARBOY, added compressed chunk uploads for media and report files, cutting upload-related crashes by about 80%.',
-          'Developed responsive web interfaces and maintained backend services with reliable API integrations.',
+          'Full-stack developer on SchoolNest, a multi-tenant school ERP, and MYCARBOY, a vehicle inspection platform, taking features from database schema to React screen to AWS deployment.',
+          'Built SchoolNest as four Node.js services (auth, academic, notification and transport) with JWT authentication, role-based access for admins, teachers, parents and drivers, and tenant isolation by school; documented the APIs in Swagger, including a phone-OTP login ahead of the mobile app.',
+          'Deployed the platform on AWS: four services on EC2 under PM2 that restart themselves after a reboot, Nginx in front, RDS PostgreSQL databases, and schema migrations applied across local and AWS environments.',
+          'Replaced AWS SNS and SQS with self-hosted equivalents behind one environment switch, so the client pays nothing for messaging until the platform grows; built a transactional outbox with retries and idempotent delivery that survived the receiving service being down.',
+          'Built live bus tracking: drivers start a ride and send GPS fixes, and the admin map follows the bus in real time over server-sent events. Verified on production with a moving marker.',
+          'Closed security gaps: moved hard-coded database passwords and the JWT secret out of tracked files into environment variables, and fixed a parent endpoint that could expose any child in the school.',
+          'In MYCARBOY, built booking and Razorpay payment flows with webhook verification, deployed on an Ubuntu VPS with PM2, and cut upload-related crashes by about 80% with compressed chunk uploads.',
         ],
       },
       {
