@@ -147,13 +147,18 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
 - `ToolWheel.tsx` + `toolWheel.css`: the Tools & Technologies page, after his
   `tools&technologies-section/` references, in the Skills poster's cream (`#f1ece3` veil),
   ink and a dark green (`#3f5a40`).
-  - **Layout:** five numbered cards (serif numeral, green spark, title, grey pill chips) on
-    a ring round a dark-green four-point star in a 1000×1000 "world".
+  - **Layout:** six numbered cards (serif numeral, green spark, title, grey pill chips) on
+    a ring round a dark-green four-point star in a 1000×1000 "world". His reference had five;
+    the sixth, **AI tools** (Claude, Claude Code, ChatGPT, Codex), was added at his request as
+    "a separate box for AI tools". The ring radius `R` is 380 so six 308-wide cards, 60°
+    apart, don't touch (about 21 units between cards 1 and 2).
   - **Lines:** five concentric ring lines (ink and green alternating), hairline circles
     and a crosshair, spokes with dots, and five-line bundles running off to the screen
     edges (built with `route()` plus `offsetPath`, which is exported from `SkillRiver.tsx`).
-  - **Order:** follows his reference, so Design and office is 4 and Operating systems is 5
-    (the `content.ts` order was changed to match).
+    `bundleRoutes()` is written for exactly six cards, clockwise from the top: up, straight
+    right, down and round to the right, straight down, straight left, up and out to the left.
+  - **Order:** 1 Version control, 2 APIs and databases, 3 Deployment, 4 Design and office,
+    5 Operating systems, 6 AI tools (the order of `content.ts`).
   - **The scroll draws the lines and moves a camera, exactly like the Skills poster** (pinned
     the same way: a track from the top of the page, with a sticky stage the full width of the
     screen via `--bleed`). Nothing is timed. `plan()` builds the timeline as a list of
@@ -164,8 +169,8 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     - Hold on a card (`STAY` 500px): the lines wait at it, like Skills' lines at a dot.
     - A trip (`MOVE` 720px): the lines travel clockwise round the ring to the next card, the
       camera following, pulling back 30% on the way; the next card appears at 70%.
-    - After card 5 (`FINAL` 760px): the lines close the ring while the camera pulls back to
-      the whole ring, held for `CLOSE` 360px.
+    - After the last card (`FINAL` 760px): the lines close the ring while the camera pulls
+      back to the whole ring, held for `CLOSE` 360px.
   - **The drawn line** is a mask: a 70-wide stroke along the centre path (down, then
     clockwise round the ring) with `stroke-dasharray` set per frame from the tip position.
     12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
@@ -177,21 +182,23 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     at a card's edge and carries on from its other side, whether or not the card has
     appeared. Cards also appear earlier (55% of a trip, 70% of the first run), and card 1's
     dot sits just above its edge so the cut doesn't halve it.
-  - **Size:** the cards are 296×280 world units, with a 60px numeral, 23px title and 14.5px
+  - **Size:** the cards are 308×280 world units, with a 60px numeral, 23px title and 14.5px
     chips. They were 236×214, then 264×240 when he found the whole-ring view "too far away".
-    The height went to 280 when card 2 got six tools (278 tall), and the width to 296 when
-    Deployment got eight (three rows instead of four), so that every card stays the same
-    size. **`CARD_W`/`CARD_H` in `ToolWheel.tsx` must match `width`/`min-height` in
-    `toolWheel.css`, and the busiest card must fit them, or lines show behind a card's extra
-    size.** Measure the cards' `offsetWidth`/`offsetHeight` after adding tools. Neighbouring
-    cards 1 and 2 (and 1 and 5) are only about 18 world units apart at this width: don't go
-    wider without spreading the ring (`R`). The ring
-    shot fits the top and bottom cards plus a 40-unit margin to the screen
+    The height went to 280 when card 2 got six tools (278 tall), and the width to 296 and then
+    308 as Deployment got eight tools and Design and office seven (three rows instead of
+    four), so that every card stays the same size. **`CARD_W`/`CARD_H` in `ToolWheel.tsx` must
+    match `width`/`min-height` in `toolWheel.css`, and the busiest card must fit them, or
+    lines show behind a card's extra size.** Measure the cards' `offsetWidth`/`offsetHeight`
+    after adding tools (a quick puppeteer script that prints `.tw-card` sizes does it).
+    **Chip order matters:** chips wrap in order into 242px rows, and the order of Design and
+    office (Sheets, Meet, Slides, Docs, Figma, Excel, Trello) was chosen so it packs into
+    three rows with room to spare; the obvious order needed four. Wider cards need a larger
+    `R`. The ring shot fits the top and bottom cards plus a 40-unit margin to the screen
     (`min(w, h) / (2 * (R + CARD_H / 2) + 40)`).
   - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
     (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
     nothing shows but the faint title, as at the top of Skills.
-  - **Up close:** the other cards dim to 35%, and a "01 / 05" pager (dots, count, arrow) shows
+  - **Up close:** the other cards dim to 35%, and a "01 / 06" pager (dots, count, arrow) shows
     at the bottom, once the card has appeared; its dots and arrow scroll (Lenis) to a card.
   - TOOLS & TECHNOLOGIES is the page's usual faint title, fixed behind everything (warm grey
     `#6f6a5f`), as he asked.
@@ -354,9 +361,9 @@ _Last updated: 2026-10-24_
   face is centred in the avatar circle.
 - **Project pages (2026-10-24):** the wheel scrolls them smoothly (own Lenis); the title line
   fades out on scrolling and the project's name appears above "Overview".
-- **Tools & Technologies page (2026-10-24):** a cream ring of five numbered cards round a
+- **Tools & Technologies page (2026-10-24):** a cream ring of six numbered cards round a
   dark star (`ToolWheel.tsx`), played by the scroll like a camera: the ring, then each card
-  up close from 1 to 5, then the ring again. The faint title stays behind. Checked at
+  up close from 1 to 6, then the ring again. The faint title stays behind. Checked at
   1366x651 and 390x844 in headless Chrome (no errors, no sideways scroll); he hasn't seen
   it yet. Work Experience was suggested as the next content-heavy section to redesign.
 - **Gotcha, Lenis:** any scrollable layer inside the Projects section needs its own Lenis
@@ -378,6 +385,12 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- Added Google Docs, Excel, Google Meet and Trello to Tools card 4, Design and office, and a
+  **sixth card, AI tools** (Claude, Claude Code, ChatGPT, Codex), at his request. Six cards
+  needed a wider ring (`R` 330 to 380), a new bundle route for each of the six, and the cards
+  widened to 308 so Design and office (seven tools) fits three rows; its chips were reordered
+  to pack. Checked all six cards measure 308x280, and the run to card 6 and the ring closing
+  at 1366x651 and 390x844.
 - Added Nginx, SSH, Certbot, AWS EC2, Render and Vercel to Tools card 3, Deployment (now PM2,
   Ubuntu VPS, Nginx, SSH, Certbot, AWS EC2, Render, Vercel). Eight chips made it four rows
   (320px), so every card was widened from 264 to 296px, which keeps it at three rows and

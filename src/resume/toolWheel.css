@@ -143,7 +143,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 296px;
+  width: 308px;
   /* Tall enough for the busiest card (six tools); the layout's CARD_H must match. */
   min-height: 280px;
   padding: 24px 26px 26px;
