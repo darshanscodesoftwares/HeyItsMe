@@ -119,7 +119,9 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   (`image.png` there is its line-art inspiration). Cream page (`#f1ece3` veil). SKILLS is the
   usual faint, centred page title behind the content, in warm grey `#6f6a5f` (the poster's
   top-right tagline was dropped at his request). Sections have no boxes: a number, a rule
-  running to a sage dot (`#7a8575`) beside the lines, a title, outlined pill chips; they
+  running to a sage dot (`#7a8575`) beside the lines, a title, outlined pill chips. The dot is a
+  pie loader: an empty ring when the lines reach it, filling clockwise with the scroll as its
+  rows come in, solid once they all have (`--fill` 0-1 from `render`, eased toward the scroll's value by a small rAF loop so it glides, drawn with a `conic-gradient` with a soft leading edge; pops once when full via `.is-full`); they
   alternate left and right in a grid (`1fr 192px 1fr`), each one `--step` below the last.
   Five thin black lines (~2px, 7px apart) run down the middle: straight past each dot
   (`SWAY` = 72px from the centre), a rounded S over to the other side between dots, then back
@@ -360,6 +362,15 @@ _Last updated: 2026-10-23_
   slides up through it, and the active section sits lower (about 290px down at 1366x651).
   A first attempt lost the poster's offset because its top margin collapsed through the
   stage; fixed with padding. Checked scrolling at 1366x768, 1366x651 and 390x844.
+- Then each section's dot became a pie loader: empty when the lines reach it, filling
+  clockwise in step with the scroll as its rows come in, solid sage once the last row has
+  appeared. Checked fills while scrolling at 1366x768 (0.24, 0.68, 1.00 for Backend while
+  the rest stayed 0).
+- He asked for the pie to be "bubblier, smoother": the fill now eases toward the scroll-driven
+  value (it glides over ~0.5s after each wheel notch instead of stepping), the leading edge is
+  soft, and the circle pops (scale 1.22) once when it completes. Reduced motion: no ease or pop.
+- The completion pop now starts earlier: when the eased fill reaches 90% (it used to wait for
+  99.5%, which the ease reaches late), and resets once the fill falls below 75%.
 
 ### 2026-10-23
 
