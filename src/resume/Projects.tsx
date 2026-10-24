@@ -101,6 +101,33 @@ function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }
     }
   }, [card, chained, flyIn, origin])
 
+  // The page glides like the list does. Lenis's wrapper is the page itself, and the page
+  // is its own content, since it holds two blocks side by side in the flow.
+  useEffect(() => {
+    const page = root.current
+    if (!page || prefersReducedMotion()) return
+    const lenis = new Lenis({ wrapper: page, content: page, lerp: 0.075, wheelMultiplier: 0.9, autoRaf: true })
+    return () => lenis.destroy()
+  }, [])
+
+  // The title line at the top fades away over the first stretch of scrolling, so it
+  // doesn't sit on top of the pictures that scroll beneath it.
+  useEffect(() => {
+    const page = root.current
+    const head = page?.querySelector<HTMLElement>('.pj-page-head')
+    const factsTitle = page?.querySelector<HTMLElement>('.pj-facts-title')
+    if (!page || !head || !factsTitle) return
+    const FADE = 160
+    const update = () => {
+      const gone = Math.min(1, page.scrollTop / FADE)
+      head.style.opacity = String(1 - gone)
+      // Appears only once the top title is nearly gone, then eases in slowly.
+      factsTitle.classList.toggle('is-shown', gone > 0.8)
+    }
+    page.addEventListener('scroll', update, { passive: true })
+    return () => page.removeEventListener('scroll', update)
+  }, [])
+
   // Next project: this page empties out the way it filled in, then the next project's
   // picture glides up from the list just like a click on it would.
   const goNext = () => {
@@ -158,6 +185,10 @@ function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }
           <span aria-hidden="true" />
           Back
         </button>
+        {/* Fades in above the facts as the title at the top fades out. */}
+        <p className="pj-facts-title" aria-hidden="true">
+          {card.title}
+        </p>
         <dl className="pj-facts">
           {card.overview || card.text ? (
             <div>
@@ -290,6 +321,8 @@ export default function Projects({ cards }: { cards: Card[] }) {
       lerp: 0.075,
       wheelMultiplier: 0.9,
       autoRaf: true,
+      // A project's page glides on its own (below); the list behind it stays still.
+      prevent: (node) => node.closest('.pj-page') !== null,
     })
     return () => lenis.destroy()
   }, [])

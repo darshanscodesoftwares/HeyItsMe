@@ -356,6 +356,26 @@
   outline-offset: 6px;
 }
 
+/* The project's name above the facts: hidden at first, it takes over from the title at the
+   top once that has faded away. */
+.pj-facts-title {
+  position: absolute;
+  top: calc(26% - 38px);
+  left: 82.4%;
+  width: min(15.6vw, 260px);
+  margin: 0;
+  font: 400 16px/1.1 var(--font);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+/* In: a beat after the top title has gone, and slow. Out: quick. */
+.pj-facts-title.is-shown {
+  opacity: 1;
+  transition: opacity 900ms ease 250ms;
+}
+
 .pj-facts {
   position: absolute;
   top: 26%;
@@ -526,6 +546,15 @@
   .pj-page {
     display: flex;
     flex-direction: column;
+  }
+
+  /* Stacked: the title heads the page and scrolls away with it, so nothing cross-fades. */
+  .pj-page-head {
+    opacity: 1 !important;
+  }
+
+  .pj-facts-title {
+    display: none;
   }
 
   /* Everything falls into one column: title, pictures, facts, then the write-up. */
