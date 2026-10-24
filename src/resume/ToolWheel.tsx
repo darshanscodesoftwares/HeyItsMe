@@ -26,6 +26,7 @@ const LINES = 5
 const PITCH = 7
 // How much scrolling each part takes: the whole ring at the start, each move of the camera,
 // each card held up close, and the whole ring again at the end.
+const INTRO = 8
 const OPEN = 260
 const MOVE = 760
 const STAY = 520
@@ -68,15 +69,16 @@ function route(points: Point[], radius = 46): Cubic[] {
 }
 
 // Where the bundles leave each card and how they run off the poster, like the reference:
-// up and away to the left from the top card, straight out to the right, down and away from
-// the two bottom cards, and out to the left from the last one.
+// straight up from the top card (where the Skills page's lines end, at the centre, so they
+// seem to carry on into this page), straight out to the right, down and away from the two
+// bottom cards, and out to the left from the last one.
 function bundleRoutes(cards: Point[]): Point[][] {
   const [top, right, lowRight, lowLeft, left] = cards
   const h = CARD_H / 2
   const w = CARD_W / 2
   const far = 1900
   return [
-    [{ x: top.x, y: top.y - h }, { x: top.x, y: top.y - h - 70 }, { x: top.x - 380, y: top.y - h - 70 }, { x: top.x - 380, y: -far }],
+    [{ x: top.x, y: top.y - h }, { x: top.x, y: -far }],
     [{ x: right.x + w, y: right.y }, { x: far, y: right.y }],
     [{ x: lowRight.x, y: lowRight.y + h }, { x: lowRight.x, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: far }],
     [{ x: lowLeft.x, y: lowLeft.y + h }, { x: lowLeft.x, y: lowLeft.y + h + 70 }, { x: -far, y: lowLeft.y + h + 70 }],
@@ -203,6 +205,8 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
           cursor += stay
         }
       }
+      // At the very top only the incoming lines show; the first scroll brings the rest in.
+      element.classList.toggle('is-intro', !still && scroller.scrollTop <= INTRO)
       scene.style.transform = `translate3d(${-(shot.x - C) * shot.scale}px, ${-(shot.y - C) * shot.scale}px, 0) scale(${shot.scale})`
       if (near !== shown) {
         shown = near
@@ -252,7 +256,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
   }
 
   return (
-    <div ref={root} className="tw" data-enter>
+    <div ref={root} className="tw is-intro" data-enter>
       <div className="tw-stage">
         <div className="tw-window">
           <div className="tw-view">
@@ -264,29 +268,39 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                     <stop offset="1" stopColor="#fbf8f2" stopOpacity="0" />
                   </radialGradient>
                 </defs>
-                <circle className="tw-hair" cx={C} cy={C} r={R + 96} />
-                <circle className="tw-hair" cx={C} cy={C} r={R * 0.57} />
-                <line className="tw-hair" x1={C} y1={C - R * 0.57} x2={C} y2={C + R * 0.57} />
-                <line className="tw-hair" x1={C - R * 0.57} y1={C} x2={C + R * 0.57} y2={C} />
-                <circle cx={C} cy={C} r={R * 0.27} fill="url(#tw-glow)" />
-                <circle className="tw-hair" cx={C} cy={C} r={R * 0.25} />
-                {Array.from({ length: LINES }, (_, k) => (
-                  <circle key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} cx={C} cy={C} r={R + (k - (LINES - 1) / 2) * PITCH} />
-                ))}
-                {bundles.map((lines, b) =>
-                  lines.map((d, k) => <path key={`${b}-${k}`} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />),
-                )}
-                {points.map((p, i) => {
-                  const a = Math.atan2(p.y - C, p.x - C)
-                  const r1 = R * 0.57
-                  const r2 = R - CARD_H / 2 - 4
-                  return (
-                    <g key={i}>
-                      <line className="tw-spoke" x1={C + r1 * Math.cos(a)} y1={C + r1 * Math.sin(a)} x2={C + r2 * Math.cos(a)} y2={C + r2 * Math.sin(a)} />
-                      <circle className="tw-dot" cx={C + r1 * Math.cos(a)} cy={C + r1 * Math.sin(a)} r={3.5} />
-                    </g>
-                  )
-                })}
+                {/* On arrival only this shows: the lines coming down from the Skills page, ending
+                    in a dot where the first card will be. The first scroll fades the rest in. */}
+                <g className="tw-entry">
+                  {bundles[0]?.map((d, k) => (
+                    <path key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />
+                  ))}
+                  <circle className="tw-dot" cx={points[0].x} cy={points[0].y - CARD_H / 2} r={7} />
+                </g>
+                <g className="tw-rest">
+                  <circle className="tw-hair" cx={C} cy={C} r={R + 96} />
+                  <circle className="tw-hair" cx={C} cy={C} r={R * 0.57} />
+                  <line className="tw-hair" x1={C} y1={C - R * 0.57} x2={C} y2={C + R * 0.57} />
+                  <line className="tw-hair" x1={C - R * 0.57} y1={C} x2={C + R * 0.57} y2={C} />
+                  <circle cx={C} cy={C} r={R * 0.27} fill="url(#tw-glow)" />
+                  <circle className="tw-hair" cx={C} cy={C} r={R * 0.25} />
+                  {Array.from({ length: LINES }, (_, k) => (
+                    <circle key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} cx={C} cy={C} r={R + (k - (LINES - 1) / 2) * PITCH} />
+                  ))}
+                  {bundles.slice(1).map((lines, b) =>
+                    lines.map((d, k) => <path key={`${b}-${k}`} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />),
+                  )}
+                  {points.map((p, i) => {
+                    const a = Math.atan2(p.y - C, p.x - C)
+                    const r1 = R * 0.57
+                    const r2 = R - CARD_H / 2 - 4
+                    return (
+                      <g key={i}>
+                        <line className="tw-spoke" x1={C + r1 * Math.cos(a)} y1={C + r1 * Math.sin(a)} x2={C + r2 * Math.cos(a)} y2={C + r2 * Math.sin(a)} />
+                        <circle className="tw-dot" cx={C + r1 * Math.cos(a)} cy={C + r1 * Math.sin(a)} r={3.5} />
+                      </g>
+                    )
+                  })}
+                </g>
               </svg>
               <Star className="tw-core" />
 

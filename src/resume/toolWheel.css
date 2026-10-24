@@ -71,6 +71,17 @@
   padding-top: 0;
 }
 
+/* On arrival only the incoming lines show (`.tw-entry`); the first scroll fades in the rest. */
+.tw-rest,
+.tw-cards,
+.tw-core {
+  transition: opacity 1000ms ease;
+}
+
+.tw.is-intro :is(.tw-rest, .tw-cards, .tw-core) {
+  opacity: 0;
+}
+
 /* ---------- Lines ---------- */
 
 .tw-lines {
@@ -267,7 +278,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tw-card > * {
+  .tw-card > *,
+  .tw-rest,
+  .tw-cards,
+  .tw-core {
     transition: none;
   }
 }

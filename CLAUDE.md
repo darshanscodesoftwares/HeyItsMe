@@ -162,6 +162,13 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     at the bottom; its dots and arrow scroll (Lenis) to a card.
   - TOOLS & TECHNOLOGIES is the page's usual faint title, fixed behind everything (warm grey
     `#6f6a5f`), as he asked.
+  - **Arrival (2026-10-24):** the Skills page's lines end at the bottom centre, so the first
+    card's bundle now comes straight down the centre of the screen (no side step) and ends in
+    a dot where the card will be: they seem to carry on from Skills. At `scrollTop <= INTRO`
+    (8px) the root has `.is-intro` and **only that bundle (`.tw-entry`) shows**; the first
+    scroll fades in everything else (`.tw-rest`, `.tw-cards`, `.tw-core`, 1s), and returning
+    to the top fades it out again. Not drawn in as an animation: the visible stretch is short
+    and the rest of the bundle runs off the screen.
   - **Glitch fixed (2026-10-24):** `--bleed` (how far the scene runs past the page's
     column) must be measured from the *column* (`body.clientWidth`), never from the scene
     itself. The scene is already widened by it, so measuring it gave 0 on the next pass and
@@ -339,6 +346,10 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He asked for the Skills lines to feel like they carry on into Tools, and for the rest of the
+  Tools page to appear only after one more scroll. Done: the first card's lines come straight
+  down the centre and, on arrival, are all that shows; the first scroll fades the ring in.
+  Checked in headless Chrome (intro on at the top, off after a scroll, on again at the top).
 - He saw glitching on the Tools page: a hard cut at the scene's left edge, a sideways
   scrollbar, and lines showing through the dimmed cards. Fixed all three (see the Tools entry
   in How it works). Checked in headless Chrome at 1366x651: the scene stays 0 to 1366 wide at
