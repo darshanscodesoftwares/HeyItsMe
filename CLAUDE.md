@@ -317,9 +317,9 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
     SNS/SQS saving, the outbox, the 80% upload fix, MYCARBOY's payment flows); he asked for
     it to sound different and shorter, so **keep Experience about the role and don't repeat
     what Achievements and Projects already say**. The paper's summary shows the first bullet
-    only, so keep that one a good overview. **The period still says Aug 2025 - Feb 2026,
-    but his work log is dated July, so he may still work there: ask him before changing it.**
-    The Go Prime intern entry is unchanged.
+    only, so keep that one a good overview. **He still works there: the period is "Aug 2025 -
+    Present"** (his résumé PDF said Feb 2026; he corrected it on 2026-10-25). The Go Prime
+    intern entry is unchanged.
   - They only claim what the log says: the outbox is "built and tested locally", the AWS side
     of the switch is "designed in, not live". **Two things to remember:** the outbox is the
     stand-in for SNS-to-SQS delivery, *not* for Redis (he asked; Redis in the log is the
@@ -434,6 +434,13 @@ _Last updated: 2026-10-24_
 ## Session log (newest first)
 
 ### 2026-10-24
+
+### 2026-10-25
+
+- He corrected the Scode period: he still works there, so it is now "Aug 2025 – Present" (it said
+  Feb 2026, copied from his résumé PDF).
+
+### 2026-10-24 (continued)
 
 - He then said the Scode bullets repeated too much of what's written elsewhere (Achievements,
   Projects) and asked for different, shorter wording. Cut it from seven bullets to four, about

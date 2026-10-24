@@ -414,7 +414,7 @@ export const mainSections: Section[] = [
       {
         title: 'Full-Stack Developer',
         place: 'Scode Software Solutions',
-        period: 'Aug 2025 – Feb 2026',
+        period: 'Aug 2025 – Present',
         points: [
           'Worked across the whole stack on two client products, a school ERP and a vehicle inspection platform, from database design to React screens.',
           'Took the school platform from local machines to AWS: its four services run on EC2 under PM2 and Nginx, with local and cloud databases kept in step through migrations.',
