@@ -71,14 +71,20 @@
   padding-top: 0;
 }
 
-/* On arrival only the incoming lines show (`.tw-entry`); the first scroll fades in the rest. */
+/* Each card, its spoke and its bundle of lines appear as the drawn line comes up to it; the
+   star and its hairlines come in with the first card. */
+[data-i],
 .tw-rest,
-.tw-cards,
 .tw-core {
-  transition: opacity 1000ms ease;
+  transition: opacity 800ms ease;
 }
 
-.tw.is-intro :is(.tw-rest, .tw-cards, .tw-core) {
+[data-i]:not(.is-in) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tw:not(.has-core) :is(.tw-rest, .tw-core) {
   opacity: 0;
 }
 
@@ -91,11 +97,13 @@
   pointer-events: none;
 }
 
+/* The same 2.2px thickness as the Skills lines, at every zoom of the camera. */
 .tw-ring {
   fill: none;
   stroke: var(--ink);
-  stroke-width: 1.7;
+  stroke-width: 2.2px;
   stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
 }
 
 .tw-ring.is-green {
@@ -279,8 +287,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tw-card > *,
+  [data-i],
   .tw-rest,
-  .tw-cards,
   .tw-core {
     transition: none;
   }

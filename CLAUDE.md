@@ -154,21 +154,36 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     edges (built with `route()` plus `offsetPath`, which is exported from `SkillRiver.tsx`).
   - **Order:** follows his reference, so Design and office is 4 and Operating systems is 5
     (the `content.ts` order was changed to match).
-  - **The scroll is a camera** (pinned exactly like Skills: a track from the top of the page,
-    with a sticky stage the full width of the screen via `--bleed`). It goes: the whole ring
-    (`OPEN` 260px) → each card up close (`MOVE` 760px to get there, held for `STAY` 520px),
-    pulling back 30% while passing between cards → the whole ring again (`CLOSE` 360px).
+  - **The scroll draws the lines and moves a camera, exactly like the Skills poster** (pinned
+    the same way: a track from the top of the page, with a sticky stage the full width of the
+    screen via `--bleed`). Nothing is timed. `plan()` builds the timeline as a list of
+    parts, each with where the line's tip is (`sFrom` to `sTo`) and the camera's shots:
+    - `COME` (720px): five lines come down the centre from the top of the screen (where the
+      Skills lines end) to card 1's dot, the camera moving down with them. Card 1 appears
+      at 85%.
+    - Hold on a card (`STAY` 500px): the lines wait at it, like Skills' lines at a dot.
+    - A trip (`MOVE` 720px): the lines travel clockwise round the ring to the next card, the
+      camera following, pulling back 30% on the way; the next card appears at 70%.
+    - After card 5 (`FINAL` 760px): the lines close the ring while the camera pulls back to
+      the whole ring, held for `CLOSE` 360px.
+  - **The drawn line** is a mask: a 70-wide stroke along the centre path (down, then
+    clockwise round the ring) with `stroke-dasharray` set per frame from the tip position.
+    12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
+    Skills. The lines keep the Skills thickness (2.2px, `vector-effect: non-scaling-stroke`)
+    at every zoom; `PITCH` (10 world units) sets their spacing.
+  - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
+    (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
+    nothing shows but the faint title, as at the top of Skills.
   - **Up close:** the other cards dim to 35%, and a "01 / 05" pager (dots, count, arrow) shows
-    at the bottom; its dots and arrow scroll (Lenis) to a card.
+    at the bottom, once the card has appeared; its dots and arrow scroll (Lenis) to a card.
   - TOOLS & TECHNOLOGIES is the page's usual faint title, fixed behind everything (warm grey
     `#6f6a5f`), as he asked.
   - **Arrival (2026-10-24):** the Skills page's lines end at the bottom centre, so the first
-    card's bundle now comes straight down the centre of the screen (no side step) and ends in
-    a dot where the card will be: they seem to carry on from Skills. At `scrollTop <= INTRO`
-    (8px) the root has `.is-intro` and **only that bundle (`.tw-entry`) shows**; the first
-    scroll fades in everything else (`.tw-rest`, `.tw-cards`, `.tw-core`, 1s), and returning
-    to the top fades it out again. Not drawn in as an animation: the visible stretch is short
-    and the rest of the bundle runs off the screen.
+    bundle comes straight down the centre of the screen (no side step). A first version
+    just showed it on arrival and faded the ring in on the first scroll; he rejected that
+    ("it just shows up, without any smooth line travel") and asked for the Skills lines'
+    size, thickness, smoothness and travel logic copied. That is the drawn-line timeline
+    above. Don't go back to an arrival fade.
   - **Glitch fixed (2026-10-24):** `--bleed` (how far the scene runs past the page's
     column) must be measured from the *column* (`body.clientWidth`), never from the scene
     itself. The scene is already widened by it, so measuring it gave 0 on the next pass and
@@ -346,10 +361,13 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
-- He asked for the Skills lines to feel like they carry on into Tools, and for the rest of the
-  Tools page to appear only after one more scroll. Done: the first card's lines come straight
-  down the centre and, on arrival, are all that shows; the first scroll fades the ring in.
-  Checked in headless Chrome (intro on at the top, off after a scroll, on again at the top).
+- He wanted the Skills lines to feel like they carry on into Tools. A first version (lines
+  showing on arrival, the ring fading in on the first scroll) was rejected: the lines just
+  appeared. **Rebuilt the Tools page on the Skills line logic** (see the Tools entry in How it
+  works): the scroll draws five soft-tipped 2.2px lines down from the top to card 1, holds
+  there while it appears, then draws them round the ring to each card with a camera following,
+  and finally closes the ring. Checked in headless Chrome at 1366x651 at ten scroll positions
+  (no errors, no sideways scroll; the pager now waits for card 1). He hasn't tried it by hand.
 - He saw glitching on the Tools page: a hard cut at the scene's left edge, a sideways
   scrollbar, and lines showing through the dimmed cards. Fixed all three (see the Tools entry
   in How it works). Checked in headless Chrome at 1366x651: the scene stays 0 to 1366 wide at
