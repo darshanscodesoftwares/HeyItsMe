@@ -976,3 +976,61 @@
   }
 
 }
+
+/* ---------- Scroll push cue ---------- */
+
+/* Shown at the bottom of the screen while scrolling on past the end of a page: where the
+   scroll will go, and how close it is to going (see scrollPush.ts). */
+.push-cue {
+  position: fixed;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 400;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 10px 18px 12px;
+  background: rgba(20, 22, 28, 0.82);
+  border-radius: 14px;
+  color: #f4f4f2;
+  font: 500 12px/1 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition:
+    opacity 200ms ease,
+    transform 250ms ease;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.push-cue[data-direction='up'] {
+  top: max(22px, env(safe-area-inset-top));
+  bottom: auto;
+  transform: translate(-50%, -12px);
+}
+
+.push-cue.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.push-cue-bar {
+  display: block;
+  width: 140px;
+  height: 3px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+}
+
+.push-cue-bar i {
+  display: block;
+  height: 100%;
+  width: calc(var(--push, 0) * 100%);
+  background: #fff;
+  border-radius: inherit;
+  transition: width 120ms linear;
+}

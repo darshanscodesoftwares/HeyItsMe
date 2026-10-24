@@ -5,6 +5,7 @@ import Paper from './Paper'
 import { createCinema } from './cinema'
 import { sections } from './content'
 import { hrefFor, routeId } from './route'
+import { useScrollPush } from './scrollPush'
 import './resume.css'
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -132,6 +133,19 @@ export default function Resume() {
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
   }, [shown, back])
+
+  // Scrolling on past the bottom of the paper opens the first section.
+  useScrollPush({
+    scroller: () => window,
+    enabled: () => revealed && !routeId(),
+    down: () => ({
+      label: sections[0].title,
+      go: () => {
+        history.pushState(null, '', hrefFor(sections[0].id))
+        cinema.sync()
+      },
+    }),
+  })
 
   const section = sections.find((s) => s.id === shown)
 

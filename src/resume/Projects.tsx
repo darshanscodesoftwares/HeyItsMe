@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type Pointer
 import Lenis from 'lenis'
 import type { Card, Link } from './content'
 import { mediaFor } from './projectMedia'
+import { autoScroll, rest as holdPush, useScrollPush } from './scrollPush'
 import './projects.css'
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -64,13 +65,16 @@ interface ProjectProps {
   leave: { current: (() => void) | null }
   onClosed: () => void
   onNext: () => void
+  // The last project: scrolling on past its end goes back to the list, not to another project.
+  last: boolean
 }
 
 // One project's own page: the picture from the list, the poster, and the write-up, with
 // the facts in a column on the right.
-function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }: ProjectProps) {
+function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext, last }: ProjectProps) {
   const { thumb, poster } = mediaFor(card.title)
   const root = useRef<HTMLDivElement>(null)
+  const goNextRef = useRef<() => void>(() => {})
   const lead = useRef<HTMLImageElement>(null)
   const back = useRef<HTMLButtonElement>(null)
 
@@ -130,6 +134,18 @@ function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }
 
   // Next project: this page empties out the way it filled in, then the next project's
   // picture glides up from the list just like a click on it would.
+  // Scrolling on past the end of the page moves on to the next project (after the last, back to
+  // the list); scrolling up past its top goes back to the list.
+  useScrollPush({
+    scroller: () => root.current,
+    enabled: () => true,
+    down: () =>
+      last
+        ? { label: 'Back to projects', go: () => leave.current?.() }
+        : { label: `Next project · ${next.title}`, go: () => goNextRef.current() },
+    up: () => ({ label: 'Back to projects', go: () => leave.current?.() }),
+  })
+
   const goNext = () => {
     const page = root.current!
     if (prefersReducedMotion()) return onNext()
@@ -140,6 +156,7 @@ function Project({ card, next, origin, flyIn, chained, leave, onClosed, onNext }
     // The page itself stays, so the list never shows through while it moves on.
     window.setTimeout(onNext, 380)
   }
+  goNextRef.current = goNext
 
   // Out: the reverse. The page empties, and the picture glides back into its place in
   // the list, which is shown again only once it has landed.
@@ -259,6 +276,13 @@ export default function Projects({ cards }: { cards: Card[] }) {
   const [open, setOpen] = useState<{ index: number; flyIn: boolean; chained?: boolean } | null>(null)
   const opener = useRef<HTMLButtonElement | null>(null)
   const leave = useRef<(() => void) | null>(null)
+  const lenisRef = useRef<Lenis | null>(null)
+  // Each project opens by itself once per pass: it re-arms when its picture moves well away
+  // from the middle of the screen.
+  const armed = useRef(cards.map(() => true))
+  const isOpen = useRef(false)
+  isOpen.current = open !== null
+  const showRef = useRef<(index: number, button: HTMLButtonElement | null) => void>(() => {})
 
   // Rolls the side labels with the scroll: each picture's label sits in place while it's
   // at the centre, and slides out as the gap to the next one crosses the middle.
@@ -324,7 +348,49 @@ export default function Projects({ cards }: { cards: Card[] }) {
       // A project's page glides on its own (below); the list behind it stays still.
       prevent: (node) => node.closest('.pj-page') !== null,
     })
-    return () => lenis.destroy()
+    lenisRef.current = lenis
+    return () => {
+      lenisRef.current = null
+      lenis.destroy()
+    }
+  }, [])
+
+  // Scrolling alone opens the projects: when a picture comes to the middle of the screen
+  // while scrolling down, the list pauses on it for a moment, then opens its page.
+  useEffect(() => {
+    const element = root.current
+    const scroller = element?.closest<HTMLElement>('[data-scroll]')
+    if (!element || !scroller) return
+    let lastTop = scroller.scrollTop
+    let pending = 0
+    const onScroll = () => {
+      const down = scroller.scrollTop > lastTop
+      lastTop = scroller.scrollTop
+      if (isOpen.current || pending || !autoScroll.get()) return
+      const box = scroller.getBoundingClientRect()
+      const middle = box.top + box.height / 2
+      element.querySelectorAll<HTMLButtonElement>('.pj-thumb').forEach((thumb, i) => {
+        const r = thumb.getBoundingClientRect()
+        const off = Math.abs(r.top + r.height / 2 - middle) / box.height
+        if (off > 0.3) armed.current[i] = true
+        if (pending || !down || !armed.current[i] || off > 0.06) return
+        armed.current[i] = false
+        lenisRef.current?.stop()
+        pending = window.setTimeout(() => {
+          pending = 0
+          lenisRef.current?.start()
+          if (isOpen.current) return
+          holdPush()
+          showRef.current(i, thumb)
+        }, 650)
+      })
+    }
+    scroller.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      clearTimeout(pending)
+      lenisRef.current?.start()
+      scroller.removeEventListener('scroll', onScroll)
+    }
   }, [])
 
   // Escape leaves a project before it would close the whole section.
@@ -348,11 +414,14 @@ export default function Projects({ cards }: { cards: Card[] }) {
   }
 
   const show = (index: number, button: HTMLButtonElement | null) => {
+    armed.current[index] = false
     hideCursor()
     opener.current = button
     hide(button, true)
     setOpen({ index, flyIn: true })
   }
+
+  showRef.current = show
 
   const close = () => leave.current?.()
 
@@ -365,6 +434,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
   // "Next project": the list quietly scrolls to that project behind the page, so Back
   // returns into it.
   const showNext = (index: number) => {
+    armed.current[index] = false
     hide(opener.current, false)
     const button = thumbAt(index)
     button?.scrollIntoView({ block: 'center' })
@@ -460,6 +530,7 @@ export default function Projects({ cards }: { cards: Card[] }) {
           key={open.index}
           card={cards[open.index]}
           next={cards[(open.index + 1) % cards.length]}
+          last={open.index === cards.length - 1}
           origin={opener.current?.querySelector('img') ?? null}
           flyIn={open.flyIn}
           chained={open.chained ?? false}

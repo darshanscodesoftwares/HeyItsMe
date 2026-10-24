@@ -1,6 +1,7 @@
-import type { Ref } from 'react'
+import { useRef, type Ref } from 'react'
 import Icon from './Icon'
 import Projects from './Projects'
+import { useScrollPush } from './scrollPush'
 import SkillRiver from './SkillRiver'
 import { sections, type Card, type Entry, type Group, type Item, type Link, type Section } from './content'
 
@@ -132,6 +133,19 @@ export default function Detail({ ref, section, onBack, onGo }: DetailProps) {
   const index = sections.indexOf(section)
   const previous = sections[(index + sections.length - 1) % sections.length]
   const next = sections[(index + 1) % sections.length]
+  const scroller = useRef<HTMLDivElement>(null)
+  const first = index === 0
+  const last = index === sections.length - 1
+
+  // Scrolling on past the end of the page moves to the next section (after the last, back to
+  // the paper); past the top, to the one before (before the first, back to the paper). A
+  // project's own page handles its own scrolling.
+  useScrollPush({
+    scroller: () => scroller.current,
+    enabled: () => !document.querySelector('.pj-page'),
+    down: () => (last ? { label: 'Back to resume', go: onBack } : { label: next.title, go: () => onGo(next.id) }),
+    up: () => (first ? { label: 'Back to resume', go: onBack } : { label: previous.title, go: () => onGo(previous.id) }),
+  })
 
   return (
     <div
@@ -151,7 +165,7 @@ export default function Detail({ ref, section, onBack, onGo }: DetailProps) {
         {`${section.title}, ${index + 1} of ${sections.length}`}
       </p>
 
-      <div className="resume-detail-scroll" data-scroll>
+      <div ref={scroller} className="resume-detail-scroll" data-scroll>
         <div className="resume-detail-bar">
           <button type="button" className="detail-pill" onClick={onBack} data-enter>
             <Icon name="arrowLeft" />
