@@ -135,7 +135,7 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   reached stay visible as they scroll up and off the top, and only sections the lines haven't
   reached yet are hidden. For each section, the lines wait at its
   dot while its skills come in, **one row per `ROW_PX` (84px) of scrolling** (rows = how the
-  chips wrap, grouped in `measure`), then travel on to the next dot over `TRAVEL` (0.5) of
+  chips wrap, grouped in `measure`), then travel on to the next dot over `TRAVEL` (0.8, was 0.5; he found 0.5 too fast) of
   the distance between them. The lines' tip stays at one height in the window (`anchor`, as
   high as the tallest section below a dot allows); the section appears as the lines reach its
   dot, and everything reverses on scrolling up. `render` computes all of it from
@@ -308,6 +308,8 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- The Skills lines travelled between dots too fast, so `TRAVEL` went from 0.5 to 0.8 (they
+  now move at about 1.25x the scroll instead of 2x). Raise it further to slow them more.
 - The mouse wheel didn't scroll a project's own page: Lenis (smooth scroll on the Projects
   list) caught the wheel for the whole section, while the project page is a separate fixed
   layer with its own scroll. Fix: the page gets its **own Lenis** (`wrapper` and `content`
