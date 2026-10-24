@@ -310,13 +310,14 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
     LISTEN/NOTIFY, idempotent consumer). **The "Three-flow API architecture" and "Live bus
     tracking" cards are commented out** in `content.ts` (a `/* */` block) at his request; put
     them back by removing the markers.
-  - **Work Experience, Scode Software Solutions (Full-Stack Developer):** rewritten at his
-    request as seven achievement-style bullets (no Decimal-chess): an overview line, then the
-    SchoolNest services and auth, the AWS deployment, the self-hosted SNS/SQS stand-ins and
-    outbox, live bus tracking, the security fixes, and MYCARBOY. All drawn from his résumé,
-    projects, tools, achievements and work log. The paper's summary shows the first bullet
-    only, so keep that one a good overview. The AWS and SNS/SQS facts therefore appear in both
-    Experience and Achievements (on purpose). **The period still says Aug 2025 - Feb 2026,
+  - **Work Experience, Scode Software Solutions (Full-Stack Developer):** four short bullets
+    (no Decimal-chess): working across the whole stack on two client products, the move of the
+    school platform to AWS (EC2, PM2, Nginx, migrations), real-time bus tracking, and the
+    security fixes. It was first seven bullets that repeated Achievements and Projects (the
+    SNS/SQS saving, the outbox, the 80% upload fix, MYCARBOY's payment flows); he asked for
+    it to sound different and shorter, so **keep Experience about the role and don't repeat
+    what Achievements and Projects already say**. The paper's summary shows the first bullet
+    only, so keep that one a good overview. **The period still says Aug 2025 - Feb 2026,
     but his work log is dated July, so he may still work there: ask him before changing it.**
     The Go Prime intern entry is unchanged.
   - They only claim what the log says: the outbox is "built and tested locally", the AWS side
@@ -434,6 +435,9 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He then said the Scode bullets repeated too much of what's written elsewhere (Achievements,
+  Projects) and asked for different, shorter wording. Cut it from seven bullets to four, about
+  the role (see Resume content). Checked the page at 1366x651 and 390x844.
 - He asked for the Scode work experience to drop Decimal-chess and read like real work
   experience, not a content dump, using what's in the projects, skills, tools and
   achievements. Rewrote it as seven bullets (see Resume content). Checked the Work Experience

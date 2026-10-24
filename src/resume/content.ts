@@ -416,13 +416,10 @@ export const mainSections: Section[] = [
         place: 'Scode Software Solutions',
         period: 'Aug 2025 – Feb 2026',
         points: [
-          'Full-stack developer on SchoolNest, a multi-tenant school ERP, and MYCARBOY, a vehicle inspection platform, taking features from database schema to React screen to AWS deployment.',
-          'Built SchoolNest as four Node.js services (auth, academic, notification and transport) with JWT authentication, role-based access for admins, teachers, parents and drivers, and tenant isolation by school; documented the APIs in Swagger, including a phone-OTP login ahead of the mobile app.',
-          'Deployed the platform on AWS: four services on EC2 under PM2 that restart themselves after a reboot, Nginx in front, RDS PostgreSQL databases, and schema migrations applied across local and AWS environments.',
-          'Replaced AWS SNS and SQS with self-hosted equivalents behind one environment switch, so the client pays nothing for messaging until the platform grows; built a transactional outbox with retries and idempotent delivery that survived the receiving service being down.',
-          'Built live bus tracking: drivers start a ride and send GPS fixes, and the admin map follows the bus in real time over server-sent events. Verified on production with a moving marker.',
-          'Closed security gaps: moved hard-coded database passwords and the JWT secret out of tracked files into environment variables, and fixed a parent endpoint that could expose any child in the school.',
-          'In MYCARBOY, built booking and Razorpay payment flows with webhook verification, deployed on an Ubuntu VPS with PM2, and cut upload-related crashes by about 80% with compressed chunk uploads.',
+          'Worked across the whole stack on two client products, a school ERP and a vehicle inspection platform, from database design to React screens.',
+          'Took the school platform from local machines to AWS: its four services run on EC2 under PM2 and Nginx, with local and cloud databases kept in step through migrations.',
+          'Added real-time bus tracking for school transport, from the driver starting a ride to a live map for admins, and checked it on production.',
+          'Tightened security: moved secrets out of the code, and fixed an endpoint that could show a parent any child in the school.',
         ],
       },
       {
