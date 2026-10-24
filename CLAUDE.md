@@ -149,13 +149,14 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   ink and a dark green (`#3f5a40`).
   - **Layout:** five numbered cards (serif numeral, green spark, title, grey pill chips) on
     a ring round a dark-green four-point star in a 1000×1000 "world", as in his reference.
-    The ring radius `R` is 385: five 308-wide cards, 72° apart (about 60 units between cards
-    1 and 2). It is wider than the cards need on purpose: the drawn line is hidden behind the
-    cards, so only the ring *between* two cards is ever seen, and that stretch (about 180
-    units at R 385, only about 140 at R 350) is all the line has to travel along. A tighter ring
-    makes the line seem to end almost at once, which he complained about. It was briefly six
-    cards (R 380) while Version control and Operating systems were separate; he then had them
-    merged.
+    The ring radius `R` is 430 and the cards are drawn at 85% (`CARD_SCALE`) of their laid-out
+    308×280, so `SW`×`SH` (262×238) is the space a card really takes: about 150 units clear
+    sideways between cards 1 and 2. He asked for "the cards a little smaller and the centre
+    expanded to create a gap between each card in the circle". The wide ring also gives the
+    line a long stretch to be seen travelling along between two cards (the line passes behind
+    the cards, so only the ring between them shows): R 350 left about 140 units, R 430 about
+    300. It was briefly six cards (R 380) while Version control and Operating systems were
+    separate; he then had them merged.
   - **Lines:** five concentric ring lines (ink and green alternating), hairline circles
     and a crosshair, and spokes with dots. **The only line that leaves the ring is the one
     coming down from the top into card 1** (`entryRoute()`, built with `route()` plus
@@ -170,46 +171,49 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     the same way: a track from the top of the page, with a sticky stage the full width of the
     screen via `--bleed`). Nothing is timed. `plan()` builds the timeline as a list of
     parts, each with where the line's tip is (`sFrom` to `sTo`) and the camera's shots:
-    - `COME` (850px): five lines come down the centre from the top of the screen (where the
+    - `COME` (900px): five lines come down the centre from the top of the screen (where the
       Skills lines end) to card 1's dot, the camera moving down with them. Card 1 appears
       at 80%.
     - Hold on a card (`STAY` 500px): the lines wait at it, like Skills' lines at a dot.
-    - A trip (`MOVE` 1100px): the lines travel clockwise round the ring from one card's
-      *edge* to the next card's edge, the camera following, pulling back 30% on the way;
-      the next card appears at 80%. Trips run edge to edge (`leave()`/`arrive()` in `plan()`,
-      using `edge(i)`, how far along the ring a card's edge is from its centre), because the
-      part of the line behind a card is hidden: timing it to the card's centre made the line
-      seem to stop a third of the way through every trip. The camera is eased only half
-      (`lerp(u, smooth(u), 0.5)`) so it keeps pace with the steady line. He asked for
-      slower, smoother travel: it was `MOVE` 720.
-    - After the last card (`FINAL` 1100px): the lines close the ring (arriving at card 1's
-      left edge) while the camera pulls back to the whole ring, held for `CLOSE` 360px.
-    - **Up close** a card is drawn at 80% (`CLOSE_UP`) of the biggest size that fits the screen;
-      he asked for the zoomed-in cards to be a bit smaller.
+    - A trip (`MOVE` 1400px): the lines travel clockwise round the ring **from one card's
+      centre to the next at one steady speed, passing behind the cards**, the camera
+      following, pulling back 30% on the way; the next card appears at 70%. History: trips
+      were centre to centre, then edge to edge (`leave()`/`arrive()`, which made the line
+      jump from one card's edge to the next and hid it behind the cards); he then said "it
+      can go behind cards too, I'll allow", wanting smoother travel, so it is back to centre
+      to centre with the cut-outs removed. The camera is eased only a little
+      (`lerp(u, smooth(u), 0.3)`) so it keeps pace with the line. `MOVE` was 720, 1100, now
+      1400 (he keeps asking for slower, smoother).
+    - After the last card (`FINAL` 1400px): the lines close the ring while the camera pulls
+      back to the whole ring, held for `CLOSE` 360px.
+    - **Up close** a card is drawn at 80% (`CLOSE_UP`) of the biggest size that fits the screen
+      (computed from `SW`×`SH`, so it also gets 15% smaller from `CARD_SCALE`); he asked for
+      the zoomed-in cards to be smaller, twice.
   - **The drawn line** is a mask: a 70-wide stroke along the centre path (down, then
     clockwise round the ring) with `stroke-dasharray` set per frame from the tip position.
     12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
     Skills. The lines keep the Skills thickness (2.2px, `vector-effect: non-scaling-stroke`)
     at every zoom; `PITCH` (10 world units) sets their spacing.
-  - **Lines never show behind a card (2026-10-24):** while a card was fading in, the ring's
-    lines and hairlines showed through it. The cards' rounded rectangles are now cut out of
-    both masks (`tw-drawn` for the drawn lines, `tw-cut` for the hairlines), so a line ends
-    at a card's edge and carries on from its other side, whether or not the card has
-    appeared. Cards also appear earlier (55% of a trip, 70% of the first run), and card 1's
-    dot sits just above its edge so the cut doesn't halve it.
-  - **Size:** the cards are 308×280 world units, with a 60px numeral, 23px title and 14.5px
-    chips. They were 236×214, then 264×240 when he found the whole-ring view "too far away".
-    The height went to 280 when card 2 got six tools (278 tall), and the width to 296 and then
-    308 as Deployment got eight tools and Design and office seven (three rows instead of
-    four), so that every card stays the same size. **`CARD_W`/`CARD_H` in `ToolWheel.tsx` must
-    match `width`/`min-height` in `toolWheel.css`, and the busiest card must fit them, or
-    lines show behind a card's extra size.** Measure the cards' `offsetWidth`/`offsetHeight`
-    after adding tools (a quick puppeteer script that prints `.tw-card` sizes does it).
-    **Chip order matters:** chips wrap in order into 242px rows, and the order of Design and
-    office (Sheets, Meet, Slides, Docs, Figma, Excel, Trello) was chosen so it packs into
-    three rows with room to spare; the obvious order needed four. Wider cards need a larger
-    `R`. The ring shot fits the top and bottom cards plus a 40-unit margin to the screen
-    (`min(w, h) / (2 * (R + CARD_H / 2) + 40)`).
+  - **Behind the cards:** the drawn line passes behind the cards (no cut-outs in `tw-drawn`
+    any more; they hid the line at each card's edge and made the travel jumpy). The faint
+    hairline circles are still cut out behind cards (`tw-cut`), so they don't show through a
+    card that is fading in. A card is solid once in, so only the stretch between two cards
+    shows. Card 1's dot sits just above its top edge.
+  - **Size:** the cards are laid out at 308×280 world units, with a 60px numeral, 23px title and
+    14.5px chips, and drawn at `CARD_SCALE` 0.85 (a CSS `scale()` on `.tw-card`, from the
+    `--card-scale` variable on the root). They were 236×214, then 264×240 when he found the
+    whole-ring view "too far away". The height went to 280 when card 2 got six tools (278
+    tall), and the width to 296 and then 308 as Deployment got eight tools and Design and
+    office seven (three rows instead of four), so that every card stays the same size.
+    **`CARD_W`/`CARD_H` in `ToolWheel.tsx` must match `width`/`min-height` in `toolWheel.css`,
+    and the busiest card must fit them.** Measure the cards' `offsetWidth`/`offsetHeight`
+    (unaffected by the scale) after adding tools; a quick puppeteer script that prints
+    `.tw-card` sizes does it. **Chip order matters:** chips wrap in order into 242px rows, and
+    the order of Design and office (Sheets, Meet, Slides, Docs, Figma, Excel, Trello) was
+    chosen so it packs into three rows with room to spare; the obvious order needed four.
+    Geometry (spokes, the dot, the hairline cut-outs, the ring shot and the close-up size) uses
+    the scaled `SW`×`SH`. The ring shot fits the top and bottom cards plus a 40-unit margin
+    to the screen (`min(w, h) / (2 * (R + SH / 2) + 40)`).
   - Cards and their spokes (`[data-i]`) fade in as the line reaches them
     (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
     nothing shows but the faint title, as at the top of Skills.
@@ -400,6 +404,14 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He asked for the Tools line to travel even more smoothly ("it can go behind cards too, I'll
+  allow"), the cards a little smaller, and the ring's centre expanded for gaps between the
+  cards. Done: the line runs centre to centre at one steady speed behind the cards (the card
+  cut-outs in its mask are gone), `MOVE`/`FINAL` 1400, `COME` 900, camera eased 0.3; cards drawn
+  at 85% (`CARD_SCALE`); the ring radius 385 to 430 (about 150 units clear between neighbours).
+  Checked the trip 1 to 2 in slices, and the whole ring, at 1366x651 and 390x844. Whole-ring
+  text is now very small (chips about 6px on screen); it's an overview, but tell him if he
+  wants it bigger.
 - He found the Tools line too fast, ending too soon, and the zoomed-in cards too big. Fixed:
   zoomed cards at 80% size; trips run edge to edge so the line is seen travelling the whole
   time; `MOVE` and `FINAL` 720/760 to 1100, `COME` 850; the camera eased half as much; and

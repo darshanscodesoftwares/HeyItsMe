@@ -1,5 +1,5 @@
 import Lenis from 'lenis'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Group } from './content'
 import { offsetPath, type Cubic } from './SkillRiver'
 import './toolWheel.css'
@@ -21,22 +21,27 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 // The ring is drawn in a SIZE × SIZE world that the camera moves and scales.
 const SIZE = 1000
 const C = SIZE / 2
-// Five cards 72 degrees apart. The radius also decides how much of the ring shows between two
-// cards (the line is hidden behind them), so it is wider than the cards need: about 60 units
-// between cards 1 and 2, and about 180 units of ring to travel along between two cards.
-const R = 385
+// Five cards 72 degrees apart, a wide ring so there is a real gap between neighbouring cards
+// (about 150 units sideways between cards 1 and 2) and plenty of ring to see the line travel
+// along between them.
+const R = 430
+// The cards are laid out at 308×280 (what their chips need) and drawn at CARD_SCALE of that,
+// so SW×SH is the space a card really takes in the world.
 const CARD_W = 308
 const CARD_H = 280
+const CARD_SCALE = 0.85
+const SW = CARD_W * CARD_SCALE
+const SH = CARD_H * CARD_SCALE
 const LINES = 5
 // World units between the lines. They keep a fixed thickness on screen (see toolWheel.css), so
 // this is what sets how far apart they look as the camera moves in and out.
 const PITCH = 10
 // How much scrolling each part takes: the lines coming down to card 1, each card held up close,
 // each trip round the ring to the next card, and the ring closing.
-const COME = 850
-const MOVE = 1100
+const COME = 900
+const MOVE = 1400
 const STAY = 500
-const FINAL = 1100
+const FINAL = 1400
 const CLOSE = 360
 // Up close, a card fills this much of what it would at the largest size that fits the screen.
 const CLOSE_UP = 0.8
@@ -107,16 +112,16 @@ function route(points: Point[], radius = 46): Cubic[] {
 // page's lines end (at the centre), so they seem to carry on into this page. The reference's
 // bundles leaving the other cards were removed at his request.
 function entryRoute(top: Point): Point[] {
-  return [{ x: top.x, y: top.y - CARD_H / 2 }, { x: top.x, y: -1900 }]
+  return [{ x: top.x, y: top.y - SH / 2 }, { x: top.x, y: -1900 }]
 }
 
 // Everything that depends on the size of the screen: the camera's shots, where the drawn
 // path starts, and the timeline of the scroll as a list of parts.
 function plan(width: number, height: number, n: number) {
   // The whole ring fills the view: its cards at the top and bottom, plus a small margin.
-  const ring: Shot = { x: C, y: C, scale: Math.min(width, height) / (2 * (R + CARD_H / 2) + 40) }
+  const ring: Shot = { x: C, y: C, scale: Math.min(width, height) / (2 * (R + SH / 2) + 40) }
   // Up close, the card leaves room below it for the pager.
-  const close = Math.max(Math.min((width * 0.8) / CARD_W, (height * 0.6) / CARD_H, 3.2) * CLOSE_UP, ring.scale * 1.6)
+  const close = Math.max(Math.min((width * 0.8) / SW, (height * 0.6) / SH, 3.2) * CLOSE_UP, ring.scale * 1.6)
   const start: Shot = { x: C, y: -110, scale: Math.min(ring.scale * 2.3, close) }
   const points = Array.from({ length: n }, (_, i) => cardAt(i, n))
   const cards: Shot[] = points.map((p) => ({ x: p.x, y: p.y, scale: close }))
@@ -124,32 +129,25 @@ function plan(width: number, height: number, n: number) {
   const y0 = Math.floor(start.y - height / 2 / start.scale) - 40
   const arc = (2 * Math.PI * R) / n
   const entry = points[0].y - y0
-  const dot = points[0].y - CARD_H / 2 - y0
+  const dot = points[0].y - SH / 2 - y0
   const total = entry + 2 * Math.PI * R
   const at = (i: number) => entry + i * arc
-  // How far along the ring from a card's centre its edge is. The drawn line is hidden inside a
-  // card, so each trip runs from one card's edge to the next card's edge: the line is seen
-  // travelling for the whole trip, and arrives exactly as the trip ends.
-  const edge = (i: number) => {
-    const a = ((-90 + (360 / n) * i) * Math.PI) / 180
-    const along = { x: Math.abs(Math.sin(a)), y: Math.abs(Math.cos(a)) }
-    return Math.min(CARD_W / 2 / Math.max(along.x, 1e-6), CARD_H / 2 / Math.max(along.y, 1e-6)) + 2
-  }
-  const arrive = (i: number) => (i === 0 ? total - edge(0) : at(i) - edge(i))
-  const leave = (i: number) => at(i) + edge(i)
 
+  // The line runs from one card's centre to the next at one steady speed, passing behind the
+  // cards (a card is solid, so only the stretch between two cards is seen). There are no stops
+  // at the cards' edges, so the line flows rather than jumping from edge to edge.
   const segments: Segment[] = [
     { len: COME, sFrom: -FADE, sTo: dot, from: start, to: cards[0], fromCard: -1, toCard: 0, reveal: { card: 0, at: 0.8 } },
     { len: STAY, sFrom: dot, sTo: dot, from: cards[0], to: cards[0], fromCard: 0, toCard: 0, hold: 0 },
   ]
   for (let i = 1; i < n; i++) {
     segments.push(
-      { len: MOVE, sFrom: leave(i - 1), sTo: arrive(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.8 } },
-      { len: STAY, sFrom: arrive(i), sTo: arrive(i), from: cards[i], to: cards[i], fromCard: i, toCard: i, hold: i },
+      { len: MOVE, sFrom: at(i - 1), sTo: at(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.7 } },
+      { len: STAY, sFrom: at(i), sTo: at(i), from: cards[i], to: cards[i], fromCard: i, toCard: i, hold: i },
     )
   }
   segments.push(
-    { len: FINAL, sFrom: leave(n - 1), sTo: arrive(0), from: cards[n - 1], to: ring, fromCard: n - 1, toCard: -1 },
+    { len: FINAL, sFrom: at(n - 1), sTo: total, from: cards[n - 1], to: ring, fromCard: n - 1, toCard: -1 },
     { len: CLOSE, sFrom: total, sTo: total, from: ring, to: ring, fromCard: -1, toCard: -1, hold: -1 },
   )
   const length = segments.reduce((sum, part) => sum + part.len, 0)
@@ -261,9 +259,9 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
       if (part.reveal && u >= part.reveal.at) appeared = Math.max(appeared, part.reveal.card + 1)
       if (still) appeared = n
 
-      // The camera: eased only gently between shots, so it keeps pace with the line (which
-      // moves steadily), pulling back a little between two cards.
-      const e = lerp(u, smooth(u), 0.5)
+      // The camera: eased only a little between shots, so it keeps pace with the line (which
+      // moves at one steady speed), pulling back a little between two cards.
+      const e = lerp(u, smooth(u), 0.3)
       const dip = part.dip ? 1 - 0.3 * Math.sin(Math.PI * e) : 1
       const scale = lerp(part.from.scale, part.to.scale, e) * dip
       const x = lerp(part.from.x, part.to.x, e)
@@ -348,7 +346,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
   }
 
   return (
-    <div ref={root} className="tw" data-enter>
+    <div ref={root} className="tw" data-enter style={{ '--card-scale': CARD_SCALE } as CSSProperties}>
       <div className="tw-stage">
         <div className="tw-window">
           <div className="tw-view">
@@ -376,26 +374,12 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                         strokeDasharray={`0 ${drawn.total * 2}`}
                       />
                     ))}
-                    {/* The cards' shapes are cut out of the drawn line, so it ends at a card's edge
-                        and carries on from the other side, and is never seen inside or behind
-                        a card, even while the card is still fading in. */}
-                    {points.map((p, i) => (
-                      <rect
-                        key={i}
-                        x={p.x - CARD_W / 2 - 2}
-                        y={p.y - CARD_H / 2 - 2}
-                        width={CARD_W + 4}
-                        height={CARD_H + 4}
-                        rx={24}
-                        fill="#000"
-                      />
-                    ))}
                   </mask>
                   {/* Everything except the cards' shapes, for the hairlines behind them. */}
                   <mask id="tw-cut" maskUnits="userSpaceOnUse" x={-3000} y={-3000} width={7000} height={7000}>
                     <rect x={-3000} y={-3000} width={7000} height={7000} fill="#fff" />
                     {points.map((p, i) => (
-                      <rect key={i} x={p.x - CARD_W / 2 - 2} y={p.y - CARD_H / 2 - 2} width={CARD_W + 4} height={CARD_H + 4} rx={24} fill="#000" />
+                      <rect key={i} x={p.x - SW / 2 - 2} y={p.y - SH / 2 - 2} width={SW + 4} height={SH + 4} rx={22} fill="#000" />
                     ))}
                   </mask>
                 </defs>
@@ -415,7 +399,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                   {entry.map((d, k) => (
                     <path key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />
                   ))}
-                  <circle className="tw-dot" cx={points[0].x} cy={points[0].y - CARD_H / 2 - 7} r={7} />
+                  <circle className="tw-dot" cx={points[0].x} cy={points[0].y - SH / 2 - 7} r={7} />
                   {Array.from({ length: LINES }, (_, k) => (
                     <circle key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} cx={C} cy={C} r={R + (k - (LINES - 1) / 2) * PITCH} />
                   ))}
@@ -425,7 +409,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                 {points.map((p, i) => {
                   const a = Math.atan2(p.y - C, p.x - C)
                   const r1 = R * 0.57
-                  const r2 = R - CARD_H / 2 - 4
+                  const r2 = R - SH / 2 - 4
                   return (
                     <g key={i} className="tw-exit" data-i={i}>
                       <line className="tw-spoke" x1={C + r1 * Math.cos(a)} y1={C + r1 * Math.sin(a)} x2={C + r2 * Math.cos(a)} y2={C + r2 * Math.sin(a)} />
