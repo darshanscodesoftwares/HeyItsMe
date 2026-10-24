@@ -140,7 +140,7 @@ export const sideSections: Section[] = [
     groups: [
       { name: 'Version control', items: ['Git', 'GitHub'] },
       { name: 'APIs and databases', items: ['Postman', 'Swagger', 'PostgreSQL', 'MongoDB', 'pgAdmin', 'RDS (AWS)'] },
-      { name: 'Deployment', items: ['PM2', 'Ubuntu VPS'] },
+      { name: 'Deployment', items: ['PM2', 'Ubuntu VPS', 'Nginx', 'SSH', 'Certbot', 'AWS EC2', 'Render', 'Vercel'] },
       { name: 'Design and office', items: ['Figma', 'Google Slides', 'Google Sheets'] },
       { name: 'Operating systems', items: ['Linux', 'Mac'] },
     ],

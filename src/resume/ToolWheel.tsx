@@ -22,7 +22,7 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 const SIZE = 1000
 const C = SIZE / 2
 const R = 330
-const CARD_W = 264
+const CARD_W = 296
 const CARD_H = 280
 const LINES = 5
 // World units between the lines. They keep a fixed thickness on screen (see toolWheel.css), so

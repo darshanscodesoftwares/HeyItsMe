@@ -177,12 +177,15 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     at a card's edge and carries on from its other side, whether or not the card has
     appeared. Cards also appear earlier (55% of a trip, 70% of the first run), and card 1's
     dot sits just above its edge so the cut doesn't halve it.
-  - **Size:** the cards are 264×280 world units, with a 60px numeral, 23px title and 14.5px
+  - **Size:** the cards are 296×280 world units, with a 60px numeral, 23px title and 14.5px
     chips. They were 236×214, then 264×240 when he found the whole-ring view "too far away".
-    The height went to 280 when card 2 got six tools (it measured 278 tall), so that every
-    card stays the same size. **`CARD_H` in `ToolWheel.tsx` must match `min-height` in
-    `toolWheel.css`, and be at least as tall as the busiest card, or lines show behind the
-    card's extra height.** Measure with the cards' `offsetHeight` after adding tools. The ring
+    The height went to 280 when card 2 got six tools (278 tall), and the width to 296 when
+    Deployment got eight (three rows instead of four), so that every card stays the same
+    size. **`CARD_W`/`CARD_H` in `ToolWheel.tsx` must match `width`/`min-height` in
+    `toolWheel.css`, and the busiest card must fit them, or lines show behind a card's extra
+    size.** Measure the cards' `offsetWidth`/`offsetHeight` after adding tools. Neighbouring
+    cards 1 and 2 (and 1 and 5) are only about 18 world units apart at this width: don't go
+    wider without spreading the ring (`R`). The ring
     shot fits the top and bottom cards plus a 40-unit margin to the screen
     (`min(w, h) / (2 * (R + CARD_H / 2) + 40)`).
   - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
@@ -375,6 +378,10 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- Added Nginx, SSH, Certbot, AWS EC2, Render and Vercel to Tools card 3, Deployment (now PM2,
+  Ubuntu VPS, Nginx, SSH, Certbot, AWS EC2, Render, Vercel). Eight chips made it four rows
+  (320px), so every card was widened from 264 to 296px, which keeps it at three rows and
+  280px tall. Checked all five cards measure 296x280.
 - Added Swagger, PostgreSQL, MongoDB and RDS (AWS) to Tools card 2, "APIs and databases"
   (now Postman, Swagger, PostgreSQL, MongoDB, pgAdmin, RDS (AWS)). That made the card 278px
   tall, so every card was made 280px tall to stay uniform (see Size in the Tools entry).
