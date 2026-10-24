@@ -149,9 +149,13 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   ink and a dark green (`#3f5a40`).
   - **Layout:** five numbered cards (serif numeral, green spark, title, grey pill chips) on
     a ring round a dark-green four-point star in a 1000×1000 "world", as in his reference.
-    The ring radius `R` is 350 so five 308-wide cards, 72° apart, don't touch (about 25
-    units between cards 1 and 2). It was briefly six cards (R 380) while Version control and
-    Operating systems were separate; he then had them merged.
+    The ring radius `R` is 385: five 308-wide cards, 72° apart (about 60 units between cards
+    1 and 2). It is wider than the cards need on purpose: the drawn line is hidden behind the
+    cards, so only the ring *between* two cards is ever seen, and that stretch (about 180
+    units at R 385, only about 140 at R 350) is all the line has to travel along. A tighter ring
+    makes the line seem to end almost at once, which he complained about. It was briefly six
+    cards (R 380) while Version control and Operating systems were separate; he then had them
+    merged.
   - **Lines:** five concentric ring lines (ink and green alternating), hairline circles
     and a crosshair, and spokes with dots. **The only line that leaves the ring is the one
     coming down from the top into card 1** (`entryRoute()`, built with `route()` plus
@@ -166,14 +170,22 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     the same way: a track from the top of the page, with a sticky stage the full width of the
     screen via `--bleed`). Nothing is timed. `plan()` builds the timeline as a list of
     parts, each with where the line's tip is (`sFrom` to `sTo`) and the camera's shots:
-    - `COME` (720px): five lines come down the centre from the top of the screen (where the
+    - `COME` (850px): five lines come down the centre from the top of the screen (where the
       Skills lines end) to card 1's dot, the camera moving down with them. Card 1 appears
-      at 85%.
+      at 80%.
     - Hold on a card (`STAY` 500px): the lines wait at it, like Skills' lines at a dot.
-    - A trip (`MOVE` 720px): the lines travel clockwise round the ring to the next card, the
-      camera following, pulling back 30% on the way; the next card appears at 70%.
-    - After the last card (`FINAL` 760px): the lines close the ring while the camera pulls
-      back to the whole ring, held for `CLOSE` 360px.
+    - A trip (`MOVE` 1100px): the lines travel clockwise round the ring from one card's
+      *edge* to the next card's edge, the camera following, pulling back 30% on the way;
+      the next card appears at 80%. Trips run edge to edge (`leave()`/`arrive()` in `plan()`,
+      using `edge(i)`, how far along the ring a card's edge is from its centre), because the
+      part of the line behind a card is hidden: timing it to the card's centre made the line
+      seem to stop a third of the way through every trip. The camera is eased only half
+      (`lerp(u, smooth(u), 0.5)`) so it keeps pace with the steady line. He asked for
+      slower, smoother travel: it was `MOVE` 720.
+    - After the last card (`FINAL` 1100px): the lines close the ring (arriving at card 1's
+      left edge) while the camera pulls back to the whole ring, held for `CLOSE` 360px.
+    - **Up close** a card is drawn at 80% (`CLOSE_UP`) of the biggest size that fits the screen;
+      he asked for the zoomed-in cards to be a bit smaller.
   - **The drawn line** is a mask: a 70-wide stroke along the centre path (down, then
     clockwise round the ring) with `stroke-dasharray` set per frame from the tip position.
     12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
@@ -388,6 +400,12 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He found the Tools line too fast, ending too soon, and the zoomed-in cards too big. Fixed:
+  zoomed cards at 80% size; trips run edge to edge so the line is seen travelling the whole
+  time; `MOVE` and `FINAL` 720/760 to 1100, `COME` 850; the camera eased half as much; and
+  the ring radius 350 to 385 so there is more ring visible between cards to travel along.
+  Checked the trip 1 to 2 in slices at 1366x651 and 390x844 (the line leaves card 1's edge
+  and arrives at card 2's edge exactly as the trip ends); he hasn't tried it by hand.
 - He asked to remove all the outside lines on the Tools ring. Done: the bundles running off the
   screen from cards 2 to 5 are gone; only the lines coming down from the top into card 1
   stay (the Skills lines continuing). Checked the whole ring and a trip at 1366x651 and

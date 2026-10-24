@@ -21,9 +21,10 @@ const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: r
 // The ring is drawn in a SIZE × SIZE world that the camera moves and scales.
 const SIZE = 1000
 const C = SIZE / 2
-// Five cards 72 degrees apart: the radius is the smallest that keeps neighbouring cards
-// (308 wide) apart, about 25 units between cards 1 and 2.
-const R = 350
+// Five cards 72 degrees apart. The radius also decides how much of the ring shows between two
+// cards (the line is hidden behind them), so it is wider than the cards need: about 60 units
+// between cards 1 and 2, and about 180 units of ring to travel along between two cards.
+const R = 385
 const CARD_W = 308
 const CARD_H = 280
 const LINES = 5
@@ -32,11 +33,13 @@ const LINES = 5
 const PITCH = 10
 // How much scrolling each part takes: the lines coming down to card 1, each card held up close,
 // each trip round the ring to the next card, and the ring closing.
-const COME = 720
-const MOVE = 720
+const COME = 850
+const MOVE = 1100
 const STAY = 500
-const FINAL = 760
+const FINAL = 1100
 const CLOSE = 360
+// Up close, a card fills this much of what it would at the largest size that fits the screen.
+const CLOSE_UP = 0.8
 // The tip of the drawn line fades out over this much of its length, in this many steps.
 const FADE = 72
 const FADE_STEPS = 12
@@ -113,7 +116,7 @@ function plan(width: number, height: number, n: number) {
   // The whole ring fills the view: its cards at the top and bottom, plus a small margin.
   const ring: Shot = { x: C, y: C, scale: Math.min(width, height) / (2 * (R + CARD_H / 2) + 40) }
   // Up close, the card leaves room below it for the pager.
-  const close = Math.max(Math.min((width * 0.8) / CARD_W, (height * 0.6) / CARD_H, 3.2), ring.scale * 1.6)
+  const close = Math.max(Math.min((width * 0.8) / CARD_W, (height * 0.6) / CARD_H, 3.2) * CLOSE_UP, ring.scale * 1.6)
   const start: Shot = { x: C, y: -110, scale: Math.min(ring.scale * 2.3, close) }
   const points = Array.from({ length: n }, (_, i) => cardAt(i, n))
   const cards: Shot[] = points.map((p) => ({ x: p.x, y: p.y, scale: close }))
@@ -124,19 +127,29 @@ function plan(width: number, height: number, n: number) {
   const dot = points[0].y - CARD_H / 2 - y0
   const total = entry + 2 * Math.PI * R
   const at = (i: number) => entry + i * arc
+  // How far along the ring from a card's centre its edge is. The drawn line is hidden inside a
+  // card, so each trip runs from one card's edge to the next card's edge: the line is seen
+  // travelling for the whole trip, and arrives exactly as the trip ends.
+  const edge = (i: number) => {
+    const a = ((-90 + (360 / n) * i) * Math.PI) / 180
+    const along = { x: Math.abs(Math.sin(a)), y: Math.abs(Math.cos(a)) }
+    return Math.min(CARD_W / 2 / Math.max(along.x, 1e-6), CARD_H / 2 / Math.max(along.y, 1e-6)) + 2
+  }
+  const arrive = (i: number) => (i === 0 ? total - edge(0) : at(i) - edge(i))
+  const leave = (i: number) => at(i) + edge(i)
 
   const segments: Segment[] = [
-    { len: COME, sFrom: -FADE, sTo: dot, from: start, to: cards[0], fromCard: -1, toCard: 0, reveal: { card: 0, at: 0.7 } },
+    { len: COME, sFrom: -FADE, sTo: dot, from: start, to: cards[0], fromCard: -1, toCard: 0, reveal: { card: 0, at: 0.8 } },
     { len: STAY, sFrom: dot, sTo: dot, from: cards[0], to: cards[0], fromCard: 0, toCard: 0, hold: 0 },
   ]
   for (let i = 1; i < n; i++) {
     segments.push(
-      { len: MOVE, sFrom: at(i - 1), sTo: at(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.55 } },
-      { len: STAY, sFrom: at(i), sTo: at(i), from: cards[i], to: cards[i], fromCard: i, toCard: i, hold: i },
+      { len: MOVE, sFrom: leave(i - 1), sTo: arrive(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.8 } },
+      { len: STAY, sFrom: arrive(i), sTo: arrive(i), from: cards[i], to: cards[i], fromCard: i, toCard: i, hold: i },
     )
   }
   segments.push(
-    { len: FINAL, sFrom: at(n - 1), sTo: total, from: cards[n - 1], to: ring, fromCard: n - 1, toCard: -1 },
+    { len: FINAL, sFrom: leave(n - 1), sTo: arrive(0), from: cards[n - 1], to: ring, fromCard: n - 1, toCard: -1 },
     { len: CLOSE, sFrom: total, sTo: total, from: ring, to: ring, fromCard: -1, toCard: -1, hold: -1 },
   )
   const length = segments.reduce((sum, part) => sum + part.len, 0)
@@ -248,8 +261,9 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
       if (part.reveal && u >= part.reveal.at) appeared = Math.max(appeared, part.reveal.card + 1)
       if (still) appeared = n
 
-      // The camera: smooth between shots, pulling back a little between two cards.
-      const e = smooth(u)
+      // The camera: eased only gently between shots, so it keeps pace with the line (which
+      // moves steadily), pulling back a little between two cards.
+      const e = lerp(u, smooth(u), 0.5)
       const dip = part.dip ? 1 - 0.3 * Math.sin(Math.PI * e) : 1
       const scale = lerp(part.from.scale, part.to.scale, e) * dip
       const x = lerp(part.from.x, part.to.x, e)
