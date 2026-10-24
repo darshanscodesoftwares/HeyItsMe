@@ -401,7 +401,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-24_
+_Last updated: 2026-10-25_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
@@ -424,11 +424,23 @@ _Last updated: 2026-10-24_
   face is centred in the avatar circle.
 - **Project pages (2026-10-24):** the wheel scrolls them smoothly (own Lenis); the title line
   fades out on scrolling and the project's name appears above "Overview".
-- **Tools & Technologies page (2026-10-24):** a cream ring of five numbered cards round a
-  dark star (`ToolWheel.tsx`), played by the scroll like a camera: the ring, then each card
-  up close from 1 to 5, then the ring again. The faint title stays behind. Checked at
-  1366x651 and 390x844 in headless Chrome (no errors, no sideways scroll); he hasn't seen
-  it yet. Work Experience was suggested as the next content-heavy section to redesign.
+- **Tools & Technologies page (2026-10-24 to 25):** a cream ring of five numbered cards round
+  a dark star (`ToolWheel.tsx`), played by the scroll like the Skills poster: a soft-tipped line
+  is drawn down from the top (the Skills lines carrying on), then round the ring card to card
+  with a camera following, then the ring closes, the camera pulls back and the cards pop up
+  bigger. Cards: Version control and OS (merged, with Windows), APIs and databases,
+  Deployment, Design and office, AI tools. The faint title stays behind. He has seen it and
+  refined it over many rounds (see the log); only ever checked in headless Chrome, not by
+  hand on a trackpad or phone.
+- **Achievements and Work Experience (2026-10-24 to 25):** Achievements shows three (two
+  SchoolNest cost-saving architecture achievements and the MYCARBOY upload fix; two more are
+  commented out). Scode Work Experience is four short bullets, "Aug 2025 – Present". Both come
+  from his office work log, which is gitignored (it holds a server IP and domain).
+- **Scroll momentum (2026-10-25):** after a scroll push moves to a new section, leftover wheel
+  input is swallowed until it is quiet (`swallowMomentum`), so Projects always starts at its
+  first project. The 280ms settle may need tuning on his trackpad.
+- **Next, not asked for yet:** more office achievements from the work log (AWS deployment,
+  security fixes, driver login), and a Download PDF button.
 - **Gotcha, Lenis:** any scrollable layer inside the Projects section needs its own Lenis
   (as the project page has) or `data-lenis-prevent`, and the list's Lenis `prevent` must
   skip it, or the wheel won't scroll it.
@@ -445,8 +457,6 @@ _Last updated: 2026-10-24_
   restores the minimal section pager from commit `53c3b9d`.
 
 ## Session log (newest first)
-
-### 2026-10-24
 
 ### 2026-10-25
 
@@ -466,7 +476,7 @@ _Last updated: 2026-10-24_
 - He corrected the Scode period: he still works there, so it is now "Aug 2025 – Present" (it said
   Feb 2026, copied from his résumé PDF).
 
-### 2026-10-24 (continued)
+### 2026-10-24
 
 - He then said the Scode bullets repeated too much of what's written elsewhere (Achievements,
   Projects) and asked for different, shorter wording. Cut it from seven bullets to four, about
