@@ -171,6 +171,12 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
     Skills. The lines keep the Skills thickness (2.2px, `vector-effect: non-scaling-stroke`)
     at every zoom; `PITCH` (10 world units) sets their spacing.
+  - **Lines never show behind a card (2026-10-24):** while a card was fading in, the ring's
+    lines and hairlines showed through it. The cards' rounded rectangles are now cut out of
+    both masks (`tw-drawn` for the drawn lines, `tw-cut` for the hairlines), so a line ends
+    at a card's edge and carries on from its other side, whether or not the card has
+    appeared. Cards also appear earlier (55% of a trip, 70% of the first run), and card 1's
+    dot sits just above its edge so the cut doesn't halve it.
   - **Size:** the cards are 264×240 world units (were 236×214; he found the whole-ring view
     "too far away"), with a 60px numeral, 23px title and 14.5px chips. The ring shot fits
     the ring's top and bottom cards plus a 60-unit margin to the screen
@@ -365,6 +371,9 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He didn't want to see the lines go behind a card before it appears (they showed through the
+  card while it faded in). Fixed by cutting the card shapes out of the line masks (see the
+  Tools entry). Checked mid-fade at 1366x651.
 - He said the Tools ring was "good" but too far away. Made the whole-ring view about 11%
   closer and the cards about 12% bigger, with larger text. Checked at 1366x651 and 390x844.
 - He wanted the Skills lines to feel like they carry on into Tools. A first version (lines

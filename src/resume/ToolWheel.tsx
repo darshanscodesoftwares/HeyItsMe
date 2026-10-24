@@ -135,12 +135,12 @@ function plan(width: number, height: number, n: number) {
   const at = (i: number) => entry + i * arc
 
   const segments: Segment[] = [
-    { len: COME, sFrom: -FADE, sTo: dot, from: start, to: cards[0], fromCard: -1, toCard: 0, reveal: { card: 0, at: 0.85 } },
+    { len: COME, sFrom: -FADE, sTo: dot, from: start, to: cards[0], fromCard: -1, toCard: 0, reveal: { card: 0, at: 0.7 } },
     { len: STAY, sFrom: dot, sTo: dot, from: cards[0], to: cards[0], fromCard: 0, toCard: 0, hold: 0 },
   ]
   for (let i = 1; i < n; i++) {
     segments.push(
-      { len: MOVE, sFrom: at(i - 1), sTo: at(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.7 } },
+      { len: MOVE, sFrom: at(i - 1), sTo: at(i), from: cards[i - 1], to: cards[i], fromCard: i - 1, toCard: i, dip: true, reveal: { card: i, at: 0.55 } },
       { len: STAY, sFrom: at(i), sTo: at(i), from: cards[i], to: cards[i], fromCard: i, toCard: i, hold: i },
     )
   }
@@ -371,11 +371,32 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                         strokeDasharray={`0 ${drawn.total * 2}`}
                       />
                     ))}
+                    {/* The cards' shapes are cut out of the drawn line, so it ends at a card's edge
+                        and carries on from the other side, and is never seen inside or behind
+                        a card, even while the card is still fading in. */}
+                    {points.map((p, i) => (
+                      <rect
+                        key={i}
+                        x={p.x - CARD_W / 2 - 2}
+                        y={p.y - CARD_H / 2 - 2}
+                        width={CARD_W + 4}
+                        height={CARD_H + 4}
+                        rx={24}
+                        fill="#000"
+                      />
+                    ))}
+                  </mask>
+                  {/* Everything except the cards' shapes, for the hairlines behind them. */}
+                  <mask id="tw-cut" maskUnits="userSpaceOnUse" x={-3000} y={-3000} width={7000} height={7000}>
+                    <rect x={-3000} y={-3000} width={7000} height={7000} fill="#fff" />
+                    {points.map((p, i) => (
+                      <rect key={i} x={p.x - CARD_W / 2 - 2} y={p.y - CARD_H / 2 - 2} width={CARD_W + 4} height={CARD_H + 4} rx={24} fill="#000" />
+                    ))}
                   </mask>
                 </defs>
 
                 {/* The hairlines and the star's glow come in with the first card. */}
-                <g className="tw-rest">
+                <g className="tw-rest" mask="url(#tw-cut)">
                   <circle className="tw-hair" cx={C} cy={C} r={R + 96} />
                   <circle className="tw-hair" cx={C} cy={C} r={R * 0.57} />
                   <line className="tw-hair" x1={C} y1={C - R * 0.57} x2={C} y2={C + R * 0.57} />
@@ -389,7 +410,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                   {bundles[0]?.map((d, k) => (
                     <path key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />
                   ))}
-                  <circle className="tw-dot" cx={points[0].x} cy={points[0].y - CARD_H / 2} r={7} />
+                  <circle className="tw-dot" cx={points[0].x} cy={points[0].y - CARD_H / 2 - 7} r={7} />
                   {Array.from({ length: LINES }, (_, k) => (
                     <circle key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} cx={C} cy={C} r={R + (k - (LINES - 1) / 2) * PITCH} />
                   ))}
