@@ -302,7 +302,21 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - Contacts, in the order shown on the paper: email, LinkedIn `darshan-stack`, GitHub `DarshanLevi`, then Cuddalore (last, at his request).
   - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
     now **Languages**.
-  - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
+  - Achievements holds five: four from his office work log (SchoolNest: the self-hosted
+    stand-ins for AWS SNS/SQS behind a LOCAL/AWS switch, the transactional outbox with
+    backoff and LISTEN/NOTIFY, the three-flow API architecture, live bus tracking) plus the
+    MYCARBOY result (about 80% fewer upload crashes). They only claim what the log says:
+    the outbox is "built and tested locally", the AWS side of the switch is "designed in, not
+    live", and the live tracking was verified on production.
+  - **His office work log** is `analyze-and-bring-out-an-achivement` in the repo root (a long
+    plain-text list of daily tasks, commits and architecture notes). It contains a server
+    IP, his domain and internal repo names, so it is **gitignored and must never be
+    committed or quoted verbatim** on the site. When he adds more to it, read it, sanitise
+    (no IPs, hosts, domains, credentials or repo remotes), and add achievements from it.
+    Not yet turned into achievements: the AWS deployment (4 services on EC2 under pm2,
+    reboot-safe), removing hard-coded database passwords and the JWT secret from tracked
+    files, the parent bus-tracking authorisation fix, the DRIVER role and OTP mobile
+    login, the admin export and Teacher Assignments fixes, and the HA and scaling analysis.
   - Projects: MYCARBOY, schoolNest, VR De-Addiction Wellness (a proof of concept, not a
     clinical product), Marina FC Website (a one-day client POC, no link yet), and the personal projects Musica and Find-ISS (tagged
     "Personal project" in their meta line). Decimal-chess and Word-Builder were removed at his request. The
@@ -404,6 +418,12 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He pointed at his office work log (`analyze-and-bring-out-an-achivement`) and asked for his
+  self-hosted architecture replicating AWS SQS, SNS and the like to go into Achievements.
+  Added four SchoolNest achievements (see the Resume content decisions) and gitignored the log,
+  since it holds a server IP and domain. Checked the Achievements page at 1366x651 and 390x844.
+  He hasn't said whether the other tasks in the log (AWS deployment, security fixes and so on)
+  should be added too.
 - He asked for the Tools line to travel even more smoothly ("it can go behind cards too, I'll
   allow"), the cards a little smaller, and the ring's centre expanded for gaps between the
   cards. Done: the line runs centre to centre at one steady speed behind the cards (the card

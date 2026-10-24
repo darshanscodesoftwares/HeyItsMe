@@ -372,6 +372,26 @@ export const sideSections: Section[] = [
     kind: 'cards',
     cards: [
       {
+        title: 'Self-hosted stand-ins for AWS SNS and SQS',
+        meta: 'SchoolNest · architecture',
+        text: "Designed a LOCAL / AWS split for the school ERP's microservices. Business code talks to small interfaces (an event publisher and a location store), and one environment switch picks the implementation: self-hosted Postgres and HTTP today, Redis and SNS/SQS on AWS later, with no controller changes. Only the self-hosted side is live; the AWS side is designed in behind the same switch.",
+      },
+      {
+        title: 'A durable event outbox that survives outages',
+        meta: 'SchoolNest · reliability · built and tested locally',
+        text: 'Built a transactional outbox: events are written in the same database transaction as the business change, then a background relay delivers them with retries that back off (5s, 10s, 20s, 40s) and a Postgres LISTEN/NOTIFY wake-up, so delivery took 0.74s against a 15s poll. The receiving service dedupes on event ID, so redelivery never double-sends. Tested: events survive the consumer being down and arrive when it returns, with no duplicates.',
+      },
+      {
+        title: 'Three-flow API architecture',
+        meta: 'SchoolNest · design',
+        text: 'Sorted every API across four services into three flows (direct now, self-hosted, AWS-managed) behind one switch, with two rules: side effects decouple, reads stay direct. Audited the services and found only two real breaks of service independence, both cross-database reads, and chose the outbox as the fix.',
+      },
+      {
+        title: 'Live bus tracking on the same seam',
+        meta: 'SchoolNest · transport',
+        text: 'Drivers start a ride and send GPS fixes; the admin map updates live over server-sent events, keeping only the latest fix, ordered by the server clock so a wrong phone clock cannot freeze the map. Verified on production: a driver login, a ride, thirty GPS fixes and a moving marker on the admin map.',
+      },
+      {
         title: 'About 80% fewer upload crashes',
         meta: 'MYCARBOY',
         text: 'Compressed chunk uploads for media and report files cut upload-related crashes by about 80% and made uploads consistent in production.',

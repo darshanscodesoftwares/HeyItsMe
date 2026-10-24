@@ -3,3 +3,4 @@ node_modules
 # Local secrets
 .env.local
 .env*.local
+analyze-and-bring-out-an-achivement
