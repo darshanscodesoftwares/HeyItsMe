@@ -42,6 +42,39 @@ const LAPSE = 380
 // After a move, scrolling that is still going doesn't push straight on again.
 const REST = 1300
 
+// A wheel or trackpad keeps sending scroll input for a moment after you stop. If a push has just
+// moved you to a new page, that leftover input would scroll the new page (the Projects list
+// flew to its last project) or push straight on to the next section. So after a push the
+// input still coming in is swallowed, until it has been quiet for SETTLE (or CAP has passed,
+// so someone scrolling non-stop is not locked out).
+const SETTLE = 280
+const CAP = 2200
+let swallowFrom = 0
+let lastInput = 0
+let swallowing = false
+
+function swallow(event: Event) {
+  if (!swallowFrom) return
+  const now = performance.now()
+  if (now - lastInput > SETTLE || now - swallowFrom > CAP) {
+    swallowFrom = 0
+    return
+  }
+  lastInput = now
+  event.preventDefault()
+  event.stopImmediatePropagation()
+}
+
+function swallowMomentum() {
+  if (!swallowing) {
+    swallowing = true
+    // In the capture phase on the window, so it runs before the page's own scrolling.
+    window.addEventListener('wheel', swallow, { capture: true, passive: false })
+    window.addEventListener('touchmove', swallow, { capture: true, passive: false })
+  }
+  swallowFrom = lastInput = performance.now()
+}
+
 interface Way {
   label: string
   go: () => void
@@ -123,6 +156,7 @@ export function useScrollPush(options: PushOptions) {
       if (amount >= 1) {
         restUntil = now + REST
         reset()
+        swallowMomentum()
         way.go()
       }
     }

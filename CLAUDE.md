@@ -254,6 +254,13 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   past the last or first, back to the paper, `Detail.tsx`); a project's page (down goes to the
   next project, after the last back to the list; up goes back to the list, `Projects.tsx`). The
   pushes are ignored while a project page is open on top of a section (`.pj-page`).
+  **Momentum is swallowed after a push** (`swallowMomentum` in `scrollPush.ts`, 2026-10-25): a
+  real wheel or trackpad keeps sending input after you stop, which scrolled the new page (the
+  Projects list flew to its last project, it's only ~2360px tall) or pushed straight on to the
+  next section (Tools went on to Skills). After a push, wheel and touch input is absorbed by a
+  capture listener on the window until it has been quiet for `SETTLE` (280ms), or `CAP`
+  (2200ms) has passed so non-stop scrolling isn't locked out. Headless Chrome only shows the
+  bug if the wheel keeps turning after the push: test with a loop of `mouse.wheel` calls.
 - `src/ScrollToggle.tsx`: an **Auto-scroll On/Off switch fixed in the bottom-left corner of the
   whole site** (portalled into `<body>` so section pages never cover it; z-index 500; kept as quiet as possible at his request: a 28x16px outline switch in dark ink at 60% opacity with no box, and the words "Auto-scroll on/off" slide out only on hover or focus). The state
   lives in `scrollPush.ts` (`autoScroll`, `useAutoScroll`, saved in `localStorage` key
@@ -443,6 +450,14 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-25
 
+- He reported that going from Tools & Technologies to Projects often started at the last
+  project, and that it only worked right the first time (going back in reverse and forward
+  again went wrong). Cause: scroll momentum. The wheel keeps sending input after the push, so
+  it scrolled the new page, or pushed on again to the next section. Reproduced with a wheel
+  loop (Tools went on to Skills), fixed with `swallowMomentum` (see the scroll-push entry). After
+  the fix, both arrivals at Projects start at scrollTop 0 and the reverse trip stops at Tools.
+  Checked at 1366x651; he hasn't tried it with his own wheel or trackpad, so the 280ms settle
+  may need tuning.
 - He asked that, once the Tools circle has touched card 1, completed and zoomed out, the cards
   pop up and get bigger (only then, and only in the zoomed-out view). Done in the final hold:
   0.85 to 1.15 with a staggered overshoot; they shrink back when scrolling up. Checked at
