@@ -23,7 +23,7 @@ const SIZE = 1000
 const C = SIZE / 2
 const R = 330
 const CARD_W = 264
-const CARD_H = 240
+const CARD_H = 280
 const LINES = 5
 // World units between the lines. They keep a fixed thickness on screen (see toolWheel.css), so
 // this is what sets how far apart they look as the camera moves in and out.
@@ -120,7 +120,7 @@ function bundleRoutes(cards: Point[]): Point[][] {
 // path starts, and the timeline of the scroll as a list of parts.
 function plan(width: number, height: number, n: number) {
   // The whole ring fills the view: its cards at the top and bottom, plus a small margin.
-  const ring: Shot = { x: C, y: C, scale: Math.min(width, height) / (2 * (R + CARD_H / 2) + 60) }
+  const ring: Shot = { x: C, y: C, scale: Math.min(width, height) / (2 * (R + CARD_H / 2) + 40) }
   // Up close, the card leaves room below it for the pager.
   const close = Math.max(Math.min((width * 0.8) / CARD_W, (height * 0.6) / CARD_H, 3.2), ring.scale * 1.6)
   const start: Shot = { x: C, y: -110, scale: Math.min(ring.scale * 2.3, close) }

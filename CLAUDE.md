@@ -177,10 +177,14 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     at a card's edge and carries on from its other side, whether or not the card has
     appeared. Cards also appear earlier (55% of a trip, 70% of the first run), and card 1's
     dot sits just above its edge so the cut doesn't halve it.
-  - **Size:** the cards are 264×240 world units (were 236×214; he found the whole-ring view
-    "too far away"), with a 60px numeral, 23px title and 14.5px chips. The ring shot fits
-    the ring's top and bottom cards plus a 60-unit margin to the screen
-    (`min(w, h) / (2 * (R + CARD_H / 2) + 60)`), about 11% closer than before.
+  - **Size:** the cards are 264×280 world units, with a 60px numeral, 23px title and 14.5px
+    chips. They were 236×214, then 264×240 when he found the whole-ring view "too far away".
+    The height went to 280 when card 2 got six tools (it measured 278 tall), so that every
+    card stays the same size. **`CARD_H` in `ToolWheel.tsx` must match `min-height` in
+    `toolWheel.css`, and be at least as tall as the busiest card, or lines show behind the
+    card's extra height.** Measure with the cards' `offsetHeight` after adding tools. The ring
+    shot fits the top and bottom cards plus a 40-unit margin to the screen
+    (`min(w, h) / (2 * (R + CARD_H / 2) + 40)`).
   - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
     (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
     nothing shows but the faint title, as at the top of Skills.
@@ -371,6 +375,9 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- Added Swagger, PostgreSQL, MongoDB and RDS (AWS) to Tools card 2, "APIs and databases"
+  (now Postman, Swagger, PostgreSQL, MongoDB, pgAdmin, RDS (AWS)). That made the card 278px
+  tall, so every card was made 280px tall to stay uniform (see Size in the Tools entry).
 - He didn't want to see the lines go behind a card before it appears (they showed through the
   card while it faded in). Fixed by cutting the card shapes out of the line masks (see the
   Tools entry). Checked mid-fade at 1366x651.

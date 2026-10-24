@@ -144,7 +144,8 @@
   display: flex;
   flex-direction: column;
   width: 264px;
-  min-height: 240px;
+  /* Tall enough for the busiest card (six tools); the layout's CARD_H must match. */
+  min-height: 280px;
   padding: 24px 26px 26px;
   background: #f6f2ea;
   border: 1px solid rgba(28, 28, 26, 0.16);
