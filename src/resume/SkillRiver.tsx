@@ -217,6 +217,33 @@ export default function SkillRiver({ groups }: { groups: Group[] }) {
     const still = prefersReducedMotion()
     let frame = 0
     let count = -1
+    // Each pie glides to where the scroll says it should be, instead of stepping with the wheel.
+    const goal: number[] = []
+    const now: number[] = []
+    let easing = 0
+    let easeAt = 0
+    const ease = (time: number) => {
+      easing = 0
+      const dt = Math.min(0.05, (time - easeAt) / 1000 || 0.016)
+      easeAt = time
+      let moving = false
+      dots.current.forEach((dot, i) => {
+        if (!dot) return
+        const from = now[i] ?? 0
+        const to = goal[i] ?? 0
+        let next = still ? to : from + (to - from) * (1 - Math.exp(-dt * 7))
+        if (Math.abs(to - next) < 0.002) next = to
+        else moving = true
+        now[i] = next
+        dot.style.setProperty('--fill', next.toFixed(4))
+        // A little pop as the circle completes: it starts as the fill nears the end, not after it
+        // has fully settled, and only resets once the fill has dropped well back.
+        const popped = dot.classList.contains('is-full')
+        if (!popped && next >= 0.9) dot.classList.add('is-full')
+        else if (popped && next < 0.75) dot.classList.remove('is-full')
+      })
+      if (moving) easing = requestAnimationFrame(ease)
+    }
     const render = () => {
       frame = 0
       const { dots: ys, end, anchor, window: windowH, height, length } = timeline.current
@@ -226,6 +253,9 @@ export default function SkillRiver({ groups }: { groups: Group[] }) {
       const shown = new Array(n).fill(0)
       let tip = ys[0]
       let reachedNow = 1
+      // The section whose skills are coming in, and how far through them the scroll is.
+      let holding = -1
+      let held = 0
       let cursor = 0
       for (let i = 0; i < n; i++) {
         const rows = rowCounts.current[i] ?? 1
@@ -235,6 +265,8 @@ export default function SkillRiver({ groups }: { groups: Group[] }) {
           tip = ys[i]
           reachedNow = i + 1
           shown[i] = Math.min(rows, Math.floor((p - cursor) / ROW_PX) + 1)
+          holding = i
+          held = (p - cursor) / hold
           break
         }
         shown[i] = rows
@@ -270,6 +302,14 @@ export default function SkillRiver({ groups }: { groups: Group[] }) {
           showRows(i)
         }
       })
+      // Each dot is a pie that fills as its section's skills come in, and is full once they all have.
+      dots.current.forEach((dot, i) => {
+        goal[i] = i < reachedNow && dot ? (i === holding ? held : shown[i] >= (rowCounts.current[i] ?? 0) ? 1 : 0) : 0
+      })
+      if (!easing) {
+        easeAt = performance.now()
+        easing = requestAnimationFrame(ease)
+      }
       if (reachedNow !== count) {
         count = reachedNow
         setReached(reachedNow)
@@ -287,6 +327,7 @@ export default function SkillRiver({ groups }: { groups: Group[] }) {
     window.addEventListener('resize', schedule)
     return () => {
       cancelAnimationFrame(frame)
+      cancelAnimationFrame(easing)
       scroller.removeEventListener('scroll', schedule)
       window.removeEventListener('resize', schedule)
       play.current = () => {}
