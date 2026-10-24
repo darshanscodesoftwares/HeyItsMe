@@ -262,13 +262,33 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
 
 ## Current state
 
-_Last updated: 2026-10-23_
+_Last updated: 2026-10-24_
 
 - Hero: first version done (2026-10-17).
 - Resume section: done (2026-10-20) and reworked once from the user's feedback. It was
   checked at 1536×698 (the user's laptop), 1920×870, on a 390×844 phone and with reduced
   motion. Its content is filled in from his resume (2026-10-20). Certifications now hold
   three entries from his LinkedIn, each with a date and a "Show credential" link (2026-10-22).
+- **Skills page (2026-10-24):** a cream scroll-played poster after his "Skills Journey
+  Infographic" (`SkillRiver.tsx`): the poster is pinned and each bit of scroll brings in a row
+  of skills; five thin lines wait at each dot, whose pie fills as its rows arrive; a cream gap
+  rings each dot. He rejected: the organic river, a continuous full-gap S-bend (reverted: the
+  bend stays as is), and the timed/scroll-locked reveal.
+- **Whole site scrolls by itself (2026-10-24):** `scrollPush.ts` carries the visitor on when a
+  page is scrolled past its end (paper to Skills, section to section, project to project, list
+  pictures open after a pause), with a cue at the bottom of the screen. A faint **Auto-scroll
+  On/Off** switch sits in the bottom-left corner of every page (on by default, remembered).
+  Clicks and arrows always work. Only tried with the mouse wheel in headless Chrome, not on a
+  touch device or by hand, so expect to tune `PUSH` (300px) and the 650ms project pause.
+- **Resume paper header (2026-10-24):** photo and name left, four contacts in a column right
+  (bigger, accent icons, hover highlight and arrow for the three links; location last); the
+  face is centred in the avatar circle.
+- **Project pages (2026-10-24):** the wheel scrolls them smoothly (own Lenis); the title line
+  fades out on scrolling and the project's name appears above "Overview".
+- **Next, not started:** he added `tools&technologies-section/` (two reference images,
+  "Circular Workflow Infographic with Five UI Cards" and "Minimal Version Control UI Poster")
+  for redesigning Tools & Technologies the way Skills was done; he hasn't said what to build yet.
+  Work Experience was suggested as the next content-heavy section to redesign.
 - **Gotcha, Lenis:** any scrollable layer inside the Projects section needs its own Lenis
   (as the project page has) or `data-lenis-prevent`, and the list's Lenis `prevent` must
   skip it, or the wheel won't scroll it.
