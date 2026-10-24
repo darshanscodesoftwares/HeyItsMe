@@ -18,6 +18,11 @@
   color: #6f6a5f;
 }
 
+/* The full-width scene must never make the page scroll sideways. */
+.resume-detail[data-tone='tools'] .resume-detail-scroll {
+  overflow-x: hidden;
+}
+
 /* Pinned and played by the scroll, like the Skills poster (see ToolWheel.tsx). The stage runs
    the full width of the screen, past the page's column. */
 .tw {
@@ -127,12 +132,16 @@
   border-radius: 22px;
   box-shadow: 0 18px 40px -26px rgba(28, 28, 26, 0.35);
   transform: translate(-50%, -50%);
+}
+
+.tw-card > * {
   transition: opacity 500ms ease;
 }
 
-/* Up close, the other cards fall back. */
-.tw.is-zoomed .tw-card:not(.is-active) {
-  opacity: 0.35;
+/* Up close, the other cards fall back: their contents fade, but the card itself stays solid,
+   so the ring's lines don't show through it. */
+.tw.is-zoomed .tw-card:not(.is-active) > * {
+  opacity: 0.3;
 }
 
 .tw-num {
@@ -258,7 +267,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .tw-card {
+  .tw-card > * {
     transition: none;
   }
 }

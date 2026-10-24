@@ -162,6 +162,13 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     at the bottom; its dots and arrow scroll (Lenis) to a card.
   - TOOLS & TECHNOLOGIES is the page's usual faint title, fixed behind everything (warm grey
     `#6f6a5f`), as he asked.
+  - **Glitch fixed (2026-10-24):** `--bleed` (how far the scene runs past the page's
+    column) must be measured from the *column* (`body.clientWidth`), never from the scene
+    itself. The scene is already widened by it, so measuring it gave 0 on the next pass and
+    snapped the scene back to the column, with a hard cut at its left edge. The tools page
+    also has `overflow-x: hidden` so the full-width scene can't scroll sideways. Dimmed
+    cards fade their *contents* only (`.tw-card > *`), because a see-through card let the
+    ring's lines show through it.
   - **No `will-change` on the world:** with it, Chrome scales the small render and the
     zoomed cards look soft.
   - Reduced motion (`.is-static`): just the ring, no camera.
@@ -332,6 +339,10 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He saw glitching on the Tools page: a hard cut at the scene's left edge, a sideways
+  scrollbar, and lines showing through the dimmed cards. Fixed all three (see the Tools entry
+  in How it works). Checked in headless Chrome at 1366x651: the scene stays 0 to 1366 wide at
+  every scroll position, no sideways scroll, no errors.
 - Built the Tools & Technologies page after his two references.
   - The ring of five cards round a star, as in his "Circular Workflow Infographic", with
     TOOLS & TECHNOLOGIES always faint behind.

@@ -136,8 +136,10 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
       const body = element.parentElement as HTMLElement
       const pin =
         body.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop + parseFloat(getComputedStyle(body).paddingTop)
-      // The scene runs the full width of the screen, past the page's column.
-      element.style.setProperty('--bleed', `${(scroller.clientWidth - element.clientWidth) / 2}px`)
+      // The scene runs the full width of the screen, past the page's column. Measured from the
+      // column, not the scene: the scene is already widened by this, so measuring it would
+      // give 0 on the next pass and snap it back to the column's width.
+      element.style.setProperty('--bleed', `${(scroller.clientWidth - body.clientWidth) / 2}px`)
       const width = scroller.clientWidth
       const height = still ? Math.min(width, 720) : Math.max(320, scroller.clientHeight - pin)
       const length = OPEN + (n + 1) * MOVE + n * STAY + CLOSE
