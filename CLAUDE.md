@@ -302,12 +302,19 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - Contacts, in the order shown on the paper: email, LinkedIn `darshan-stack`, GitHub `DarshanLevi`, then Cuddalore (last, at his request).
   - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
     now **Languages**.
-  - Achievements holds five: four from his office work log (SchoolNest: the self-hosted
-    stand-ins for AWS SNS/SQS behind a LOCAL/AWS switch, the transactional outbox with
-    backoff and LISTEN/NOTIFY, the three-flow API architecture, live bus tracking) plus the
-    MYCARBOY result (about 80% fewer upload crashes). They only claim what the log says:
-    the outbox is "built and tested locally", the AWS side of the switch is "designed in, not
-    live", and the live tracking was verified on production.
+  - Achievements shows three: two from his office work log (SchoolNest) plus the MYCARBOY
+    result (about 80% fewer upload crashes). The two, worded as achievements at his request
+    and leading with the saving: "Cut the client's AWS SNS and SQS cost to zero" (self-hosted
+    stand-ins behind a LOCAL/AWS switch, until the platform needs managed services) and
+    "Built a durable event outbox in place of paid AWS queues" (transactional outbox, backoff,
+    LISTEN/NOTIFY, idempotent consumer). **The "Three-flow API architecture" and "Live bus
+    tracking" cards are commented out** in `content.ts` (a `/* */` block) at his request; put
+    them back by removing the markers.
+  - They only claim what the log says: the outbox is "built and tested locally", the AWS side
+    of the switch is "designed in, not live". **Two things to remember:** the outbox is the
+    stand-in for SNS-to-SQS delivery, *not* for Redis (he asked; Redis in the log is the
+    separate live-map fan-out, so the cards don't mention it as replaced), and "planned at
+    100+ schools" is his own estimate (the log only modelled 20 schools / 200k students).
   - **His office work log** is `analyze-and-bring-out-an-achivement` in the repo root (a long
     plain-text list of daily tasks, commits and architecture notes). It contains a server
     IP, his domain and internal repo names, so it is **gitignored and must never be
@@ -418,6 +425,9 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He then asked to comment out the Three-flow and Live bus tracking cards and to make the other
+  two read like achievements, leading with the cost saved (no AWS SNS/SQS bill until the
+  platform grows). Done; checked the page at 1366x651 and 390x844.
 - He pointed at his office work log (`analyze-and-bring-out-an-achivement`) and asked for his
   self-hosted architecture replicating AWS SQS, SNS and the like to go into Achievements.
   Added four SchoolNest achievements (see the Resume content decisions) and gitignored the log,

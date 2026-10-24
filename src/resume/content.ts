@@ -372,15 +372,17 @@ export const sideSections: Section[] = [
     kind: 'cards',
     cards: [
       {
-        title: 'Self-hosted stand-ins for AWS SNS and SQS',
+        title: "Cut the client's AWS SNS and SQS cost to zero",
         meta: 'SchoolNest · architecture',
-        text: "Designed a LOCAL / AWS split for the school ERP's microservices. Business code talks to small interfaces (an event publisher and a location store), and one environment switch picks the implementation: self-hosted Postgres and HTTP today, Redis and SNS/SQS on AWS later, with no controller changes. Only the self-hosted side is live; the AWS side is designed in behind the same switch.",
+        text: 'Replaced AWS SNS and SQS with self-hosted equivalents, so the client pays nothing for messaging until the platform is big enough to need managed services (planned at 100+ schools). Business code talks to small interfaces (an event publisher and a location store), and one environment switch picks the implementation: self-hosted Postgres and HTTP today, Redis and SNS/SQS on AWS later, with no controller changes. Only the self-hosted side is live; the AWS side is already designed in behind the same switch.',
       },
       {
-        title: 'A durable event outbox that survives outages',
+        title: 'Built a durable event outbox in place of paid AWS queues',
         meta: 'SchoolNest · reliability · built and tested locally',
-        text: 'Built a transactional outbox: events are written in the same database transaction as the business change, then a background relay delivers them with retries that back off (5s, 10s, 20s, 40s) and a Postgres LISTEN/NOTIFY wake-up, so delivery took 0.74s against a 15s poll. The receiving service dedupes on event ID, so redelivery never double-sends. Tested: events survive the consumer being down and arrive when it returns, with no duplicates.',
+        text: "Built a transactional outbox that does the job of SNS-to-SQS delivery on the client's own database, so no paid queue is needed yet. Events are saved in the same transaction as the change, and a background relay delivers them with retries that back off (5s to 40s) and a Postgres LISTEN/NOTIFY wake-up: 0.74s delivery instead of waiting for a 15s poll. The receiving service ignores repeats, so redelivery never double-sends. Tested: events survive the receiver being down and arrive when it returns, with no duplicates. It carries the load until the project outgrows it, and moves to managed AWS then.",
       },
+      // Left out for now, at his request. To show them again, remove the comment markers.
+      /*
       {
         title: 'Three-flow API architecture',
         meta: 'SchoolNest · design',
@@ -391,6 +393,7 @@ export const sideSections: Section[] = [
         meta: 'SchoolNest · transport',
         text: 'Drivers start a ride and send GPS fixes; the admin map updates live over server-sent events, keeping only the latest fix, ordered by the server clock so a wrong phone clock cannot freeze the map. Verified on production: a driver login, a ride, thirty GPS fixes and a moving marker on the admin map.',
       },
+      */
       {
         title: 'About 80% fewer upload crashes',
         meta: 'MYCARBOY',
