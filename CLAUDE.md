@@ -144,6 +144,23 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
   `getBoundingClientRect`; a ResizeObserver re-measures. Lenis smooth scroll. Phones: one
   column, a straight run of lines on the left. Reduced motion (`.is-static`): no pinning,
   everything shown.
+- `scrollPush.ts`: **the whole site works by scrolling alone** (clicks still work). `useScrollPush`
+  watches wheel and touch: once a page is already scrolled to its end, carrying on scrolling
+  "pushes" toward the next place (300px of scrolling without stopping; a pause drains it, and a
+  move is followed by a 1.3s rest). A small cue at the bottom of the screen (top when going up;
+  `.push-cue` in `resume.css`) names where it goes and fills up. Used for: the paper (down opens
+  Skills, `Resume.tsx`); every section page (down goes to the next section, up to the previous;
+  past the last or first, back to the paper, `Detail.tsx`); a project's page (down goes to the
+  next project, after the last back to the list; up goes back to the list, `Projects.tsx`). The
+  pushes are ignored while a project page is open on top of a section (`.pj-page`).
+- `src/ScrollToggle.tsx`: an **Auto-scroll On/Off switch fixed in the bottom-left corner of the
+  whole site** (portalled into `<body>` so section pages never cover it; z-index 500; kept as quiet as possible at his request: a 28x16px outline switch in dark ink at 60% opacity with no box, and the words "Auto-scroll on/off" slide out only on hover or focus). The state
+  lives in `scrollPush.ts` (`autoScroll`, `useAutoScroll`, saved in `localStorage` key
+  `auto-scroll`, on by default). Off: no push to the next section and no project opening by
+  itself; wheel scrolling still works normally, and clicks and arrows still work.
+- Projects list: scrolling down brings each picture to the middle; the list pauses (Lenis
+  `stop()` for 650ms) and the project opens by itself. A project re-arms when its picture moves
+  more than 30% of the screen from the middle, and only scrolling *down* opens one.
 - `Icon.tsx`: inline Lucide icon paths.
 
 ## Decisions
@@ -187,7 +204,7 @@ The original spec is HERO_PLAN.md (imported at the bottom of this file). Settled
   - Everything comes from his resume PDF (October 2026), with typos and cut-off bullets
     cleaned up. He will update the resume later.
   - **Never show his phone number.** He asked for it to be left out.
-  - Contacts: email, Cuddalore, LinkedIn `darshan-stack`, GitHub `DarshanLevi`.
+  - Contacts, in the order shown on the paper: email, LinkedIn `darshan-stack`, GitHub `DarshanLevi`, then Cuddalore (last, at his request).
   - His resume has Languages (Tamil, English) and no Interests, so the Interests slot is
     now **Languages**.
   - Achievements holds one real result: about 80% fewer upload crashes in MYCARBOY.
@@ -371,6 +388,56 @@ _Last updated: 2026-10-23_
   soft, and the circle pops (scale 1.22) once when it completes. Reduced motion: no ease or pop.
 - The completion pop now starts earlier: when the eased fill reaches 90% (it used to wait for
   99.5%, which the ease reaches late), and resets once the fill falls below 75%.
+- Gave each dot a cream gap around it (a 9px cream `box-shadow` ring on `.journey-dot`), so
+  the lines and the rule stop short of it, as in his reference.
+- He asked for the reference's bend and length (one continuous S from dot to dot) and then
+  said "nope, revert". **The bend is as before** (straight past each dot, a short ~110px S
+  halfway between dots); he called that one good. Don't change the bends unless he asks.
+- He asked for a three-part resume header (photo centred, email and location left, LinkedIn
+  and GitHub right), then said to **put them back in their original places** and make the four
+  contacts more visible instead. So the header is as originally designed: photo and name on the
+  left, a divider, the four contacts in a column on the right. The contacts are bigger and
+  bolder (1.95cqw, weight 500, icons 2.5cqw in the accent blue; was 1.3cqw and 1.7cqw). Checked
+  at 1536x698, 1366x651 and 390x844: nothing overflows and the sheet still fits. Don't centre
+  the photo again unless he asks.
+- The photo's face sat off-centre in the resume avatar circle. Measured the head on the pose
+  image (640px wide: hair top y=53, chin y=425, face centred at x=340; the first guesses had the
+  chin too high and cut it off) and re-cropped the circle in CSS (`top: -5.5%`, `left: -22.2%`,
+  `width: 131%` on `.sheet-avatar img`; the first computed values looked low and right of
+  centre in a capture, so they were nudged until the head's centre of mass measured 0.50
+  across) so the whole head, hair to chin, sits centred in the circle.
+- Gave the paper's contacts a hover/focus effect: a link contact (email, LinkedIn, GitHub; not
+  the location, which has no link) gets a soft accent-blue highlight behind its text, the text
+  turns blue, and a small ↗ arrow slides out to its right (`.sheet-contacts a[href]` in
+  `resume.css`; the highlight uses negative margins so the rows don't move). Verified the
+  email highlight in a capture and the LinkedIn arrow's opacity; rows stay put on hover.
+- The hover arrow on the paper's section headings sat on top of the end of "TOOLS &
+  TECHNOLOGIES" (that heading fills the left column's width). In the left column the arrow now
+  sits out in the column's margin (`.sheet-side .sheet-open { right: -2.7cqw }`), about 12px
+  clear of the text at 1536, 1366 and 390 wide; the right column's arrow is unchanged. It sits
+  just outside the hover tile's edge, which is the price of not shrinking the heading (its type
+  settings are shared with the section page's title for the camera move).
+- He said the site is 90% scrolling and should work by scroll alone, with clicks still there.
+  Added `scrollPush.ts` (see How it works): from the paper, scrolling on opens Skills; at the end
+  of each section page, scrolling on moves to the next (up goes back; past the ends, back to the
+  paper); the Projects list opens each project after a short pause on its picture, and a
+  project's page, scrolled to its end, moves to the next project, then back to the list after the
+  last. Tested end to end with only the wheel at 1366x768: paper > skills > tools > projects >
+  all six projects in order > languages > achievements > experience > education >
+  certifications > paper in about 37s; and upward from Education all the way back to the paper
+  in about 10s; no errors. Not yet tried on a real touch device or a trackpad's momentum
+  scrolling, or by eye in the cue's animation (only one capture of the cue).
+- Added an Auto-scroll On/Off switch in the bottom-left corner, on every page, at his request
+  ("full-web scrolling on/off"). Off turns off the scroll-pushes and the project auto-open; on
+  by default and remembered. Tested: off stays on Education after pushing, on moves to
+  Certifications; with it off a project doesn't open from the list, with it on it does; it is
+  clickable over a section page (an earlier version inside `#root` was covered by the section
+  overlay's hit area, so it is portalled to `<body>`); it stays off after a reload.
+- He wanted the switch "less visible as possible": removed the dark pill and label; it is now a
+  tiny outline switch at 28% opacity that brightens and shows its words on hover or focus. Still
+  clickable over every page (checked on Skills, over the sage circle).
+- Then it was too faint to find: enlarged to 28x16px and darkened (60% opacity, dark ink
+  `#2f2f2c`). Checked on the Projects page (light) and over the Skills sage circle.
 
 ### 2026-10-23
 
