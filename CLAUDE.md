@@ -171,6 +171,10 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     12 more dash layers of falling opacity make the soft fading tip, ahead of the tip, like
     Skills. The lines keep the Skills thickness (2.2px, `vector-effect: non-scaling-stroke`)
     at every zoom; `PITCH` (10 world units) sets their spacing.
+  - **Size:** the cards are 264×240 world units (were 236×214; he found the whole-ring view
+    "too far away"), with a 60px numeral, 23px title and 14.5px chips. The ring shot fits
+    the ring's top and bottom cards plus a 60-unit margin to the screen
+    (`min(w, h) / (2 * (R + CARD_H / 2) + 60)`), about 11% closer than before.
   - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
     (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
     nothing shows but the faint title, as at the top of Skills.
@@ -361,6 +365,8 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He said the Tools ring was "good" but too far away. Made the whole-ring view about 11%
+  closer and the cards about 12% bigger, with larger text. Checked at 1366x651 and 390x844.
 - He wanted the Skills lines to feel like they carry on into Tools. A first version (lines
   showing on arrival, the ring fading in on the first scroll) was rejected: the lines just
   appeared. **Rebuilt the Tools page on the Skills line logic** (see the Tools entry in How it

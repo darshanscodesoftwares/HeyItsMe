@@ -143,9 +143,9 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 236px;
-  min-height: 214px;
-  padding: 22px 24px 24px;
+  width: 264px;
+  min-height: 240px;
+  padding: 24px 26px 26px;
   background: #f6f2ea;
   border: 1px solid rgba(28, 28, 26, 0.16);
   border-radius: 22px;
@@ -168,18 +168,18 @@
   align-items: center;
   gap: 10px;
   margin: 0 0 10px;
-  font: 400 54px/0.9 Georgia, 'Times New Roman', serif;
+  font: 400 60px/0.9 Georgia, 'Times New Roman', serif;
 }
 
 .tw-spark {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   fill: var(--green);
 }
 
 .tw-title {
   margin: 0 0 16px;
-  font-size: 20px;
+  font-size: 23px;
   font-weight: 500;
   line-height: 1.2;
 }
@@ -199,7 +199,7 @@
   border: 1px solid rgba(28, 28, 26, 0.08);
   border-radius: 999px;
   color: #2c2c29;
-  font-size: 13px;
+  font-size: 14.5px;
 }
 
 /* ---------- Pager ---------- */
