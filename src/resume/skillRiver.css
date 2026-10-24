@@ -142,7 +142,10 @@
     var(--cream) calc(var(--fill, 0) * 1.03turn)
   );
   border-radius: 50%;
-  box-shadow: inset 0 0 0 2px var(--sage);
+  /* The ring in cream leaves a gap around the dot, so the lines and the rule stop short of it. */
+  box-shadow:
+    inset 0 0 0 2px var(--sage),
+    0 0 0 9px var(--cream);
   transform: translateY(-50%);
 }
 
