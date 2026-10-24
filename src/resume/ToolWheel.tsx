@@ -100,23 +100,11 @@ function route(points: Point[], radius = 46): Cubic[] {
   return curves
 }
 
-// Where the bundles leave each card and how they run off the poster, like the reference. For
-// the five cards, clockwise from the top: straight up from the top card (where the Skills page's
-// lines end, at the centre, so they seem to carry on into this page), straight out to the right
-// from the next, down and round to the right from the lower right one, down and out to the left
-// from the lower left one, and out to the left and down from the last.
-function bundleRoutes(cards: Point[]): Point[][] {
-  const [top, right, lowRight, lowLeft, left] = cards
-  const h = CARD_H / 2
-  const w = CARD_W / 2
-  const far = 1900
-  return [
-    [{ x: top.x, y: top.y - h }, { x: top.x, y: -far }],
-    [{ x: right.x + w, y: right.y }, { x: far, y: right.y }],
-    [{ x: lowRight.x, y: lowRight.y + h }, { x: lowRight.x, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: lowRight.y + h + 80 }, { x: lowRight.x + 300, y: far }],
-    [{ x: lowLeft.x, y: lowLeft.y + h }, { x: lowLeft.x, y: lowLeft.y + h + 70 }, { x: -far, y: lowLeft.y + h + 70 }],
-    [{ x: left.x - w, y: left.y }, { x: left.x - w - 70, y: left.y }, { x: left.x - w - 70, y: left.y + 330 }, { x: -far, y: left.y + 330 }],
-  ].slice(0, cards.length)
+// The only line that runs off the poster: straight up from the top card, where the Skills
+// page's lines end (at the centre), so they seem to carry on into this page. The reference's
+// bundles leaving the other cards were removed at his request.
+function entryRoute(top: Point): Point[] {
+  return [{ x: top.x, y: top.y - CARD_H / 2 }, { x: top.x, y: -1900 }]
 }
 
 // Everything that depends on the size of the screen: the camera's shots, where the drawn
@@ -184,8 +172,8 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
   const n = groups.length
   const drawn = plan(size.width, size.height, n)
   const points = drawn.points
-  const bundles = bundleRoutes(points).map((points) =>
-    Array.from({ length: LINES }, (_, k) => offsetPath(route(points), (k - (LINES - 1) / 2) * PITCH)),
+  const entry = Array.from({ length: LINES }, (_, k) =>
+    offsetPath(route(entryRoute(points[0])), (k - (LINES - 1) / 2) * PITCH),
   )
 
   // Size the scene to the screen, and make the page as long as the whole timeline.
@@ -410,7 +398,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
 
                 {/* The five lines from the top, down to card 1's dot, then round the ring. */}
                 <g mask="url(#tw-drawn)">
-                  {bundles[0]?.map((d, k) => (
+                  {entry.map((d, k) => (
                     <path key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />
                   ))}
                   <circle className="tw-dot" cx={points[0].x} cy={points[0].y - CARD_H / 2 - 7} r={7} />
@@ -419,14 +407,7 @@ export default function ToolWheel({ groups }: { groups: Group[] }) {
                   ))}
                 </g>
 
-                {/* Each card's own bundle running off the poster appears with its card. */}
-                {bundles.slice(1).map((lines, b) => (
-                  <g key={b} className="tw-exit" data-i={b + 1}>
-                    {lines.map((d, k) => (
-                      <path key={k} className={k % 2 ? 'tw-ring is-green' : 'tw-ring'} d={d} />
-                    ))}
-                  </g>
-                ))}
+                {/* Each card's short spoke to the middle appears with its card. */}
                 {points.map((p, i) => {
                   const a = Math.atan2(p.y - C, p.x - C)
                   const r1 = R * 0.57

@@ -153,11 +153,12 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     units between cards 1 and 2). It was briefly six cards (R 380) while Version control and
     Operating systems were separate; he then had them merged.
   - **Lines:** five concentric ring lines (ink and green alternating), hairline circles
-    and a crosshair, spokes with dots, and five-line bundles running off to the screen
-    edges (built with `route()` plus `offsetPath`, which is exported from `SkillRiver.tsx`).
-    `bundleRoutes()` is written for exactly five cards, clockwise from the top: up, straight
-    right, down and round to the right, down and out to the left, out to the left and down.
-    A different number of cards needs new routes and a new `R`.
+    and a crosshair, and spokes with dots. **The only line that leaves the ring is the one
+    coming down from the top into card 1** (`entryRoute()`, built with `route()` plus
+    `offsetPath`, which is exported from `SkillRiver.tsx`), where the Skills lines end. The
+    reference's bundles running off from the other cards were removed at his request
+    ("remove all outside lines"); don't bring them back unless he asks. Changing the number of
+    cards needs a new `R`.
   - **Order:** 1 Version control and OS (Git, GitHub, Linux, Mac, Windows; his name for the
     merged card is a guess, rename it in `content.ts` if he wants), 2 APIs and databases,
     3 Deployment, 4 Design and office, 5 AI tools (the order of `content.ts`).
@@ -197,7 +198,7 @@ CSS: no Tailwind and no animation library. The only runtime dependencies are `re
     three rows with room to spare; the obvious order needed four. Wider cards need a larger
     `R`. The ring shot fits the top and bottom cards plus a 40-unit margin to the screen
     (`min(w, h) / (2 * (R + CARD_H / 2) + 40)`).
-  - Cards, their spokes and their exit bundles (`[data-i]`) fade in as the line reaches them
+  - Cards and their spokes (`[data-i]`) fade in as the line reaches them
     (`.is-in`); the star and hairlines come with card 1 (`.has-core`). At the very top
     nothing shows but the faint title, as at the top of Skills.
   - **Up close:** the other cards dim to 35%, and a "01 / 05" pager (dots, count, arrow) shows
@@ -387,6 +388,10 @@ _Last updated: 2026-10-24_
 
 ### 2026-10-24
 
+- He asked to remove all the outside lines on the Tools ring. Done: the bundles running off the
+  screen from cards 2 to 5 are gone; only the lines coming down from the top into card 1
+  stay (the Skills lines continuing). Checked the whole ring and a trip at 1366x651 and
+  390x844.
 - He found the six-card ring crowded ("make 2 to 1" was unclear; he then clarified: **combine
   Version control and Operating systems into one card and add Windows**). Done: card 1 is now
   "Version control and OS" (Git, GitHub, Linux, Mac, Windows), the ring is five cards again
