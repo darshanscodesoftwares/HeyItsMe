@@ -1,6 +1,7 @@
 import type { Ref } from 'react'
 import Icon from './Icon'
 import Projects from './Projects'
+import SkillRiver from './SkillRiver'
 import { sections, type Card, type Entry, type Group, type Item, type Link, type Section } from './content'
 
 const pad = (n: number) => String(n).padStart(2, '0')
@@ -108,7 +109,7 @@ function List({ items }: { items: Item[] }) {
 function Body({ section }: { section: Section }) {
   switch (section.kind) {
     case 'groups':
-      return <Groups groups={section.groups} />
+      return section.id === 'skills' ? <SkillRiver groups={section.groups} /> : <Groups groups={section.groups} />
     case 'timeline':
       return <Timeline entries={section.entries} />
     case 'cards':
